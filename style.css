@@ -19,8 +19,18 @@
 }
 
 .botao:hover {
+    color: white;
     background-color: var(--preto);
     border-style: solid;
     border-color: var(--azul);
     transition: 0.2s all;
+}
+
+header {
+    text-align: center;
+}
+
+section {
+    max-width: 800px;
+    margin: auto;
 }

@@ -25,7 +25,7 @@
                 <option>TCC</option>
                 <option>TipoTCC</option>
             </select>
-            <input type="submit" value="Continuar">
+            <input type="submit" value="Continuar" style='cursor: pointer;'>
         </form>
     </section>
 </body>
