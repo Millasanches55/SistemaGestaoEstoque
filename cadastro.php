@@ -28,6 +28,9 @@
                 echo "Nome Completo do Segundo Integrante: <input type='text' name='nome2'> <br> <br>";
                 echo "Nome Completo do Terceiro Integrante: <input type='text' name='nome3'> <br> <br>";
                 echo "Professor Orientador: <input type='text' name='nomeProfOrient'> <br> <br>";
+                echo "Código/Tipo do TCC: <input type='text' name='codtipotcc'> <br> <br>";
+                echo "Código do TCC: <input type='text' name='codtcc'> <br> <br>";
+                echo "Título do TCC: <input type='text' name='titulotcc'> <br> <br>";
                 break;
             
             case "Professor":
