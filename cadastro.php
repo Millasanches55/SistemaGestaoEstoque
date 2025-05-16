@@ -24,9 +24,10 @@
 
         switch($tipo_cadastro) {
             case "Aluno":
-                echo "Nome Completo do Primeiro Integrante: <input type='text' name='nome1'> <br>";
-                echo "Nome Completo do Segundo Integrante: <input type='text' name='nome2'> <br>";
-                echo "Nome Completo do Terceiro Integrante: <input type='text' name='nome3'> <br>";
+                echo "Nome Completo do Primeiro Integrante: <input type='text' name='nome1'> <br> <br>";
+                echo "Nome Completo do Segundo Integrante: <input type='text' name='nome2'> <br> <br>";
+                echo "Nome Completo do Terceiro Integrante: <input type='text' name='nome3'> <br> <br>";
+                echo "Professor Orientador: <input type='text' name='nomeProfOrient'> <br> <br>";
                 break;
             
             case "Professor":
