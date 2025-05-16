@@ -20,6 +20,7 @@
                 <option>Professor</option>
                 <option>Agenda</option>
                 <option>TCC</option>
+                <option>TipoTCC</option>
             </select>
             <input type="submit" value="Continuar">
         </form>
