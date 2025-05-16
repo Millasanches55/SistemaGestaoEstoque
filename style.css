@@ -1,0 +1,26 @@
+:root {
+    --preto: #272b33;
+    --cinza: #555963;
+    --azul: #63c3f2;
+    font-family: sans-serif;
+    background-color: var(--preto);
+    color: white;
+}
+
+.botao {
+    color: var(--azul);
+    text-decoration: none;
+    padding: 10px;
+    background-color: var(--cinza);
+    border-style: solid;
+    border-color: var(--preto);
+    border-radius: 15px;
+    transition: 0.2s all;
+}
+
+.botao:hover {
+    background-color: var(--preto);
+    border-style: solid;
+    border-color: var(--azul);
+    transition: 0.2s all;
+}

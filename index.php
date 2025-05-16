@@ -12,6 +12,8 @@
         <h1>Sistema de TCC</h1>
     </header>
 
+    <hr>
+
     <section>
         <h2>Cadastro</h2>
         <form action="cadastro.php" method="post">
