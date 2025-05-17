@@ -17,49 +17,53 @@
 
     <br>
 
-    <h2>Cadastro de <?php echo $_POST['opcao-cadastro']; ?></h2>
+    <section>
+        <h2>Cadastro de <?php echo $_POST['opcao-cadastro']; ?></h2>
 
-    <?php
-        $tipo_cadastro = $_POST['opcao-cadastro'];
+        <form action="cadastro.php" method="post">
+            <?php
+                $tipo_cadastro = $_POST['opcao-cadastro'];
 
-        switch($tipo_cadastro) {
-            case "Aluno":
-                echo "Nome Completo do Primeiro Integrante: <input type='text' name='nome1'> <br> <br>";
-                echo "Nome Completo do Segundo Integrante: <input type='text' name='nome2'> <br> <br>";
-                echo "Nome Completo do Terceiro Integrante: <input type='text' name='nome3'> <br> <br>";
-                echo "Professor Orientador: <input type='text' name='nomeProfOrient'> <br> <br>";
-                echo "Código/Tipo do TCC: <input type='text' name='codtipotcc'> <br> <br>";
-                echo "Código do TCC: <input type='text' name='codtcc'> <br> <br>";
-                echo "Título do TCC: <input type='text' name='titulotcc'> <br> <br>";
-                break;
-            
-            case "Professor":
+                switch($tipo_cadastro) {
+                    case "Aluno":
+                        echo "Nome Completo do Primeiro Integrante: <input type='text' name='nome1'> <br> <br>";
+                        echo "Nome Completo do Segundo Integrante: <input type='text' name='nome2'> <br> <br>";
+                        echo "Nome Completo do Terceiro Integrante: <input type='text' name='nome3'> <br> <br>";
+                        echo "Professor Orientador: <input type='text' name='nomeProfOrient'> <br> <br>";
+                        echo "Código/Tipo do TCC: <input type='text' name='codtipotcc'> <br> <br>";
+                        echo "Código do TCC: <input type='text' name='codtcc'> <br> <br>";
+                        echo "Título do TCC: <input type='text' name='titulotcc'> <br> <br>";
+                        break;
+                    
+                    case "Professor":
 
-            /*Nome Professor Orientador */
-            echo "Professor Orientador: <input type='text' name='nomeProfOrient'> <br>";
-            /*Nome professor convidado1 */
+                    /*Nome Professor Orientador */
+                    echo "Professor Orientador: <input type='text' name='nomeProfOrient'> <br>";
+                    /*Nome professor convidado1 */
 
-            /*Nome professor convidado2 */
+                    /*Nome professor convidado2 */
 
-            /*Codigo TCC */
+                    /*Codigo TCC */
 
-            /*Codigo tipo TCC */
+                    /*Codigo tipo TCC */
 
-            /*Aluno1 */
+                    /*Aluno1 */
 
-            /*Aluno2 */
+                    /*Aluno2 */
 
-            /*Aluno3 */
-                break;
-        
-            case "Agenda":
-            
-                break;
+                    /*Aluno3 */
+                        break;
+                
+                    case "Agenda":
+                    
+                        break;
 
-            case "TCC":
-            
-                break;
-        }
-    ?>
+                    case "TCC":
+                    
+                        break;
+                }
+            ?>
+        </form>
+    </section>
 </body>
 </html>
