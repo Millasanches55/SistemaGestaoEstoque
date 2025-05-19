@@ -1,42 +1,45 @@
 <?php
 require_once 'conexao.php';
 
-$stmt = $pdo->query("SELECT id, nome FROM nomes ORDER BY id ASC");
-$nomes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$id = $_GET['id'] ?? null;
+
+if ($id) {
+    $stmt = $pdo->prepare("SELECT * FROM nomes WHERE id = :id");
+    $stmt->execute(['id' => $id]);
+    $nomeAtual = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$nomeAtual) {
+        die("Nome não encontrado.");
+    }
+} else {
+    die("ID inválido.");
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST['nome'])) {
+    $novoNome = trim($_POST['nome']);
+    $stmt = $pdo->prepare("UPDATE nomes SET nome = :nome WHERE id = :id");
+    $stmt->execute(['nome' => $novoNome, 'id' => $id]);
+
+    header("Location: index.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Nomes Cadastrados</title>
+    <title>Editar Nome</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Nomes Cadastrados</h1>
+    <h1>Editar Nome</h1>
 
-    <a href="cadastrar.php"><button>Cadastrar Novo Nome</button></a>
+    <form method="POST">
+        <input type="text" name="nome" value="<?= htmlspecialchars($nomeAtual['nome']) ?>" required>
+        <button type="submit">Salvar Alterações</button>
+    </form>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Código</th>
-                <th>Nome</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($nomes as $linha): ?>
-                <tr>
-                    <td><?= htmlspecialchars($linha['id']) ?></td>
-                    <td><?= htmlspecialchars($linha['nome']) ?></td>
-                    <td>
-                        <a href="editar.php?id=<?= $linha['id'] ?>"><button>Editar</button></a>
-                        <a href="deletar.php?id=<?= $linha['id'] ?>" onclick="return confirm('Tem certeza que deseja excluir este nome?');"><button>Deletar</button></a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+    <a href="index.php"><button>Voltar</button></a>
 </body>
 </html>
