@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <button type="submit">Cadastrar TCC</button>
 </form>
 <?php
-echo "<h3>Exemplo com FOR:</h3>";
+echo "<h3>Sumário dos Tipos de Tcc's e seus códigos</h3>";
 for ($i = 0; $i < count($tipos); $i++) {
     $numeroTipo = $i + 1;
     echo "Tipo {$numeroTipo}: " . htmlspecialchars($tipos[$i]['nomeTipoTcc']) . "<br>";
