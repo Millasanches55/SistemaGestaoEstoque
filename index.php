@@ -1,32 +1,110 @@
+<?php
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Document</title>
-</head>
-<body>
-    <header>
-        <h1>Sistema de TCC</h1>
-    </header>
+$pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
 
-    <hr>
+try {
+    $stmt = $pdo->query("SELECT COUNT(*) AS total FROM Tcc");
+    $totalTcc = 0;
+ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $totalTcc = $row['total'];
+    }
+    echo "<p><strong>Total de TCCs cadastrados:</strong> $totalTcc</p>";
+} catch (PDOException $e) {
+    echo "Erro ao contar TCCs: " . $e->getMessage();
+}
+?>
+<?php
+$pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
+$query = "
+    SELECT 
+        t.codTcc,
+        t.codTipoTcc,
+        t.titulo,
+        tipo.nomeTipoTcc,
+        t.qtdPg,
+        t.qtdAlunos,
+        t.curso,
+        t.aprovado,
+        t.codTcc AS codAgenda
+    FROM Tcc t
+    JOIN TipoTcc tipo ON t.codTipoTcc = tipo.codTipoTcc
+";
+$tccs = $pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
+if (isset($_GET['delete'])) {
+    $codTcc = (int)$_GET['delete'];
+    $pdo->prepare("DELETE FROM Aluno WHERE codTcc = ?")->execute([$codTcc]);
+    $pdo->prepare("DELETE FROM Professor WHERE codTcc = ?")->execute([$codTcc]);
+    $pdo->prepare("DELETE FROM Agenda WHERE codAgenda = ?")->execute([$codTcc]);
+    $pdo->prepare("DELETE FROM Tcc WHERE codTcc = ?")->execute([$codTcc]);
 
-    <section>
-        <h2>Cadastro</h2>
-        <form action="cadastro.php" method="post">
-            <p>Por favor, selecione uma opção:</p>
-            <select name="opcao-cadastro">
-                <option>Aluno</option>
-                <option>Professor</option>
-                <option>Agenda</option>
-                <option>TCC</option>
-                <option>TipoTCC</option>
-            </select>
-            <input type="submit" value="Continuar" style='cursor: pointer;'>
-        </form>
-    </section>
+    header("Location: index.php");
+    exit;
+}
+?>
+
+<h2>TCC's Cadastrados</h2>
+
+<a href="cadastroTcc.php"><button>Cadastrar Novo TCC</button></a>
+<br><br>
+
+<table border="1" cellpadding="8">
+    <thead>
+        <tr>
+            <th>codTcc</th>
+            <th>codTipoTcc</th>
+            <th>título</th>
+            <th>nomeTipoTcc</th>
+            <th>qtdPg</th>
+            <th>qtdAlunos</th>
+            <th>curso</th>
+            <th>aprovado</th>
+            <th>codAgenda</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($tccs as $tcc): ?>
+            <tr>
+                <td><?= $tcc['codTcc'] ?></td>
+                <td><?= $tcc['codTipoTcc'] ?></td>
+                <td><?= htmlspecialchars($tcc['titulo']) ?></td>
+                <td><?= $tcc['nomeTipoTcc'] ?></td>
+                <td><?= $tcc['qtdPg'] ?></td>
+                <td><?= $tcc['qtdAlunos'] ?></td>
+                <td><?= htmlspecialchars($tcc['curso']) ?></td>
+                <td><?= $tcc['aprovado'] ?></td>
+                <td><?= $tcc['codAgenda'] ?></td>
+                <td>
+                    <a href="editarTcc.php?codTcc=<?= $tcc['codTcc'] ?>"><button>Editar</button></a>
+                    <a href="?delete=<?= $tcc['codTcc'] ?>" onclick="return confirm('Tem certeza que deseja excluir este TCC?');">
+                        <button>Deletar</button>
+                    </a>
+
+
+
+                    <a href="acessarAgenda.php?codAgenda=<?= $tcc['codAgenda'] ?>"><button>Acessar Agenda</button></a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<?php
+$pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
+
+require 'Tcc.php';
+
+$tcc = new Tcc($pdo);
+$tccs = $tcc->listarTodos();
+
+echo "<h2>Lista de TCCs Cadastrados e Seus Cursos</h2>";
+foreach ($tccs as $item) {
+    echo "<p><strong>" . htmlspecialchars($item['titulo']) . "</strong> - " . 
+         htmlspecialchars($item['aluno1']) . 
+         " (<em>" . htmlspecialchars($item['curso']) . "</em>)</p>";
+}
+?>
+<button onclick="window.location.href='professoresCadastrados.php'">Ver Professores Cadastrados</button>
+
+
 </body>
 </html>
