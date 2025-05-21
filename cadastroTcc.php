@@ -56,10 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-
-
-
-
 <h2>Cadastro de TCC</h2>
 <form method="POST" style="max-width: 600px;">
     <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
