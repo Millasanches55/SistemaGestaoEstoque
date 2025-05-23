@@ -1,20 +1,28 @@
 <?php
+echo "<link rel='stylesheet' href='style.css'/>";
 
 $pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
 
 try {
+    // Consulta para contar os TCCs
     $stmt = $pdo->query("SELECT COUNT(*) AS total FROM Tcc");
     $totalTcc = 0;
- while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+    // Laço while para percorrer os resultados (só 1 linha, mas usamos while para cumprir o critério)
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $totalTcc = $row['total'];
     }
+
     echo "<p><strong>Total de TCCs cadastrados:</strong> $totalTcc</p>";
 } catch (PDOException $e) {
     echo "Erro ao contar TCCs: " . $e->getMessage();
 }
 ?>
 <?php
+// Conexão PDO
 $pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
+
+// Busca todos os TCCs com JOIN para pegar nomeTipoTcc
 $query = "
     SELECT 
         t.codTcc,
@@ -30,8 +38,12 @@ $query = "
     JOIN TipoTcc tipo ON t.codTipoTcc = tipo.codTipoTcc
 ";
 $tccs = $pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
+
+// Deletar TCC
 if (isset($_GET['delete'])) {
     $codTcc = (int)$_GET['delete'];
+
+    // Apaga das tabelas relacionadas
     $pdo->prepare("DELETE FROM Aluno WHERE codTcc = ?")->execute([$codTcc]);
     $pdo->prepare("DELETE FROM Professor WHERE codTcc = ?")->execute([$codTcc]);
     $pdo->prepare("DELETE FROM Agenda WHERE codAgenda = ?")->execute([$codTcc]);
@@ -103,7 +115,11 @@ foreach ($tccs as $item) {
          " (<em>" . htmlspecialchars($item['curso']) . "</em>)</p>";
 }
 ?>
-<button onclick="window.location.href='professoresCadastrados.php'">Ver Professores Cadastrados</button>
+
+
+
+    <!-- Botão para ir à página de professores -->
+ <button onclick="window.location.href='professoresCadastrados.php'">Ver Professores Cadastrados</button>
 
 
 </body>

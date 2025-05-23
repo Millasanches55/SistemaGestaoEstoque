@@ -1,6 +1,13 @@
 <?php
+echo "<link rel='stylesheet' href='style.css'/>";
+
+// Conexão PDO
 $pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
+
+// Pega os tipos de TCC para o select
 $tipos = $pdo->query("SELECT * FROM TipoTcc")->fetchAll(PDO::FETCH_ASSOC);
+
+// Lógica de cadastro
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $titulo = $_POST['titulo'];
     $codTipoTcc = (int)$_POST['codTipoTcc'];
@@ -56,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
+<!-- Formulário HTML -->
 <h2>Cadastro de TCC</h2>
 <form method="POST" style="max-width: 600px;">
     <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
@@ -98,8 +106,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <button type="submit">Cadastrar TCC</button>
 </form>
+
+<!-- Exemplo com FOR -->
 <?php
-echo "<h3>Sumário dos Tipos de Tcc's e seus códigos</h3>";
+echo "<h3>Sumário dos Tipos de Tcc's e seus códigos:</h3>";
 for ($i = 0; $i < count($tipos); $i++) {
     $numeroTipo = $i + 1;
     echo "Tipo {$numeroTipo}: " . htmlspecialchars($tipos[$i]['nomeTipoTcc']) . "<br>";
