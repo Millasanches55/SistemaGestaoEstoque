@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-=======
     <link rel='stylesheet' href='style.css'/>
     <title>Alunos Cadastrados</title>
->>>>>>> fac9da91c3d8be2056b6056226966b37eae454c4
 </head>
 <body>
-<section>
-
-<a href="index.php" class='botao'>← Voltar para lista de TCCs</a>
+    <section>
+    <br>
+    <a href="index.php" class='botao'>← Voltar para lista de TCCs</a>
 <?php
 require_once 'Aluno.php';
 
