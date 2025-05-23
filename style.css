@@ -44,7 +44,7 @@ header {
 }
 
 section {
-    max-width: 800px;
+    max-width: 900px;
     margin: auto;
 }
 
@@ -63,4 +63,20 @@ td {
 option, select, input {
     color: white;
     background-color: var(--cinza);
+}
+
+#links-index {
+    text-align: center;
+}
+
+header {
+    font-size: 25px;
+}
+
+.opcoes-tabela {
+    display: flex;
+}
+
+table {
+    margin: auto;
 }
