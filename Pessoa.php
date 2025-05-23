@@ -6,9 +6,15 @@ class Pessoa {
         $this->nome = $nome;
     }
 
+
+
     public function exibirNome() {
         return $this->nome;
     }
+
+
+
+   
 }
 ?>
 

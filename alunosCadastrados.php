@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
+=======
     <link rel='stylesheet' href='style.css'/>
     <title>Alunos Cadastrados</title>
+>>>>>>> fac9da91c3d8be2056b6056226966b37eae454c4
 </head>
 <body>
 <section>
 
 <a href="index.php" class='botao'>← Voltar para lista de TCCs</a>
 <?php
-require_once 'Professor.php';
+require_once 'Aluno.php';
 
 // Ativa exibição de erros
 ini_set('display_errors', 1);
@@ -24,12 +27,12 @@ try {
 
     // Junta informações da tabela Professor com Tcc (para obter o título)
     $stmt = $pdo->query("
-        SELECT tcc.titulo, professor.*
-        FROM Professor professor
-        JOIN Tcc tcc ON tcc.codTcc = professor.codTcc
+        SELECT tcc.titulo, aluno.*
+        FROM Aluno aluno
+        JOIN Tcc tcc ON tcc.codTcc = aluno.codTcc
     ");
     
-    echo "<h2>Professores Cadastrados por TCC</h2>";
+    echo "<h2>Alunos Cadastrados por TCC</h2>";
 
     echo "<hr>";
 
@@ -38,11 +41,11 @@ try {
         echo "<h3>Título do TCC: " . htmlspecialchars($row['titulo']) . "</h3>";
         echo "<ul>";
 
-        $tipos = ['orientador', 'coorientador', 'profConvidado1', 'profConvidado2'];
+        $tipos = ['aluno1', 'aluno2', 'aluno3'];
         foreach ($tipos as $tipo) {
             if (!empty($row[$tipo])) {
-                $prof = new Professor($row[$tipo], ucfirst($tipo));
-                echo "<li>" . $prof->exibirProfessor() . "</li>";
+                $aluno = new Aluno($row[$tipo], ucfirst($tipo));
+                echo "<li>" . $aluno->exibirDados() . "</li>";
             }
         }
 
