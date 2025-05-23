@@ -36,6 +36,7 @@ try {
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         echo "<div>";
         echo "<h3>Título do TCC: " . htmlspecialchars($row['titulo']) . "</h3>";
+        echo "<h3>Curso do TCC: " . htmlspecialchars($row['curso']) . "</h3>";
         echo "<ul>";
 
         $tipos = ['aluno1', 'aluno2', 'aluno3'];

@@ -24,7 +24,7 @@ try {
 
     // Junta informações da tabela Professor com Tcc (para obter o título)
     $stmt = $pdo->query("
-        SELECT tcc.titulo, professor.*
+        SELECT tcc.titulo, tcc.curso, professor.*
         FROM Professor professor
         JOIN Tcc tcc ON tcc.codTcc = professor.codTcc
     ");
@@ -35,6 +35,7 @@ try {
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         echo "<div id='professores-div'>";
         echo "<h3>Título do TCC: " . htmlspecialchars($row['titulo']) . "</h3>";
+        echo "<h3>Curso do TCC: " . htmlspecialchars($row['curso']) . "</h3>";
         echo "<ul>";
 
         $tipos = ['orientador', 'coorientador', 'profConvidado1', 'profConvidado2'];
