@@ -6,8 +6,12 @@
     <title>Página Principal</title>
     <link rel='stylesheet' href='style.css'/>
     </head>
-<section>
 <body>
+<section>
+<header>
+    <h1>Cadastro de TCCs</h1>
+</header>
+
 <?php
 echo "";
 
@@ -64,11 +68,12 @@ if (isset($_GET['delete'])) {
 }
 ?>
 
+
 <h2>TCC's Cadastrados</h2>
 
 <a class='botao' href="cadastroTcc.php">Cadastrar Novo TCC</a>
 <br><br>
-
+</section>
 <table border="1">
     <thead>
         <tr>
@@ -96,21 +101,22 @@ if (isset($_GET['delete'])) {
                 <td><?= htmlspecialchars($tcc['curso']) ?></td>
                 <td><?= $tcc['aprovado'] ?></td>
                 <td><?= $tcc['codAgenda'] ?></td>
-                <td>
-                    <a href="editarTcc.php?codTcc=<?= $tcc['codTcc'] ?>"><button>Editar</button></a>
+                <td class="opcoes-tabela">
+                    <a href="editarTcc.php?codTcc=<?= $tcc['codTcc'] ?>"><button class='botao'>Editar</button></a>
                     <a href="?delete=<?= $tcc['codTcc'] ?>" onclick="return confirm('Tem certeza que deseja excluir este TCC?');">
-                        <button>Deletar</button>
+                        <button class='botao'>Deletar</button>
                     </a>
 
 
 
-                    <a href="acessarAgenda.php?codAgenda=<?= $tcc['codAgenda'] ?>"><button>Acessar Agenda</button></a>
+                    <a href="acessarAgenda.php?codAgenda=<?= $tcc['codAgenda'] ?>"><button class='botao'>Acessar Agenda</button></a>
                 </td>
             </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
 <?php
+echo "<section>";
 $pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
 
 require 'Tcc.php';
@@ -125,12 +131,14 @@ foreach ($tccs as $item) {
          " (<em>" . htmlspecialchars($item['curso']) . "</em>)</p>";
 }
 ?>
-
+</div>
 
 
     <!-- Botão para ir à página de professores -->
- <a class='botao' href='professoresCadastrados.php'>Ver Professores Cadastrados</a>
-<a class='botao' href="alunosCadastrados.php">Ver Alunos Cadastrados</a>
+<div id='links-index'>
+    <a class='botao' href='professoresCadastrados.php'>Ver Professores Cadastrados</a>
+    <a class='botao' href="alunosCadastrados.php">Ver Alunos Cadastrados</a>
+</div>
 
 </section>
 
