@@ -114,24 +114,7 @@ if (isset($_GET['delete'])) {
         <?php endforeach; ?>
     </tbody>
 </table>
-<?php
-echo "<section>";
-$pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
 
-require 'Tcc.php';
-
-
-$tcc = new Tcc($pdo);
-$tccs = $tcc->listarTodos();
-
-echo "<h2>Lista de TCCs Cadastrados e Seus Cursos</h2>";
-foreach ($tccs as $item) {
-    echo "<p><strong>" . htmlspecialchars($item['titulo']) . "</strong> - " . 
-         htmlspecialchars($item['aluno1']) . 
-         " (<em>" . htmlspecialchars($item['curso']) . "</em>)</p>";
-}
-?>
-</div>
 
 
     <!-- Botão para ir à página de professores e alunos -->
