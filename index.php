@@ -66,7 +66,7 @@ if (isset($_GET['delete'])) {
 
 <h2>TCC's Cadastrados</h2>
 
-<a href="cadastroTcc.php"><button>Cadastrar Novo TCC</button></a>
+<a class='botao' href="cadastroTcc.php">Cadastrar Novo TCC</a>
 <br><br>
 
 <table border="1">
@@ -129,8 +129,8 @@ foreach ($tccs as $item) {
 
 
     <!-- Botão para ir à página de professores -->
- <button onclick="window.location.href='professoresCadastrados.php'">Ver Professores Cadastrados</button>
-<button onclick="window.location.href='alunosCadastrados.php'">Ver Alunos Cadastrados</button>
+ <a class='botao' href='professoresCadastrados.php'>Ver Professores Cadastrados</a>
+<a class='botao' href="alunosCadastrados.php">Ver Alunos Cadastrados</a>
 
 </section>
 

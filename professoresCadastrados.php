@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='style.css'/>
+    <title>Professores Cadastrados</title>
 </head>
 <body>
     <section>
     <br>
     <a href="index.php" class='botao'>← Voltar para lista de TCCs</a>
 <?php
-echo "<link rel='stylesheet' href='style.css'/>";
-
 require_once 'Professor.php';
 
 // Ativa exibição de erros
