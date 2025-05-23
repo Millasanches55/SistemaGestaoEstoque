@@ -60,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+<link rel='stylesheet' href='style.css'/>
 <a href="index.php">← Voltar para lista de TCCs</a>
 <h2>Editar TCC (codTcc = <?= $codTcc ?>)</h2>
 
