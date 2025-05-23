@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -6,14 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-     <a href="index.php">← Voltar para lista de TCCs</a>
-    
-</body>
-</html>
-
-=======
-<section>
->>>>>>> Stashed changes
+    <section>
+    <br>
+    <a href="index.php" class='botao'>← Voltar para lista de TCCs</a>
 <?php
 echo "<link rel='stylesheet' href='style.css'/>";
 
@@ -62,4 +56,5 @@ try {
 ?>
 </section>
 
-
+</body>
+</html>

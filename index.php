@@ -132,8 +132,6 @@ foreach ($tccs as $item) {
  <button onclick="window.location.href='professoresCadastrados.php'">Ver Professores Cadastrados</button>
 <button onclick="window.location.href='alunosCadastrados.php'">Ver Alunos Cadastrados</button>
 
-=======
-
 </section>
 
 </body>
