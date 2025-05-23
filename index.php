@@ -1,5 +1,15 @@
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>Página Principal</title>
+    <link rel='stylesheet' href='style.css'/>
+    </head>
+<section>
+<body>
 <?php
-echo "<link rel='stylesheet' href='style.css'/>";
+echo "";
 
 $pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
 
@@ -59,7 +69,7 @@ if (isset($_GET['delete'])) {
 <a href="cadastroTcc.php"><button>Cadastrar Novo TCC</button></a>
 <br><br>
 
-<table border="1" cellpadding="8">
+<table border="1">
     <thead>
         <tr>
             <th>codTcc</th>
@@ -120,7 +130,12 @@ foreach ($tccs as $item) {
 
     <!-- Botão para ir à página de professores -->
  <button onclick="window.location.href='professoresCadastrados.php'">Ver Professores Cadastrados</button>
+<<<<<<< Updated upstream
 <button onclick="window.location.href='alunosCadastrados.php'">Ver Alunos Cadastrados</button>
 
+=======
+
+</section>
+>>>>>>> Stashed changes
 </body>
 </html>

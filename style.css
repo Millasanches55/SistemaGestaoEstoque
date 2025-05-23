@@ -1,8 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.poppins-semibold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
 :root {
     --preto: #272b33;
     --cinza: #555963;
     --azul: #63c3f2;
-    font-family: sans-serif;
+    font-family: "Poppins";
     background-color: var(--preto);
     color: white;
 }
@@ -33,4 +46,16 @@ header {
 section {
     max-width: 800px;
     margin: auto;
+}
+
+#professores-div {
+    line-height: 25px;
+}
+
+th {
+    padding: 10px;
+}
+
+td {
+    text-align: center;
 }
