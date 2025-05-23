@@ -24,7 +24,7 @@ try {
 
     // Junta informações da tabela Professor com Tcc (para obter o título)
     $stmt = $pdo->query("
-        SELECT tcc.titulo, aluno.*
+        SELECT tcc.curso, tcc.titulo, aluno.*
         FROM Aluno aluno
         JOIN Tcc tcc ON tcc.codTcc = aluno.codTcc
     ");

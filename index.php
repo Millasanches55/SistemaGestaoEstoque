@@ -134,7 +134,7 @@ foreach ($tccs as $item) {
 </div>
 
 
-    <!-- Botão para ir à página de professores -->
+    <!-- Botão para ir à página de professores e alunos -->
 <div id='links-index'>
     <a class='botao' href='professoresCadastrados.php'>Ver Professores Cadastrados</a>
     <a class='botao' href="alunosCadastrados.php">Ver Alunos Cadastrados</a>
