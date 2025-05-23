@@ -1,3 +1,14 @@
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>Agenda</title>
+    <link rel='stylesheet' href='style.css'/>
+    </head>
+<body>
+<section>
+
 <?php
 echo "<link rel='stylesheet' href='style.css'/>";
 $pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8mb4", "root", "");
@@ -89,8 +100,8 @@ if ($codAgenda) {
     }
 }
 ?>
-
-<a href="index.php">← Voltar para lista de TCCs</a>
+<br>
+<a href="index.php" class='botao'>← Voltar para lista de TCCs</a>
 <h2>Acessar Agenda do TCC</h2>
 
 <?php if ($erro): ?>
@@ -146,3 +157,7 @@ if ($codAgenda) {
         <button type="submit" name="salvar">Salvar Alterações</button>
     </form>
 <?php endif; ?>
+
+</section>
+</body>
+</html>
