@@ -20,7 +20,7 @@
     color: white;
 }
 
-.botao {
+.botao, #botao-cadastro {
     color: var(--azul);
     text-decoration: none;
     padding: 10px;
@@ -31,7 +31,7 @@
     transition: 0.2s all;
 }
 
-.botao:hover {
+.botao:hover , #botao-cadastro:hover{
     color: white;
     background-color: var(--preto);
     border-style: solid;
@@ -58,4 +58,9 @@ th {
 
 td {
     text-align: center;
+}
+
+option, select, input {
+    color: white;
+    background-color: var(--cinza);
 }

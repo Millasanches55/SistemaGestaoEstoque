@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <label>Cidade: <input type="text" name="cidade" required></label><br>
     </div>
 
-    <button type="submit">Cadastrar TCC</button>
+    <button id='botao-cadastro' type="submit">Cadastrar TCC</button>
 </form>
 
 <!-- Exemplo com FOR -->
