@@ -105,6 +105,7 @@ $pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
 
 require 'Tcc.php';
 
+
 $tcc = new Tcc($pdo);
 $tccs = $tcc->listarTodos();
 
