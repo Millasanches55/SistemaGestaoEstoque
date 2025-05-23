@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='style.css'/>
+    <title>Professores Cadastrados</title>
 </head>
 <body>
-     <a href="index.php">← Voltar para lista de TCCs</a>
-    
-</body>
-</html>
-
+    <section>
+    <br>
+    <a href="index.php" class='botao'>← Voltar para lista de TCCs</a>
 <?php
 require_once 'Professor.php';
 
@@ -30,11 +30,12 @@ try {
     ");
     
     echo "<h2>Professores Cadastrados por TCC</h2>";
+    echo "<hr>";
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        echo "<div style='border: 1px solid #ccc; padding: 10px; margin-bottom: 15px; border-radius: 8px; background-color: #f9f9f9;'>";
-        echo "<h3 style='margin-top: 0;'>Título do TCC: " . htmlspecialchars($row['titulo']) . "</h3>";
-        echo "<ul style='list-style-type: none; padding-left: 0;'>";
+        echo "<div id='professores-div'>";
+        echo "<h3>Título do TCC: " . htmlspecialchars($row['titulo']) . "</h3>";
+        echo "<ul>";
 
         $tipos = ['orientador', 'coorientador', 'profConvidado1', 'profConvidado2'];
         foreach ($tipos as $tipo) {
@@ -46,12 +47,14 @@ try {
 
         echo "</ul>";
         echo "</div>";
+        echo "<hr>";
     }
 
 } catch (PDOException $e) {
     echo "Erro ao conectar ou buscar dados: " . $e->getMessage();
 }
 ?>
+</section>
 
-
-
+</body>
+</html>

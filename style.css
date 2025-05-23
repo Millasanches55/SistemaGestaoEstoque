@@ -1,13 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.poppins-semibold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
 :root {
     --preto: #272b33;
     --cinza: #555963;
     --azul: #63c3f2;
-    font-family: sans-serif;
+    font-family: "Poppins";
     background-color: var(--preto);
     color: white;
 }
 
-.botao {
+.botao, #botao-cadastro {
     color: var(--azul);
     text-decoration: none;
     padding: 10px;
@@ -18,7 +31,7 @@
     transition: 0.2s all;
 }
 
-.botao:hover {
+.botao:hover , #botao-cadastro:hover{
     color: white;
     background-color: var(--preto);
     border-style: solid;
@@ -33,4 +46,21 @@ header {
 section {
     max-width: 800px;
     margin: auto;
+}
+
+#professores-div {
+    line-height: 25px;
+}
+
+th {
+    padding: 10px;
+}
+
+td {
+    text-align: center;
+}
+
+option, select, input {
+    color: white;
+    background-color: var(--cinza);
 }

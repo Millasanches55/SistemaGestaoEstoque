@@ -1,5 +1,15 @@
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>Página Principal</title>
+    <link rel='stylesheet' href='style.css'/>
+    </head>
+<section>
+<body>
 <?php
-echo "<link rel='stylesheet' href='style.css'/>";
+echo "";
 
 $pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
 
@@ -56,10 +66,10 @@ if (isset($_GET['delete'])) {
 
 <h2>TCC's Cadastrados</h2>
 
-<a href="cadastroTcc.php"><button>Cadastrar Novo TCC</button></a>
+<a class='botao' href="cadastroTcc.php">Cadastrar Novo TCC</a>
 <br><br>
 
-<table border="1" cellpadding="8">
+<table border="1">
     <thead>
         <tr>
             <th>codTcc</th>
@@ -120,8 +130,10 @@ foreach ($tccs as $item) {
 
 
     <!-- Botão para ir à página de professores -->
- <button onclick="window.location.href='professoresCadastrados.php'">Ver Professores Cadastrados</button>
-<button onclick="window.location.href='alunosCadastrados.php'">Ver Alunos Cadastrados</button>
+ <a class='botao' href='professoresCadastrados.php'>Ver Professores Cadastrados</a>
+<a class='botao' href="alunosCadastrados.php">Ver Alunos Cadastrados</a>
+
+</section>
 
 </body>
 </html>

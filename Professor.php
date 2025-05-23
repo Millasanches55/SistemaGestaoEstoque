@@ -9,7 +9,7 @@ class Professor {
     }
 
     public function exibirProfessor() {
-        return $this->cargo . ": " . htmlspecialchars($this->nome);
+        return "<p><b>" . $this->cargo . "</b>: " . htmlspecialchars($this->nome) . "</p>";
     }
 }
 ?>

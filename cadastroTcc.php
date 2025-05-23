@@ -1,5 +1,15 @@
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>Cadastro de TCC</title>
+    <link rel='stylesheet' href='style.css'/>
+</head>
+<section>
+<body>
+
 <?php
-echo "<link rel='stylesheet' href='style.css'/>";
 
 // Conexão PDO
 $pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
@@ -65,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!-- Formulário HTML -->
 
-<a href="index.php">← Voltar para lista de TCCs</a>
+<a href="index.php" class='botao'>← Voltar para lista de TCCs</a>
 <h2>Cadastro de TCC</h2>
 <form method="POST" style="max-width: 600px;">
     <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
@@ -106,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <label>Cidade: <input type="text" name="cidade" required></label><br>
     </div>
 
-    <button type="submit">Cadastrar TCC</button>
+    <button id='botao-cadastro' type="submit">Cadastrar TCC</button>
 </form>
 
 <!-- Exemplo com FOR -->
@@ -117,3 +127,5 @@ for ($i = 0; $i < count($tipos); $i++) {
     echo "Tipo {$numeroTipo}: " . htmlspecialchars($tipos[$i]['nomeTipoTcc']) . "<br>";
 }
 ?>
+</body>
+</html>
