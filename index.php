@@ -9,7 +9,7 @@
 <body>
 <section>
 <header>
-    <h1>Cadastro de TCCs</h1>
+     <marquee behavior="scroll" direction="left">Cadastro de TCCs</marquee>
 </header>
 
 <?php
@@ -68,8 +68,10 @@ if (isset($_GET['delete'])) {
 }
 ?>
 
-
+<!-- Botão para ir à página de professores e alunos -->
 <a class='botao' href="cadastroTcc.php">Cadastrar Novo TCC</a>
+<a class='botao' href='professoresCadastrados.php'>Ver Professores Cadastrados</a>
+<a class='botao' href="alunosCadastrados.php">Ver Alunos Cadastrados</a>
 <br><br>
 <h2>TCC's Cadastrados</h2>
 </section>
@@ -114,14 +116,6 @@ if (isset($_GET['delete'])) {
         <?php endforeach; ?>
     </tbody>
 </table>
-
-
-
-    <!-- Botão para ir à página de professores e alunos -->
-<div id='links-index'>
-    <a class='botao' href='professoresCadastrados.php'>Ver Professores Cadastrados</a>
-    <a class='botao' href="alunosCadastrados.php">Ver Alunos Cadastrados</a>
-</div>
 
 </section>
 

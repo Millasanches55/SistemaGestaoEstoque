@@ -1,82 +1,110 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-.poppins-regular {
-  font-family: "Poppins", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.poppins-semibold {
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  font-style: normal;
-}
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap');
 
 :root {
-    --preto: #272b33;
-    --cinza: #555963;
-    --azul: #63c3f2;
-    font-family: "Poppins";
+    --preto: #1f1f1f;
+    --cinza: #2e2e2e;
+    --azul: #00bfff;
+    --verde: #8fffa6;
+    --branco: #f5faff;
+    --sombra: 0 4px 10px rgba(0, 0, 0, 0.2);
+    --raio: 12px;
+    font-family: 'Segoe UI', sans-serif;
     background-color: var(--preto);
-    color: white;
+    color: var(--branco);
 }
 
-.botao, #botao-cadastro {
-    color: var(--azul);
-    text-decoration: none;
-    padding: 10px;
-    background-color: var(--cinza);
-    border-style: solid;
-    border-color: var(--preto);
-    border-radius: 15px;
-    transition: 0.2s all;
-}
-
-.botao:hover , #botao-cadastro:hover{
-    color: white;
-    background-color: var(--preto);
-    border-style: solid;
-    border-color: var(--azul);
-    transition: 0.2s all;
+body {
+    background: linear-gradient(to bottom, #dff9ff, #b5eaff);
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    color: #1f1f1f;
 }
 
 header {
     text-align: center;
+    font-size: 2rem;
+    padding: 20px;
+    background: linear-gradient(to right, #63c3f2, #00bfff);
+    color: white;
+    box-shadow: var(--sombra);
+    border-bottom-left-radius: var(--raio);
+    border-bottom-right-radius: var(--raio);
 }
 
 section {
     max-width: 900px;
-    margin: auto;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+}
+
+.botao, #botao-cadastro {
+    color: white;
+    background-color: var(--azul);
+    text-decoration: none;
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--raio);
+    box-shadow: 0 2px 8px rgba(0, 191, 255, 0.5);
+    transition: background 0.3s, transform 0.2s;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.botao:hover, #botao-cadastro:hover {
+    background-color: var(--verde);
+    color: #1f1f1f;
+    transform: scale(1.05);
 }
 
 #professores-div {
-    line-height: 25px;
-}
-
-th {
-    padding: 10px;
-}
-
-td {
-    text-align: center;
-}
-
-option, select, input {
-    color: white;
-    background-color: var(--cinza);
-}
-
-#links-index {
-    text-align: center;
-}
-
-header {
-    font-size: 25px;
-}
-
-.opcoes-tabela {
-    display: flex;
+    line-height: 1.6;
 }
 
 table {
     margin: auto;
+    border-collapse: collapse;
+    width: 100%;
+    box-shadow: var(--sombra);
+    background-color: #ffffff;
+    border-radius: var(--raio);
+    overflow: hidden;
 }
+
+th, td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: var(--azul);
+    color: white;
+}
+
+td {
+    background-color: #f0faff;
+}
+
+.opcoes-tabela {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+option, select, input {
+    color: #1f1f1f;
+    background-color: #f0faff;
+    border: 1px solid #ccc;
+    border-radius: var(--raio);
+    padding: 5px;
+}
+
+#links-index {
+    text-align: center;
+    margin-top: 20px;
+}
+
+    

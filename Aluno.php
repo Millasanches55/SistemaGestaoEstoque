@@ -4,9 +4,8 @@ require_once 'Pessoa.php';
 class Aluno extends Pessoa {
     public $curso;
 
-    public function __construct($nome, $curso) {
+    public function __construct($nome) {
         parent::__construct($nome);
-        $this->curso = $curso;
     }
 
     public function exibirDados() {
@@ -14,4 +13,3 @@ class Aluno extends Pessoa {
     }
 }
 ?>
-
