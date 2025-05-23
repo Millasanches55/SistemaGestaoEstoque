@@ -7,14 +7,10 @@ class Pessoa {
     }
 
 
-
     public function exibirNome() {
         return $this->nome;
     }
 
-
-
-   
 }
 ?>
 
