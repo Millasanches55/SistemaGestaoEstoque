@@ -10,7 +10,7 @@ class Aluno extends Pessoa {
     }
 
     public function exibirDados() {
-        return "Aluno: {$this->nome} | Curso: {$this->curso}";
+        return "Aluno: {$this->nome}";
     }
 }
 ?>
