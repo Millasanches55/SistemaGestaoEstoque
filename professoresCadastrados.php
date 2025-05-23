@@ -1,3 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste</title>
+</head>
+<body>
+     <a href="index.php">← Voltar para lista de TCCs</a>
+    
+</body>
+</html>
+
 <?php
 require_once 'Professor.php';
 
@@ -16,7 +29,7 @@ try {
         FROM Professor professor
         JOIN Tcc tcc ON tcc.codTcc = professor.codTcc
     ");
-
+    
     echo "<h2>Professores Cadastrados por TCC</h2>";
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -40,5 +53,6 @@ try {
     echo "Erro ao conectar ou buscar dados: " . $e->getMessage();
 }
 ?>
+
 
 

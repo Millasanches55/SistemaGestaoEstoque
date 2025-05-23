@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
+<a href="index.php">← Voltar para lista de TCCs</a>
 <h2>Editar TCC (codTcc = <?= $codTcc ?>)</h2>
 
 <?php if (isset($erro)): ?>
