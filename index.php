@@ -69,10 +69,9 @@ if (isset($_GET['delete'])) {
 ?>
 
 
-<h2>TCC's Cadastrados</h2>
-
 <a class='botao' href="cadastroTcc.php">Cadastrar Novo TCC</a>
 <br><br>
+<h2>TCC's Cadastrados</h2>
 </section>
 <table border="1">
     <thead>
