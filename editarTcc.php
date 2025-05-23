@@ -1,3 +1,14 @@
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>Editar TCC</title>
+    <link rel='stylesheet' href='style.css'/>
+    </head>
+<body>
+<section>
+
 <?php
 $pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
 
@@ -60,7 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<a href="index.php">← Voltar para lista de TCCs</a>
+<br>
+<a href="index.php" class='botao'>← Voltar para lista de TCCs</a>
 <h2>Editar TCC (codTcc = <?= $codTcc ?>)</h2>
 
 <?php if (isset($erro)): ?>
@@ -86,9 +98,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <label>Curso:</label><br>
     <input type="text" name="curso" value="<?= htmlspecialchars($tcc['curso']) ?>" required><br><br>
 
-    <button type="submit">Salvar Alterações</button>
+    <button class='botao' type="submit">Salvar Alterações</button>
 </form>
-
+</section>
 <script>
 // Atualizar dinamicamente o max das páginas baseado no tipo selecionado
 const tipoSelect = document.querySelector('select[name="codTipoTcc"]');
