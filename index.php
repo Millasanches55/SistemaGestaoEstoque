@@ -120,7 +120,7 @@ foreach ($tccs as $item) {
 
     <!-- Botão para ir à página de professores -->
  <button onclick="window.location.href='professoresCadastrados.php'">Ver Professores Cadastrados</button>
-
+<button onclick="window.location.href='alunosCadastrados.php'">Ver Alunos Cadastrados</button>
 
 </body>
 </html>
