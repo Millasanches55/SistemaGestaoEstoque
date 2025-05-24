@@ -9,7 +9,12 @@
 <body>
 <section>
 <header>
-     <marquee behavior="scroll" direction="left">Cadastro de TCCs</marquee>
+     <marquee behavior="scroll" direction="left">
+    <img src="https://64.media.tumblr.com/e87d127229a9ea2deaf40dee8c961512/0256c413a444b1fd-a4/s2048x3072/aee11462d23c18b3256cc04448a90bee4501c3b2.gifv" alt="gif" style="height: 30px; vertical-align: middle;">
+    Cadastro de TCCs
+    <img src="https://64.media.tumblr.com/a7669e560cf0e6f52d29e4783a6cf0f2/b2576166f7e98a15-71/s250x400/d0c42473659321762bc1bd97ed2bfaacb874796f.gifv" alt="gif" style="height: 30px; vertical-align: middle;">
+</marquee>
+
 </header>
 
 <?php
@@ -69,10 +74,14 @@ if (isset($_GET['delete'])) {
 ?>
 
 <!-- Botão para ir à página de professores e alunos -->
-<a class='botao' href="cadastroTcc.php">Cadastrar Novo TCC</a>
-<a class='botao' href='professoresCadastrados.php'>Ver Professores Cadastrados</a>
-<a class='botao' href="alunosCadastrados.php">Ver Alunos Cadastrados</a>
-<br><br>
+<div class="botoes-container">
+    <a class='botao' href="cadastroTcc.php">Cadastrar Novo TCC</a>
+    <a class='botao' href='professoresCadastrados.php'>Ver Professores Cadastrados</a>
+    <a class='botao' href="alunosCadastrados.php">Ver Alunos Cadastrados</a>
+</div>
+<br>
+
+
 <h2>TCC's Cadastrados</h2>
 </section>
 <table border="1">
