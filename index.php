@@ -32,7 +32,7 @@ try {
         $totalTcc = $row['total'];
     }
 
-    echo "<p><strong>Total de TCCs cadastrados:</strong> $totalTcc</p>";
+    echo "<p style='text-align:center;'><strong>Total de TCCs cadastrados:</strong> $totalTcc</p>";
 } catch (PDOException $e) {
     echo "Erro ao contar TCCs: " . $e->getMessage();
 }

@@ -154,7 +154,7 @@ if ($codAgenda) {
 
         <p><b>Curso:</b> <?= htmlspecialchars($agenda['curso']) ?></p>
 
-        <button type="submit" name="salvar">Salvar Alterações</button>
+        <button type="submit" name="salvar" class="botao">Salvar Alterações</button>
     </form>
 <?php endif; ?>
 
