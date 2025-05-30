@@ -6,6 +6,8 @@
     --azul: #00bfff;
     --verde: #8fffa6;
     --branco: #f5faff;
+    --azul_escuro: #150c96;
+    --rosa: #ff00f2;
     --sombra: 0 4px 10px rgba(0, 0, 0, 0.2);
     --raio: 12px;
     font-family: 'Segoe UI', sans-serif;
@@ -19,13 +21,14 @@ body {
     font-family: 'Segoe UI', sans-serif;
     color: #1f1f1f;
     min-height: 750px;
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTJJlRbweg10cGfsy5-TCqvqn_BJqaXqkBTw&s);
 }
 
 header {
     text-align: center;
     font-size: 2rem;
     padding: 20px;
-    background: linear-gradient(to right, #63c3f2, #00bfff);
+    background: linear-gradient(to right, #150c96, #ff00f2);
     color: white;
     box-shadow: var(--sombra);
     border-bottom-left-radius: var(--raio);
@@ -42,8 +45,8 @@ section {
 }
 
 .botao, #botao-cadastro {
-    color: green;
-    background-color: var(--verde);
+    color: var(#ff00f2);
+    background-color: var(--rosa);
     text-decoration: none;
     padding: 10px 20px;
     border: none;
@@ -55,7 +58,7 @@ section {
 }
 
 .botao:hover, #botao-cadastro:hover {
-    background-color: var(--verde);
+    background-color: var(--rosa);
     color: #1f1f1f;
     transform: scale(1.05);
 }
@@ -81,7 +84,7 @@ th, td {
 }
 
 th {
-    background-color: var(--azul);
+    background-color: var(--rosa);
     color: white;
 }
 
