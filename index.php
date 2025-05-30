@@ -87,15 +87,15 @@ if (isset($_GET['delete'])) {
 <table border="1">
     <thead>
         <tr>
-            <th>codTcc</th>
-            <th>codTipoTcc</th>
-            <th>título</th>
-            <th>nomeTipoTcc</th>
-            <th>qtdPg</th>
-            <th>qtdAlunos</th>
-            <th>curso</th>
-            <th>aprovado</th>
-            <th>codAgenda</th>
+            <th>Código do Tcc</th>
+            <th>Código do Tipo de Tcc</th>
+            <th>Título</th>
+            <th>Tipo de Tcc</th>
+            <th>Quantidade de Páginas</th>
+            <th>Quantidade</th>
+            <th>Curso</th>
+            <th>Aprovado</th>
+            <th>Código da Agenda</th>
             <th>Ações</th>
         </tr>
     </thead>
