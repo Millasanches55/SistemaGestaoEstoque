@@ -18,6 +18,7 @@ body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
     color: #1f1f1f;
+    min-height: 750px;
 }
 
 header {

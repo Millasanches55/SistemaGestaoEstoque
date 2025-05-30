@@ -80,42 +80,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <form method="POST" style="max-width: 600px;">
     <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
         <h3 style="margin-top: 0;">Informações Gerais</h3>
-        <label>Título: <input type="text" name="titulo" required></label><br><br>
-
+        <label>Título: <input type="text" name="titulo" required></label> *<br><br>
+        
         <label>Tipo de TCC:</label>
         <select name="codTipoTcc" required>
             <?php foreach ($tipos as $tipo): ?>
                 <option value="<?= $tipo['codTipoTcc'] ?>"><?= htmlspecialchars($tipo['nomeTipoTcc']) ?></option>
             <?php endforeach; ?>
-        </select><br><br>
+        </select> *
 
-        <label>Qtd. Páginas: <input type="number" name="qtdPg" required></label><br><br>
-        <label>Curso: <input type="text" name="curso" required></label><br>
+        <br><br>
+
+        <label>Qtd. Páginas: <input type="number" name="qtdPg" required></label> *<br><br>
+        <label>Curso: <input type="text" name="curso" required></label> *<br>
     </div>
 
     <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
         <h3 style="margin-top: 0;">Alunos</h3>
-        <label>Aluno 1: <input type="text" name="aluno1"></label><br>
-        <label>Aluno 2: <input type="text" name="aluno2"></label><br>
-        <label>Aluno 3: <input type="text" name="aluno3"></label><br>
+        <label>Aluno 1: <input type="text" name="aluno1" required></label> *<br><br>
+        <label>Aluno 2: <input type="text" name="aluno2"></label><br><br>
+        <label>Aluno 3: <input type="text" name="aluno3"></label><br><br>
     </div>
 
     <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
         <h3 style="margin-top: 0;">Professores</h3>
-        <label>Orientador: <input type="text" name="orientador"></label><br>
-        <label>Coorientador: <input type="text" name="coorientador"></label><br>
-        <label>Prof. Convidado 1: <input type="text" name="profConvidado1"></label><br>
-        <label>Prof. Convidado 2: <input type="text" name="profConvidado2"></label><br>
+        <label>Orientador: <input type="text" name="orientador" required></label> *<br><br>
+        <label>Coorientador: <input type="text" name="coorientador"></label><br><br>
+        <label>Prof. Convidado 1: <input type="text" name="profConvidado1"></label><br><br>
+        <label>Prof. Convidado 2: <input type="text" name="profConvidado2"></label><br><br>
     </div>
 
     <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
         <h3 style="margin-top: 0;">Agenda</h3>
-        <label>Data e Hora: <input type="datetime-local" name="dataHora" required></label><br>
-        <label>Local: <input type="text" name="local" required></label><br>
-        <label>Nota Final: <input type="number" step="0.01" name="notaFinal" required></label><br>
-        <label>Cidade: <input type="text" name="cidade" required></label><br>
+        <label>Data e Hora: <input type="datetime-local" name="dataHora" required></label> *<br><br>
+        <label>Local: <input type="text" name="local" required></label> *<br><br>
+        <label>Nota Final: <input type="number" step="0.01" name="notaFinal" required> *</label><br><br>
+        <label>Cidade: <input type="text" name="cidade" required></label> *<br><br>
     </div>
 
+    <p>* Obrigatório</p>
     <button id='botao-cadastro' type="submit">Cadastrar TCC</button>
 </form>
 
