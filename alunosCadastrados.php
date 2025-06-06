@@ -34,22 +34,22 @@ try {
     echo "<hr>";
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        echo "<div>";
-        echo "<h3>Título do TCC: " . htmlspecialchars($row['titulo']) . "</h3>";
-        echo "<h3>Curso do TCC: " . htmlspecialchars($row['curso']) . "</h3>";
-        echo "<ul>";
+        echo "<div class='cartao-tcc'>";
+echo "<h3>Título do TCC: <span>" . htmlspecialchars($row['titulo']) . "</span></h3>";
+echo "<h4>Curso: <span>" . htmlspecialchars($row['curso']) . "</span></h4>";
+echo "<ul class='lista-alunos'>";
 
-        $tipos = ['aluno1', 'aluno2', 'aluno3'];
-        foreach ($tipos as $tipo) {
-            if (!empty($row[$tipo])) {
-                $aluno = new Aluno($row[$tipo], ucfirst($tipo));
-                echo "<li>" . $aluno->exibirDados() . "</li>";
-            }
-        }
+$tipos = ['aluno1', 'aluno2', 'aluno3'];
+foreach ($tipos as $tipo) {
+    if (!empty($row[$tipo])) {
+        $aluno = new Aluno($row[$tipo], ucfirst($tipo));
+        echo "<li>👨‍🎓 " . $aluno->exibirDados() . "</li>";
+    }
+}
 
-        echo "</ul>";
-        echo "</div>";
-        echo "<hr>";
+echo "</ul>";
+echo "</div>";
+
     }
 
 } catch (PDOException $e) {

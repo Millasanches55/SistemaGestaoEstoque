@@ -1,97 +1,91 @@
 @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap');
+
 :root {
-    --preto: #1f1f1f;
-    --cinza: #2e2e2e;
-    --azul: #00bfff;
-    --verde: #8fffa6;
-    --branco: #f5faff;
-    --azul_escuro: #150c96;
-    --rosa: #ff00f2;
-    --sombra: 0 4px 10px rgba(0, 0, 0, 0.2);
-    --raio: 12px;
+    --azul-aero: #3c8dbc;
+    --azul-claro: #d0ecff;
+    --azul-gradiente: linear-gradient(to bottom, #e3f2fd, #b0d8f1);
+    --branco-vidro: rgba(255, 255, 255, 0.6);
+    --cinza-borda: #ccddee;
+    --sombra-leve: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --sombra-forte: 0 4px 20px rgba(0, 0, 0, 0.2);
+    --raio: 10px;
+    --texto-primario: #1a1a1a;
+    --texto-suave: #2e2e2e;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
     font-family: 'Segoe UI', sans-serif;
-    background-color: var(--preto);
-    color: var(--branco);
 }
 
 body {
-    background: linear-gradient(to bottom, #dff9ff, #b5eaff);
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    color: #1f1f1f;
-    min-height: 750px;
-    background-size: 10%;
-
-    background-image: url(https://64.media.tumblr.com/e87d127229a9ea2deaf40dee8c961512/0256c413a444b1fd-a4/s2048x3072/aee11462d23c18b3256cc04448a90bee4501c3b2.gifv);
+    background: var(--azul-gradiente);
+    color: var(--texto-primario);
+    min-height: 100vh;
+    padding: 30px 10px;
 }
 
 header {
-    text-align: center;
-    font-size: 2rem;
-    padding: 20px;
-    background: linear-gradient(to right, #150c96, #ff00f2);
+    background: linear-gradient(to right, #5faee3, #3c8dbc);
     color: white;
-    box-shadow: var(--sombra);
-    border-bottom-left-radius: var(--raio);
-    border-bottom-right-radius: var(--raio);
+    text-align: center;
+    padding: 25px;
+    font-size: 2rem;
+    border-radius: var(--raio) var(--raio) 0 0;
+    box-shadow: var(--sombra-forte);
 }
 
 section {
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: white;
+    max-width: 960px;
+    margin: 40px auto;
+    background: var(--branco-vidro);
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--cinza-borda);
     border-radius: var(--raio);
-    box-shadow: var(--sombra);
+    box-shadow: var(--sombra-leve);
+    padding: 30px;
 }
 
-.botao, #botao-cadastro {
-    color: var(#ff00f2);
-    background-color: var(--rosa);
-    text-decoration: none;
-    padding: 10px 20px;
-    border: none;
-    border-radius: var(--raio);
-    box-shadow: 0 2px 8px rgba(0, 191, 255, 0.5);
-    transition: background 0.3s, transform 0.2s;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-.botao:hover, #botao-cadastro:hover {
-    background-color: var(--rosa);
-    color: #1f1f1f;
-    transform: scale(1.05);
-}
-
-#professores-div {
-    line-height: 1.6;
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--azul-aero);
 }
 
 table {
-    margin: auto;
-    border-collapse: collapse;
     width: 100%;
-    box-shadow: var(--sombra);
-    background-color: #ffffff;
-    border-radius: var(--raio);
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: white;
+    border: 1px solid #b7d2eb;
+    border-radius: 8px;
     overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-size: 0.95rem;
 }
 
 th, td {
-    padding: 15px;
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddeaf4;
     text-align: center;
-    border-bottom: 1px solid #ddd;
 }
 
 th {
-    background-color: var(--rosa);
-    color: white;
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
+    color: #0c2c50;
+    border-right: 1px solid #cce5f9;
+    border-bottom: 1px solid #9bcdf1;
+    background: linear-gradient(to bottom, #cce6fc 0%, #b2d7f3 100%);
 }
 
 td {
-    background-color: #f0faff;
+    background-color: #f9fcff;
 }
 
 .opcoes-tabela {
@@ -100,36 +94,191 @@ td {
     gap: 10px;
 }
 
-option, select, input {
-    color: #1f1f1f;
-    background-color: #f0faff;
-    border: 1px solid #ccc;
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #aaccee;
     border-radius: var(--raio);
-    padding: 5px;
+    background-color: #ffffff;
+    color: var(--texto-primario);
+    transition: box-shadow 0.2s;
 }
 
-#links-index {
-    text-align: center;
-    margin-top: 20px;
+input:focus, select:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(60, 141, 188, 0.5);
 }
 
-h2 {
-    text-align: center;
+.botao, #botao-cadastro {
+    background: linear-gradient(to bottom, #5faee3, #3c8dbc);
+    color: white;
+    padding: 10px 20px;
+    border: 1px solid #2d6a9f;
+    border-radius: var(--raio);
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), var(--sombra-leve);
+    transition: background 0.3s, transform 0.2s;
+}
+
+.botao:hover, #botao-cadastro:hover {
+    background: linear-gradient(to bottom, #3c8dbc, #2b6fa8);
+    transform: scale(1.03);
 }
 
 .botoes-container {
     display: flex;
     justify-content: center;
-    gap: 20px; 
+    gap: 15px;
     margin: 20px 0;
 }
 
-.botao {
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-    border: none;
+#links-index {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 0.95rem;
+    color: #333;
 }
 
+
+
+
+
+
+
+
+
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: white;
+    border: 1px solid #b7d2eb;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-size: 0.95rem;
+}
+
+thead tr {
+    background: linear-gradient(to bottom, #d1e9ff, #a6d2f5);
+    border-bottom: 2px solid #7ab2e2;
+    color: #1f1f1f;
+    text-shadow: 0 1px white;
+}
+
+th {
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
+    color: #0c2c50;
+    border-right: 1px solid #cce5f9;
+    border-bottom: 1px solid #9bcdf1;
+    background: linear-gradient(to bottom, #cce6fc 0%, #b2d7f3 100%);
+}
+
+th:last-child {
+    border-right: none;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2faff;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+tbody tr:hover {
+    background-color: #e0f2ff;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+    border-right: 1px solid #e0ecf3;
+    border-bottom: 1px solid #d0e6f6;
+    color: #1e1e1e;
+}
+
+td:last-child {
+    border-right: none;
+}
+
+.opcoes-tabela {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+
+
+
+.cartao-tcc {
+    background: var(--branco-vidro);
+    border: 1px solid var(--cinza-borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra-leve);
+    backdrop-filter: blur(5px);
+    padding: 20px 25px;
+    margin: 20px 0;
+    transition: transform 0.2s ease;
+}
+
+.cartao-tcc:hover {
+    transform: scale(1.01);
+    box-shadow: var(--sombra-forte);
+}
+
+.cartao-tcc h3,
+.cartao-tcc h4 {
+    color: #1c3f66;
+    margin-bottom: 5px;
+}
+
+.cartao-tcc h3 span,
+.cartao-tcc h4 span {
+    font-weight: normal;
+    color: var(--texto-suave);
+}
+
+.lista-alunos {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 10px;
+}
+
+.lista-alunos li {
+    background: #f2faff;
+    border: 1px solid #c6e4f8;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+
+
+
+
+
+.lista-professores {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 10px;
+}
+
+.lista-professores li {
+    background: #f0f9ff;
+    border: 1px solid #c4e0f6;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}

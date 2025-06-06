@@ -10,8 +10,8 @@
 <section>
 <header>
      <marquee behavior="scroll" direction="left">
-    <img src="https://64.media.tumblr.com/e87d127229a9ea2deaf40dee8c961512/0256c413a444b1fd-a4/s2048x3072/aee11462d23c18b3256cc04448a90bee4501c3b2.gifv" alt="gif" style="height: 30px; vertical-align: middle;">
-    Cadastro de TCCs
+    <img src="https://64.media.tumblr.com/a7669e560cf0e6f52d29e4783a6cf0f2/b2576166f7e98a15-71/s250x400/d0c42473659321762bc1bd97ed2bfaacb874796f.gifv" alt="gif" style="height: 30px; vertical-align: middle;">
+    Cadastro de TCC's
     <img src="https://64.media.tumblr.com/a7669e560cf0e6f52d29e4783a6cf0f2/b2576166f7e98a15-71/s250x400/d0c42473659321762bc1bd97ed2bfaacb874796f.gifv" alt="gif" style="height: 30px; vertical-align: middle;">
 </marquee>
 
