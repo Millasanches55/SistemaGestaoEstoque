@@ -217,7 +217,7 @@ td:last-child {
 
 
 
-
+/*CSS Alunos Cadastrados*/
 .cartao-tcc {
     background: var(--branco-vidro);
     border: 1px solid var(--cinza-borda);
@@ -265,7 +265,7 @@ td:last-child {
 
 
 
-
+/*CSS Prrofessores Cadastrados*/
 
 .lista-professores {
     list-style-type: none;
