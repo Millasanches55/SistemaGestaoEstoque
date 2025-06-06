@@ -1,8 +1,10 @@
 <?php
 class Professor {
+    /*Atributos*/
     private $nome;
     private $cargo;
 
+    /*Métodos*/
     public function __construct($nome, $cargo) {
         $this->nome = $nome;
         $this->cargo = $cargo;

@@ -41,7 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['salvar']) && $codAgen
     $orientador = trim($_POST['orientador'] ?? '');
     $notaFinal = floatval($_POST['notaFinal'] ?? 0);
     $cidade = trim($_POST['cidade'] ?? '');
+    /*Operador de Fluxo Switch*/
     switch (true) {
+        /*Operador de Comparação*/
     case ($notaFinal >= 6.0):
         $aprovado = "Sim";
         break;

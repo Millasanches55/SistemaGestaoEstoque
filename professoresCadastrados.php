@@ -42,6 +42,7 @@ $tipos = ['orientador', 'coorientador', 'profConvidado1', 'profConvidado2'];
 foreach ($tipos as $tipo) {
     /*Laço if*/
     if (!empty($row[$tipo])) {
+        /*Instanciação de Objeto*/
         $prof = new Professor($row[$tipo], ucfirst($tipo));
         echo "<li>👨‍🏫 " . $prof->exibirProfessor() . "</li>";
     }
