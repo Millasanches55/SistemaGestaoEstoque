@@ -40,6 +40,7 @@ echo "<ul class='lista-professores'>";
 
 $tipos = ['orientador', 'coorientador', 'profConvidado1', 'profConvidado2'];
 foreach ($tipos as $tipo) {
+    /*Laço if*/
     if (!empty($row[$tipo])) {
         $prof = new Professor($row[$tipo], ucfirst($tipo));
         echo "<li>👨‍🏫 " . $prof->exibirProfessor() . "</li>";

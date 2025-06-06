@@ -33,6 +33,8 @@ try {
 
     echo "<hr>";
 
+
+    /*Laço WHILE*/
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         echo "<div class='cartao-tcc'>";
 echo "<h3>Título do TCC: <span>" . htmlspecialchars($row['titulo']) . "</span></h3>";
@@ -42,6 +44,7 @@ echo "<ul class='lista-alunos'>";
 $tipos = ['aluno1', 'aluno2', 'aluno3'];
 foreach ($tipos as $tipo) {
     if (!empty($row[$tipo])) {
+        /*Instanciação de Objetos*/
         $aluno = new Aluno($row[$tipo], ucfirst($tipo));
         echo "<li>👨‍🎓 " . $aluno->exibirDados() . "</li>";
     }

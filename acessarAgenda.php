@@ -20,6 +20,7 @@ $erro = null;
 $codAgenda = $_GET['codAgenda'] ?? $_POST['codAgenda'] ?? null;
 
 // Se houve submissão do formulário (salvar)
+// Operador de Comparação
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['salvar']) && $codAgenda) {
     // Dados dos alunos
     $aluno1 = trim($_POST['aluno1']);

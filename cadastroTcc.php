@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tipo->execute([$codTipoTcc]);
     $maxPg = $tipo->fetchColumn();
 
+    /*Laço IF_ELSE*/
     if ($qtdPg > $maxPg) {
         echo "<p style='color:red;'>Erro: Número de páginas excede o limite do tipo de TCC selecionado.</p>";
     } else {
@@ -123,10 +124,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <a href="index.php" class='botao'>← Voltar para lista de TCCs</a>
 </form>
 
-<!-- Exemplo com FOR -->
+<!--Laço FOR com incremento-->
 <?php
 echo "<h3>Sumário dos Tipos de Tcc's e seus códigos:</h3>";
 for ($i = 0; $i < count($tipos); $i++) {
+    /*Operador Aritmético*/
     $numeroTipo = $i + 1;
     echo "Tipo {$numeroTipo}: " . htmlspecialchars($tipos[$i]['nomeTipoTcc']) . "<br>";
 }

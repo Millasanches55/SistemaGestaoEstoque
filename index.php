@@ -31,7 +31,6 @@ try {
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $totalTcc = $row['total'];
     }
-
     echo "<p style='text-align:center;'><strong>Total de TCCs cadastrados:</strong> $totalTcc</p>";
 } catch (PDOException $e) {
     echo "Erro ao contar TCCs: " . $e->getMessage();
@@ -113,12 +112,10 @@ if (isset($_GET['delete'])) {
                 <td><?= $tcc['codAgenda'] ?></td>
                 <td class="opcoes-tabela">
                     <a href="editarTcc.php?codTcc=<?= $tcc['codTcc'] ?>"><button class='botao'>Editar</button></a>
+                    <!--Deleção-->
                     <a href="?delete=<?= $tcc['codTcc'] ?>" onclick="return confirm('Tem certeza que deseja excluir este TCC?');">
                         <button class='botao'>Deletar</button>
                     </a>
-
-
-
                     <a href="acessarAgenda.php?codAgenda=<?= $tcc['codAgenda'] ?>"><button class='botao'>Acessar Agenda</button></a>
                 </td>
             </tr>
