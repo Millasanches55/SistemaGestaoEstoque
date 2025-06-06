@@ -1,7 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap');
-
 :root {
     --azul-aero: #3c8dbc;
     --azul-claro: #d0ecff;
@@ -141,15 +139,6 @@ input:focus, select:focus {
     font-size: 0.95rem;
     color: #333;
 }
-
-
-
-
-
-
-
-
-
 
 table {
     width: 100%;

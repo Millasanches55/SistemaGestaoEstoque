@@ -68,14 +68,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                        VALUES (?, ?, ?, ?, ?)")
             ->execute([$codTcc, $dataHora, $local, $notaFinal, $cidade]);
 
-        echo "<p style='color:green;'>TCC cadastrado com sucesso!</p>";
+            echo "<p style='color:green;'>TCC cadastrado com sucesso!</p>";
+        
     }
 }
 ?>
 
 <!-- Formulário HTML -->
-
-<a href="index.php" class='botao'>← Voltar para lista de TCCs</a>
 <h2>Cadastro de TCC</h2>
 <form method="POST" style="max-width: 600px;">
     <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
@@ -120,6 +119,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <p>* Obrigatório</p>
     <button id='botao-cadastro' type="submit">Cadastrar TCC</button>
+
+    <a href="index.php" class='botao'>← Voltar para lista de TCCs</a>
 </form>
 
 <!-- Exemplo com FOR -->
