@@ -44,6 +44,7 @@ foreach ($tipos as $tipo) {
     if (!empty($row[$tipo])) {
         /*Instanciação de Objeto*/
         $prof = new Professor($row[$tipo], ucfirst($tipo));
+        /*Função com Passagem de Parâmetros*/
         echo "<li>👨‍🏫 " . $prof->exibirProfessor() . "</li>";
     }
 }
