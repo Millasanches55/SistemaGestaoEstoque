@@ -51,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($qtdPg > $maxPg) {
         echo "<p style='color:red;'>Erro: Número de páginas excede o limite do tipo de TCC selecionado.</p>";
     } else {
+        /*Operador Ternário*/
         $aprovado = ($notaFinal >= 6.0) ? "Sim" : "Não";
 
         $stmt = $pdo->prepare("INSERT INTO Tcc (titulo, codTipoTcc, qtdPg, qtdAlunos, curso, aprovado)
