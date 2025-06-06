@@ -1,0 +1,73 @@
+✅ 1.1 Comentários
+Presente em vários arquivos, como Tcc.php, acessarAgenda.php, cadastroTcc.php, etc.
+
+✅ 2.1 Uso de “Camel Case” ou “snake_case”
+camelCase: usado em arquivos como Tcc.php, cadastroTcc.php.
+
+snake_case: não foi encontrado com frequência.
+
+✅ 3.1 Aritméticos
+Presente em todos os arquivos.
+
+✅ 3.2 String
+Concatenação com . aparece em arquivos como Professor.php, acessarAgenda.php.
+
+✅ 3.3 Atribuição
+Uso de = está presente amplamente.
+
+✅ 3.4 Comparação
+Operadores como ==, != aparecem em todos os arquivos.
+
+✅ 3.5 Incremento ou Decremento
+Usado em arquivos como index.php, acessarAgenda.php.
+
+✅ 3.6 Lógico
+Operadores &&, || usados em vários arquivos como index.php, editarTcc.php.
+
+✅ 4.1 Uso de Arrays
+Arrays estão presentes, como em acessarAgenda.php, index.php.
+
+✅ 5.1 For
+Presente em arquivos como index.php, cadastroTcc.php.
+
+✅ 5.2 Foreach
+Usado em editarTcc.php, alunosCadastrados.php.
+
+✅ 5.3 While / Do_While
+Presente em arquivos como index.php, professoresCadastrados.php.
+
+✅ 6.1 If / Else
+Presente em cadastroTcc.php, editarTcc.php.
+
+✅ 6.2 Switch
+Usado em acessarAgenda.php.
+
+✅ 6.3 Operador Ternário
+Muito usado, ex: alunosCadastrados.php, Professor.php.
+
+✅ 7.1 Classes (Métodos e Atributos)
+Definido em arquivos como Aluno.php, Pessoa.php, Tcc.php.
+
+✅ 7.3 Uso de Herança
+Aluno.php usa extends.
+
+✅ 7.4 Instanciação de Objetos
+Uso de new em vários arquivos.
+
+✅ 8.1 Funções com passagem de parâmetros
+Funções declaradas com parâmetros em Tcc.php, Pessoa.php.
+
+✅ 9.1 Conexão PDO
+Uso de new PDO em Tcc.php, acessarAgenda.php.
+
+✅ 9.2 Leitura e apresentação de registro (SELECT)
+Detectado em cadastroTcc.php, editarTcc.php.
+
+✅ 9.3 Atualização (UPDATE)
+Exemplo em acessarAgenda.php, editarTcc.php.
+
+✅ 9.4 Deleção (DELETE)
+Exemplo em Tcc.php, index.php.
+
+✅ 9.5 Inserção (INSERT)
+Presente em cadastroTcc.php.
