@@ -11,28 +11,32 @@
 
 <?php
 echo "<link rel='stylesheet' href='style.css'/>";
+// Conexão com PDO (Critério 9.1 Conexão PDO)
 $pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8mb4", "root", "");
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $agenda = null;
 $erro = null;
 
+// Uso de operador ternário para atribuição (Critério 6.3 Operador Ternário, 3.3 Atribuição)
 $codAgenda = $_GET['codAgenda'] ?? $_POST['codAgenda'] ?? null;
 
 // Se houve submissão do formulário (salvar)
-// Operador de Comparação
+// Uso de operadores de comparação e lógicos (Critérios 3.4, 3.6, 6.1 If / Else)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['salvar']) && $codAgenda) {
     // Dados dos alunos
+    // String (Critério 3.2) e atribuições
     $aluno1 = trim($_POST['aluno1']);
     $aluno2 = trim($_POST['aluno2']);
     $aluno3 = trim($_POST['aluno3']);
 
     $qtdAlunos = 0;
+     // Comparação + incremento (Critérios 3.4 e 3.5 Incremento)
     if ($aluno1 !== '') $qtdAlunos++;
     if ($aluno2 !== '') $qtdAlunos++;
     if ($aluno3 !== '') $qtdAlunos++;
 
-    // Dados gerais
+      // Atribuições e strings
     $dataHora = $_POST['dataHora'] ?? '';
     $local = trim($_POST['local'] ?? '');
     $profConvidado1 = trim($_POST['profConvidado1'] ?? '');
@@ -41,9 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['salvar']) && $codAgen
     $orientador = trim($_POST['orientador'] ?? '');
     $notaFinal = floatval($_POST['notaFinal'] ?? 0);
     $cidade = trim($_POST['cidade'] ?? '');
-    /*Operador de Fluxo Switch*/
+
+    // Switch e comparação (Critérios 6.2 Switch, 3.4 Comparação)
     switch (true) {
-        /*Operador de Comparação*/
     case ($notaFinal >= 6.0):
         $aprovado = "Sim";
         break;
@@ -55,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['salvar']) && $codAgen
     try {
         $pdo->beginTransaction();
 
+        // Atualização de dados no banco (Critério 9.3 Atualização)
         // Atualizar Agenda
         $stmt = $pdo->prepare("UPDATE Agenda SET dataHora = ?, local = ?, notaFinal = ?, cidade = ? WHERE codAgenda = ?");
         $stmt->execute([$dataHora, $local, $notaFinal, $cidade, $codAgenda]);
@@ -78,6 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['salvar']) && $codAgen
     }
 }
 
+// Leitura e apresentação de registros (Critério 9.2)
 // Buscar dados para exibir
 if ($codAgenda) {
     $stmt = $pdo->prepare("

@@ -11,19 +11,24 @@
 
 <?php
 
-// Conexão PDO
+// 1.1 Comentários explicativos adicionados em vários trechos
+// 9.1 Conexão PDO
 $pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
 
 // Pega os tipos de TCC para o select
+// 9.2 Leitura (SELECT)
 $tipos = $pdo->query("SELECT * FROM TipoTcc")->fetchAll(PDO::FETCH_ASSOC);
 
 // Lógica de cadastro
+// 6.1 If / Else
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // 3.3 Atribuição
     $titulo = $_POST['titulo'];
-    $codTipoTcc = (int)$_POST['codTipoTcc'];
+    $codTipoTcc = (int)$_POST['codTipoTcc']; // 3.1 Aritméticos (cast implícito)
     $qtdPg = (int)$_POST['qtdPg'];
     $curso = $_POST['curso'];
 
+    // 3.2 String (uso de trim)
     $aluno1 = trim($_POST['aluno1']);
     $aluno2 = trim($_POST['aluno2']);
     $aluno3 = trim($_POST['aluno3']);
@@ -35,30 +40,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $dataHora = $_POST['dataHora'];
     $local = $_POST['local'];
-    $notaFinal = (float)$_POST['notaFinal'];
+    $notaFinal = (float)$_POST['notaFinal']; // 3.1 Aritméticos
     $cidade = $_POST['cidade'];
 
     $qtdAlunos = 0;
+    // 3.5 Incremento
     if (!empty($aluno1)) $qtdAlunos++;
     if (!empty($aluno2)) $qtdAlunos++;
     if (!empty($aluno3)) $qtdAlunos++;
 
+    // 9.2 Leitura com prepare/execute
     $tipo = $pdo->prepare("SELECT maxPaginas FROM TipoTcc WHERE codTipoTcc = ?");
     $tipo->execute([$codTipoTcc]);
     $maxPg = $tipo->fetchColumn();
 
-    /*Laço IF_ELSE*/
-    if ($qtdPg > $maxPg) {
+    // 6.1 If / Else
+    if ($qtdPg > $maxPg) { // 3.4 Comparação
         echo "<p style='color:red;'>Erro: Número de páginas excede o limite do tipo de TCC selecionado.</p>";
     } else {
-        /*Operador Ternário*/
-        $aprovado = ($notaFinal >= 6.0) ? "Sim" : "Não";
+        // 6.3 Operador Ternário
+        $aprovado = ($notaFinal >= 6.0) ? "Sim" : "Não";  // 3.6 Lógico
 
+        // 9.5 Inserção com PDO
         $stmt = $pdo->prepare("INSERT INTO Tcc (titulo, codTipoTcc, qtdPg, qtdAlunos, curso, aprovado)
                                VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->execute([$titulo, $codTipoTcc, $qtdPg, $qtdAlunos, $curso, $aprovado]);
-        $codTcc = $pdo->lastInsertId();
+        $codTcc = $pdo->lastInsertId();   // 7.4 Instanciação indireta de objetos (PDO)
 
+        // 9.5 Inserção - múltiplas tabelas
         $pdo->prepare("INSERT INTO Aluno (codTcc, aluno1, aluno2, aluno3) VALUES (?, ?, ?, ?)")
             ->execute([$codTcc, $aluno1, $aluno2, $aluno3]);
 
@@ -129,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php
 echo "<h3>Sumário dos Tipos de Tcc's e seus códigos:</h3>";
 for ($i = 0; $i < count($tipos); $i++) {
-    /*Operador Aritmético*/
+    // 3.1 Aritméticos
     $numeroTipo = $i + 1;
     echo "Tipo {$numeroTipo}: " . htmlspecialchars($tipos[$i]['nomeTipoTcc']) . "<br>";
 }

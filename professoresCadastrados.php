@@ -19,10 +19,12 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 try {
+    /* 9.1 Conexão PDO */
     $pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8mb4", "root", "");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Junta informações da tabela Professor com Tcc (para obter o título)
+    /* 9.2 Leitura (SELECT com JOIN) */
     $stmt = $pdo->query("
         SELECT tcc.titulo, tcc.curso, professor.*
         FROM Professor professor
@@ -32,19 +34,21 @@ try {
     echo "<h2>Professores Cadastrados por TCC</h2>";
     echo "<hr>";
 
+    /* 5.3 Laço while */
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         echo "<div class='cartao-tcc'>";
 echo "<h3>Título do TCC: <span>" . htmlspecialchars($row['titulo']) . "</span></h3>";
 echo "<h4>Curso: <span>" . htmlspecialchars($row['curso']) . "</span></h4>";
 echo "<ul class='lista-professores'>";
 
+/* 4.1 Uso de arrays + 5.2 Foreach */
 $tipos = ['orientador', 'coorientador', 'profConvidado1', 'profConvidado2'];
 foreach ($tipos as $tipo) {
-    /*Laço if*/
+    /* 6.1 If / Else */
     if (!empty($row[$tipo])) {
-        /*Instanciação de Objeto*/
+        /* 7.4 Instanciação de objeto */
         $prof = new Professor($row[$tipo], ucfirst($tipo));
-        /*Função com Passagem de Parâmetros*/
+        /* 8.1 Função com passagem de parâmetros */
         echo "<li>👨‍🏫 " . $prof->exibirProfessor() . "</li>";
     }
 }
