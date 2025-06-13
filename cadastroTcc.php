@@ -1,147 +1,153 @@
 <html>
+
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <title>Cadastro de TCC</title>
-    <link rel='stylesheet' href='style.css'/>
+    <link rel='stylesheet' href='style.css' />
 </head>
 <section>
-<body>
 
-<?php
+    <body>
 
-// 1.1 Comentários explicativos adicionados em vários trechos
+        <?php
+
+        // 1.1 Comentários explicativos adicionados em vários trechos
 // 9.1 Conexão PDO
-$pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
+        $pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
 
-// Pega os tipos de TCC para o select
+        // Pega os tipos de TCC para o select
 // 9.2 Leitura (SELECT)
-$tipos = $pdo->query("SELECT * FROM TipoTcc")->fetchAll(PDO::FETCH_ASSOC);
+        $tipos = $pdo->query("SELECT * FROM TipoTcc")->fetchAll(PDO::FETCH_ASSOC);
 
-// Lógica de cadastro
+        // Lógica de cadastro
 // 6.1 If / Else
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // 3.3 Atribuição
-    $titulo = $_POST['titulo'];
-    $codTipoTcc = (int)$_POST['codTipoTcc']; // 3.1 Aritméticos (cast implícito)
-    $qtdPg = (int)$_POST['qtdPg'];
-    $curso = $_POST['curso'];
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // 3.3 Atribuição
+            $titulo = $_POST['titulo'];
+            $codTipoTcc = (int) $_POST['codTipoTcc']; // 3.1 Aritméticos (cast implícito)
+            $qtdPg = (int) $_POST['qtdPg'];
+            $curso = $_POST['curso'];
 
-    // 3.2 String (uso de trim)
-    $aluno1 = trim($_POST['aluno1']);
-    $aluno2 = trim($_POST['aluno2']);
-    $aluno3 = trim($_POST['aluno3']);
+            // 3.2 String (uso de trim)
+            $aluno1 = trim($_POST['aluno1']);
+            $aluno2 = trim($_POST['aluno2']);
+            $aluno3 = trim($_POST['aluno3']);
 
-    $orientador = $_POST['orientador'];
-    $coorientador = $_POST['coorientador'];
-    $profConvidado1 = $_POST['profConvidado1'];
-    $profConvidado2 = $_POST['profConvidado2'];
+            $orientador = $_POST['orientador'];
+            $coorientador = $_POST['coorientador'];
+            $profConvidado1 = $_POST['profConvidado1'];
+            $profConvidado2 = $_POST['profConvidado2'];
 
-    $dataHora = $_POST['dataHora'];
-    $local = $_POST['local'];
-    $notaFinal = (float)$_POST['notaFinal']; // 3.1 Aritméticos
-    $cidade = $_POST['cidade'];
+            $dataHora = $_POST['dataHora'];
+            $local = $_POST['local'];
+            $notaFinal = (float) $_POST['notaFinal']; // 3.1 Aritméticos
+            $cidade = $_POST['cidade'];
 
-    $qtdAlunos = 0;
-    // 3.5 Incremento
-    if (!empty($aluno1)) $qtdAlunos++;
-    if (!empty($aluno2)) $qtdAlunos++;
-    if (!empty($aluno3)) $qtdAlunos++;
+            $qtdAlunos = 0;
+            // 3.5 Incremento
+            if (!empty($aluno1))
+                $qtdAlunos++;
+            if (!empty($aluno2))
+                $qtdAlunos++;
+            if (!empty($aluno3))
+                $qtdAlunos++;
 
-    // 9.2 Leitura com prepare/execute
-    $tipo = $pdo->prepare("SELECT maxPaginas FROM TipoTcc WHERE codTipoTcc = ?");
-    $tipo->execute([$codTipoTcc]);
-    $maxPg = $tipo->fetchColumn();
+            // 9.2 Leitura com prepare/execute
+            $tipo = $pdo->prepare("SELECT maxPaginas FROM TipoTcc WHERE codTipoTcc = ?");
+            $tipo->execute([$codTipoTcc]);
+            $maxPg = $tipo->fetchColumn();
 
-    // 6.1 If / Else
-    if ($qtdPg > $maxPg) { // 3.4 Comparação
-        echo "<p style='color:red;'>Erro: Número de páginas excede o limite do tipo de TCC selecionado.</p>";
-    } else {
-        // 6.3 Operador Ternário
-        $aprovado = ($notaFinal >= 6.0) ? "Sim" : "Não";  // 3.6 Lógico
-
-        // 9.5 Inserção com PDO
-        $stmt = $pdo->prepare("INSERT INTO Tcc (titulo, codTipoTcc, qtdPg, qtdAlunos, curso, aprovado)
+            // 6.1 If / Else
+            if ($qtdPg > $maxPg) { // 3.4 Comparação
+                echo "<p style='color:red;'>Erro: Número de páginas excede o limite do tipo de TCC selecionado.</p>";
+            } else {
+                // 6.3 Operador Ternário
+                $aprovado = ($notaFinal >= 6.0) ? "Sim" : "Não";  // 3.6 Lógico
+        
+                // 9.5 Inserção com PDO
+                $stmt = $pdo->prepare("INSERT INTO Tcc (titulo, codTipoTcc, qtdPg, qtdAlunos, curso, aprovado)
                                VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$titulo, $codTipoTcc, $qtdPg, $qtdAlunos, $curso, $aprovado]);
-        $codTcc = $pdo->lastInsertId();   // 7.4 Instanciação indireta de objetos (PDO)
-
-        // 9.5 Inserção - múltiplas tabelas
-        $pdo->prepare("INSERT INTO Aluno (codTcc, aluno1, aluno2, aluno3) VALUES (?, ?, ?, ?)")
-            ->execute([$codTcc, $aluno1, $aluno2, $aluno3]);
-
-        $pdo->prepare("INSERT INTO Professor (codTcc, orientador, coorientador, profConvidado1, profConvidado2)
-                       VALUES (?, ?, ?, ?, ?)")
-            ->execute([$codTcc, $orientador, $coorientador, $profConvidado1, $profConvidado2]);
-
-        $pdo->prepare("INSERT INTO Agenda (codAgenda, dataHora, local, notaFinal, cidade)
-                       VALUES (?, ?, ?, ?, ?)")
-            ->execute([$codTcc, $dataHora, $local, $notaFinal, $cidade]);
-
-            echo "<p style='color:green;'>TCC cadastrado com sucesso!</p>";
+                $stmt->execute([$titulo, $codTipoTcc, $qtdPg, $qtdAlunos, $curso, $aprovado]);
+                $codTcc = $pdo->lastInsertId();   // 7.4 Instanciação indireta de objetos (PDO)
         
-    }
-}
-?>
+                // 9.5 Inserção - múltiplas tabelas
+                $pdo->prepare("INSERT INTO Aluno (codTcc, aluno1, aluno2, aluno3) VALUES (?, ?, ?, ?)")
+                    ->execute([$codTcc, $aluno1, $aluno2, $aluno3]);
 
-<!-- Formulário HTML -->
-<h2>Cadastro de TCC</h2>
-<form method="POST" style="max-width: 600px;">
-    <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
-        <h3 style="margin-top: 0;">Informações Gerais</h3>
-        <label>Título: <input type="text" name="titulo" required></label> *<br><br>
-        
-        <label>Tipo de TCC:</label>
-        <select name="codTipoTcc" required>
-            <?php foreach ($tipos as $tipo): ?>
-                <option value="<?= $tipo['codTipoTcc'] ?>"><?= htmlspecialchars($tipo['nomeTipoTcc']) ?></option>
-            <?php endforeach; ?>
-        </select> *
+                $pdo->prepare("INSERT INTO Professor (codTcc, orientador, coorientador, profConvidado1, profConvidado2)
+                       VALUES (?, ?, ?, ?, ?)")
+                    ->execute([$codTcc, $orientador, $coorientador, $profConvidado1, $profConvidado2]);
 
-        <br><br>
+                $pdo->prepare("INSERT INTO Agenda (codAgenda, dataHora, local, notaFinal, cidade)
+                       VALUES (?, ?, ?, ?, ?)")
+                    ->execute([$codTcc, $dataHora, $local, $notaFinal, $cidade]);
 
-        <label>Qtd. Páginas: <input type="number" name="qtdPg" required></label> *<br><br>
-        <label>Curso: <input type="text" name="curso" required></label> *<br>
-    </div>
+                echo "<p style='color:green;'>TCC cadastrado com sucesso!</p>";
 
-    <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
-        <h3 style="margin-top: 0;">Alunos</h3>
-        <label>Aluno 1: <input type="text" name="aluno1" required></label> *<br><br>
-        <label>Aluno 2: <input type="text" name="aluno2"></label><br><br>
-        <label>Aluno 3: <input type="text" name="aluno3"></label><br><br>
-    </div>
+            }
+        }
+        ?>
 
-    <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
-        <h3 style="margin-top: 0;">Professores</h3>
-        <label>Orientador: <input type="text" name="orientador" required></label> *<br><br>
-        <label>Coorientador: <input type="text" name="coorientador"></label><br><br>
-        <label>Prof. Convidado 1: <input type="text" name="profConvidado1"></label><br><br>
-        <label>Prof. Convidado 2: <input type="text" name="profConvidado2"></label><br><br>
-    </div>
+        <!-- Formulário HTML -->
+        <h2>Cadastro de TCC</h2>
+        <form method="POST" style="max-width: 600px;">
+            <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <h3 style="margin-top: 0;">Informações Gerais</h3>
+                <label>Título: <input type="text" name="titulo" required></label> *<br><br>
 
-    <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
-        <h3 style="margin-top: 0;">Agenda</h3>
-        <label>Data e Hora: <input type="datetime-local" name="dataHora" required></label> *<br><br>
-        <label>Local: <input type="text" name="local" required></label> *<br><br>
-        <label>Nota Final: <input type="number" step="0.01" name="notaFinal" required> *</label><br><br>
-        <label>Cidade: <input type="text" name="cidade" required></label> *<br><br>
-    </div>
+                <label>Tipo de TCC:</label>
+                <select name="codTipoTcc" required>
+                    <?php foreach ($tipos as $tipo): ?>
+                        <option value="<?= $tipo['codTipoTcc'] ?>"><?= htmlspecialchars($tipo['nomeTipoTcc']) ?></option>
+                    <?php endforeach; ?>
+                </select> *
 
-    <p>* Obrigatório</p>
-    <button id='botao-cadastro' type="submit">Cadastrar TCC</button>
+                <br><br>
 
-    <a href="index.php" class='botao'>← Voltar para lista de TCCs</a>
-</form>
+                <label>Qtd. Páginas: <input type="number" name="qtdPg" required></label> *<br><br>
+                <label>Curso: <input type="text" name="curso" required></label> *<br>
+            </div>
 
-<!--Laço FOR com incremento-->
-<?php
-echo "<h3>Sumário dos Tipos de Tcc's e seus códigos:</h3>";
-for ($i = 0; $i < count($tipos); $i++) {
-    // 3.1 Aritméticos
-    $numeroTipo = $i + 1;
-    echo "Tipo {$numeroTipo}: " . htmlspecialchars($tipos[$i]['nomeTipoTcc']) . "<br>";
-}
-?>
-</body>
+            <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <h3 style="margin-top: 0;">Alunos</h3>
+                <label>Aluno 1: <input type="text" name="aluno1" required></label> *<br><br>
+                <label>Aluno 2: <input type="text" name="aluno2"></label><br><br>
+                <label>Aluno 3: <input type="text" name="aluno3"></label><br><br>
+            </div>
+
+            <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <h3 style="margin-top: 0;">Professores</h3>
+                <label>Orientador: <input type="text" name="orientador" required></label> *<br><br>
+                <label>Coorientador: <input type="text" name="coorientador"></label><br><br>
+                <label>Prof. Convidado 1: <input type="text" name="profConvidado1"></label><br><br>
+                <label>Prof. Convidado 2: <input type="text" name="profConvidado2"></label><br><br>
+            </div>
+
+            <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
+                <h3 style="margin-top: 0;">Agenda</h3>
+                <label>Data e Hora: <input type="datetime-local" name="dataHora" required></label> *<br><br>
+                <label>Local: <input type="text" name="local" required></label> *<br><br>
+                <label>Nota Final: <input type="number" step="0.01" name="notaFinal" required> *</label><br><br>
+                <label>Cidade: <input type="text" name="cidade" required></label> *<br><br>
+            </div>
+
+            <p>* Obrigatório</p>
+            <button id='botao-cadastro' type="submit">Cadastrar TCC</button>
+
+            <a href="index.php" class='botao'>← Voltar para lista de TCCs</a>
+        </form>
+
+        <!--Laço FOR com incremento-->
+        <?php
+        echo "<h3>Sumário dos Tipos de Tcc's e seus códigos:</h3>";
+        for ($i = 0; $i < count($tipos); $i++) {
+            // 3.1 Aritméticos
+            $numeroTipo = $i + 1;
+            echo "Tipo {$numeroTipo}: " . htmlspecialchars($tipos[$i]['nomeTipoTcc']) . "<br>";
+        }
+        ?>
+    </body>
+
 </html>

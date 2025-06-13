@@ -3,7 +3,8 @@
 $pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
 
 // 7.1 Classe com métodos e atributos
-class Tcc {
+class Tcc
+{
     // Atributos públicos (7.1)
     public $codTcc;
     public $titulo;
@@ -17,12 +18,14 @@ class Tcc {
     private $pdo;
 
     // Construtor com parâmetro (8.1 Função com passagem de parâmetro)
-    public function __construct($pdo) {
+    public function __construct($pdo)
+    {
         $this->pdo = $pdo;
     }
 
     // Método para salvar um TCC no banco
-    public function salvar() {
+    public function salvar()
+    {
         // 9.5 Inserção
         $sql = "INSERT INTO Tcc (titulo, aluno1, aluno2, aluno3, curso, orientador) 
                 VALUES (?, ?, ?, ?, ?, ?)";
@@ -32,14 +35,16 @@ class Tcc {
     }
 
     // Método para listar todos os TCCs
-    public function listarTodos() {
+    public function listarTodos()
+    {
         // 9.2 Leitura e apresentação de registro
         $stmt = $this->pdo->query("SELECT * FROM Tcc");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // Método para deletar um TCC pelo código
-    public function deletar($codTcc) {
+    public function deletar($codTcc)
+    {
         $stmt = $this->pdo->prepare("DELETE FROM Tcc WHERE codTcc = ?");
         return $stmt->execute([$codTcc]);
     }
