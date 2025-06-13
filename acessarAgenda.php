@@ -130,7 +130,8 @@
                 <input type="hidden" name="codAgenda" value="<?= htmlspecialchars($agenda['codTcc']) ?>">
 
                 <p><b>codTipoTcc:</b> <?= htmlspecialchars($agenda['codTipoTcc']) ?> -
-                    <?= htmlspecialchars($agenda['nomeTipoTcc']) ?></p>
+                    <?= htmlspecialchars($agenda['nomeTipoTcc']) ?>
+                </p>
 
                 <label for="dataHora">Data e Hora:</label><br>
                 <input type="datetime-local" id="dataHora" name="dataHora"
