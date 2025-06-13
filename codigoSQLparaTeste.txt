@@ -1,0 +1,51 @@
+CREATE DATABASE IF NOT EXISTS tcc_db CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE tcc_db;
+
+CREATE TABLE TipoTcc (
+    codTipoTcc INT PRIMARY KEY,
+    nomeTipoTcc VARCHAR(100) NOT NULL,
+    maxPaginas INT NOT NULL
+);
+
+INSERT INTO TipoTcc (codTipoTcc, nomeTipoTcc, maxPaginas) VALUES
+(1, 'Monografia', 60),
+(2, 'Artigo técnico-científico', 30),
+(3, 'Relatório técnico-científico', 20),
+(4, 'Plano de negócios', 40);
+
+CREATE TABLE Tcc (
+    codTcc INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    codTipoTcc INT NOT NULL,
+    qtdPg INT NOT NULL,
+    qtdAlunos INT NOT NULL,
+    curso VARCHAR(100) NOT NULL,
+    aprovado ENUM('Sim', 'Não') DEFAULT 'Não',
+    FOREIGN KEY (codTipoTcc) REFERENCES TipoTcc(codTipoTcc)
+);
+
+CREATE TABLE Aluno (
+    codTcc INT PRIMARY KEY,
+    aluno1 VARCHAR(100),
+    aluno2 VARCHAR(100),
+    aluno3 VARCHAR(100),
+    FOREIGN KEY (codTcc) REFERENCES Tcc(codTcc) ON DELETE CASCADE
+);
+
+CREATE TABLE Professor (
+    codTcc INT PRIMARY KEY,
+    orientador VARCHAR(100),
+    coorientador VARCHAR(100),
+    profConvidado1 VARCHAR(100),
+    profConvidado2 VARCHAR(100),
+    FOREIGN KEY (codTcc) REFERENCES Tcc(codTcc) ON DELETE CASCADE
+);
+
+CREATE TABLE Agenda (
+    codAgenda INT PRIMARY KEY, -- igual ao codTcc
+    dataHora DATETIME NOT NULL,
+    local VARCHAR(100) NOT NULL,
+    notaFinal DECIMAL(4,2) DEFAULT 0.00,
+    cidade VARCHAR(100) NOT NULL,
+    FOREIGN KEY (codAgenda) REFERENCES Tcc(codTcc) ON DELETE CASCADE
+);
