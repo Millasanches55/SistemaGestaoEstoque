@@ -15,15 +15,27 @@
                 $pdo = new PDO("mysql:host=localhost;dbname=db_terreiro;charset=utf8", "root", "");
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 
-                $resultado = $pdo->prepare("SELECT nome_terreiro FROM terreiro");
-                $resultado->execute();
+                $usuario = $pdo->prepare("SELECT * FROM usuarios");
+                $usuario->execute();
+
+                $usuario->setFetchMode(PDO::FETCH_ASSOC);
+
+                if ($usuario->rowCount() > 0) {
+                    $linha = $usuario->fetchAll();
+
+                    echo "<h2>" . $linha[0]["nome"] . "</h2>";
+                }
+
                 
-                $resultado->setFetchMode(PDO::FETCH_ASSOC);
+                $nome_terreiro = $pdo->prepare("SELECT nome_terreiro FROM terreiro");
+                $nome_terreiro->execute();
+                
+                $nome_terreiro->setFetchMode(PDO::FETCH_ASSOC);
 
-                if ($resultado->rowCount() > 0) {
-                    $linha = $resultado->fetchAll();
+                if ($nome_terreiro->rowCount() > 0) {
+                    $linha = $nome_terreiro->fetchAll(PDO::FETCH_COLUMN, 0);
 
-                    echo "<p>" . $linha[1][0] . "</p>";
+                    echo "<p>" . $linha[0] . "</p>";
                 }
 
             } catch(PDOException $e) {
