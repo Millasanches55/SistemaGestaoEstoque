@@ -26,7 +26,7 @@
 
         // 1.1 Comentários: Este próprio comentário é um exemplo
 // 9.1 Conexão PDO
-        $pdo = new PDO("mysql:host=localhost;dbname=tcc_db;charset=utf8", "root", "");
+        $pdo = new PDO("mysql:host=localhost;dbname=db_terreiro;charset=utf8", "root", "");
 
         try {
             // Consulta para contar os TCCs
