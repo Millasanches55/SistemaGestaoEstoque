@@ -1,5 +1,5 @@
 --Código SQL para rodar no PHPMyAdmin
----testeteete
+
 -- Criar o banco de dados
 CREATE DATABASE IF NOT EXISTS db_terreiro
   DEFAULT CHARACTER SET utf8mb4
