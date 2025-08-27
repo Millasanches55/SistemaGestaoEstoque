@@ -45,6 +45,38 @@
 
 
         ?>
+        <br>
+        <p><b>Alterar Senha</b></p>
+        <form action="perfilDoUsuario.php" method="post">
+            Senha atual: <input type="password" name="senha_atual" required> <br>
+            Senha nova:  <input type="password" name="senha_nova" required> <br>
+            Confirmar senha:  <input type="password" name="confirmar_senha" required> <br>
+            <input type="submit" value="Confirmar">
+        </form>
+        
+        <?php
+            if (!empty($_POST)) {
+                $senha_atual = $_POST["senha_atual"];
+                $senha_nova = $_POST["senha_nova"];
+                $confirmar_senha = $_POST["confirmar_senha"];
+
+                $pdo = new PDO("mysql:host=localhost;dbname=db_terreiro;charset=utf8", "root", "");
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                
+                $usuario = $pdo->prepare("SELECT id, senha FROM usuarios");
+                $usuario->execute();
+
+                $usuario->setFetchMode(PDO::FETCH_ASSOC);
+
+                if ($usuario->rowCount() > 0) {
+                    $linha = $usuario->fetchAll();
+
+                    if ($senha_atual == $linha[0]["senha"] && $senha_nova == $confirmar_senha) {
+                        $atualizacao = $pdo->prepare("UPDATE usuarios SET senha = $senha_nova WHERE id = 1");
+                    }
+                }
+            }
+        ?>
     </section>
 </body>
 </html>
