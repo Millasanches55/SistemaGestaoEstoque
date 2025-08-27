@@ -73,6 +73,7 @@
 
                     if ($senha_atual == $linha[0]["senha"] && $senha_nova == $confirmar_senha) {
                         $atualizacao = $pdo->prepare("UPDATE usuarios SET senha = $senha_nova WHERE id = 1");
+                        $atualizacao->execute();
                     }
                 }
             }
