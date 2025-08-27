@@ -35,7 +35,7 @@
                 if ($nome_terreiro->rowCount() > 0) {
                     $linha = $nome_terreiro->fetchAll(PDO::FETCH_COLUMN, 0);
 
-                    echo "<p>" . $linha[0] . "</p>";
+                    echo "<p>Terreiro: " . $linha[0] . "</p>";
                 }
 
             } catch(PDOException $e) {
