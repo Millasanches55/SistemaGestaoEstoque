@@ -1,0 +1,47 @@
+-- Criar o banco de dados
+CREATE DATABASE IF NOT EXISTS db_terreiro
+  DEFAULT CHARACTER SET utf8mb4
+  DEFAULT COLLATE utf8mb4_general_ci;
+
+-- Usar o banco
+USE db_terreiro;
+
+-- Tabela: terreiro
+CREATE TABLE terreiro (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome_terreiro VARCHAR(100) NOT NULL,
+    endereco VARCHAR(150)
+);
+
+-- Tabela: usuarios
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_terreiro INT NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    usuario VARCHAR(50) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    tipo ENUM('adm', 'auxiliar') NOT NULL,
+    FOREIGN KEY (id_terreiro) REFERENCES terreiro(id) ON DELETE CASCADE
+);
+
+-- Tabela: estoque
+CREATE TABLE estoque (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_terreiro INT NOT NULL,
+    produto VARCHAR(100) NOT NULL,
+    quantidade INT DEFAULT 0,
+    origem ENUM('compra', 'doacao') NOT NULL,
+    data_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_terreiro) REFERENCES terreiro(id) ON DELETE CASCADE
+);
+
+-- Tabela: financas
+CREATE TABLE financas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_terreiro INT NOT NULL,
+    tipo ENUM('arrecadacao', 'despesa') NOT NULL,
+    descricao VARCHAR(150) NOT NULL,
+    valor DECIMAL(10,2) NOT NULL,
+    data DATE NOT NULL,
+    FOREIGN KEY (id_terreiro) REFERENCES terreiro(id) ON DELETE CASCADE
+);
