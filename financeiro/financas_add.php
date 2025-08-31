@@ -27,18 +27,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bind_param("ssdsi", $descricao, $tipo, $valor, $data, $id_terreiro);
             if ($stmt->execute()) {
                 // Redireciona com uma mensagem de sucesso
-                header("Location: financas_add.php?status=success");
+                header("Location: financas.php?status=success");
                 exit();
             } else {
                 // Redireciona com uma mensagem de erro
-                header("Location: financas_add.php?status=error");
+                header("Location: financas.php?status=error");
                 exit();
             }
             $stmt->close();
         }
     } else {
         // Redireciona com uma mensagem de erro de dados
-        header("Location: financas_add.php?status=error_data");
+        header("Location: financas.php?status=error_data");
         exit();
     }
 }
@@ -51,28 +51,40 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>Registrar Movimentação</title>
+    <!-- Usa um caminho relativo para o CSS, garantindo que ele seja encontrado. -->
     <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
     <div class="container">
         <h2>Registrar Movimentação</h2>
-        <form class="summary-box" method="POST" action="financas_add.php">
-            <label>Tipo:</label>
-            <select name="tipo">
-                <option value="arrecadacao">Arrecadação</option>
-                <option value="despesa">Despesa</option>
-            </select><br><br>
+        <div class="summary-box">
+        <form method="POST" action="financas_add.php">
+            <div class="form-group">
+                <label>Tipo:</label>
+                <select class=""name="tipo">
+                    <option value="arrecadacao">Arrecadação</option>
+                    <option value="despesa">Despesa</option>
+                </select>
+            </div>
 
-            <label>Descrição:</label>
-            <input type="text" name="descricao" required><br><br>
+            <div class="form-group">
+                <label>Descrição:</label>
+                <input type="text" name="descricao" required>
+            </div>
 
-            <label>Valor:</label>
-            <input type="number" step="0.01" name="valor" required><br><br>
+            <div class="form-group">
+                <label>Valor:</label>
+                <input type="number" step="0.01" name="valor" required>
+            </div>
 
-            <label>Data:</label>
-            <input type="date" name="data" required><br><br>
+            <div class="form-group">
+                <label>Data:</label>
+                <input type="date" name="data" required>
+            </div>
 
-            <button type="submit">Salvar</button>
+            <div class="form-group">
+                <button type="submit">Salvar</button>
+            </div>
         </form>
     </div>
 </body>

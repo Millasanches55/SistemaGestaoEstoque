@@ -12,17 +12,17 @@ if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['id_terreiro'])) {
 }
 
 $id_terreiro = $_SESSION['id_terreiro'];
-$action = $_GET['action'] ?? 'resumo';
+$action = $_GET['action'] ?? 'saldo';
 
-// Define a ação padrão como 'resumo'.
-$action = $_GET['action'] ?? 'resumo';
+// Define a ação padrão como 'Saldo'.
+$action = $_GET['action'] ?? 'saldo';
 
 // --- INICIO DO CÁLCULO DO SALDO ---
 $arrecadacoes = 0;
 $despesas = 0;
 $saldo_total = 0;
 
-if ($action == 'resumo') {
+if ($action == 'saldo') {
     // Consulta para obter o total de arrecadações.
     $sql_arrecadacoes = "SELECT SUM(valor) AS total_arrecadacoes FROM financas WHERE id_terreiro = ? AND tipo = 'arrecadacao'";
     if ($stmt_arrecadacoes = $conn->prepare($sql_arrecadacoes)) {
@@ -63,6 +63,7 @@ if ($action == 'resumo') {
 <body>
     <div class="container">
         <div class="nav-menu">
+            <a href="index.php?action=saldo">Saldo</a>
             <a href="index.php?action=resumo">Resumo</a>
             <a href="index.php?action=list">Listar Movimentações</a>
             <a href="index.php?action=add">Adicionar Movimentação</a>
@@ -74,8 +75,7 @@ if ($action == 'resumo') {
             <?php
             // Lógica de roteamento simples
             switch ($action) {
-                case 'resumo':
-                    // O resumo é exibido diretamente aqui.
+                case 'saldo':
                     ?>
                     <div class="summary-box">
                         <h2>Saldo Financeiro</h2>
@@ -86,6 +86,9 @@ if ($action == 'resumo') {
                         </div>
                     </div>
                     <?php
+                    break;
+                case 'resumo':
+                    // O resumo é exibido diretamente aqui.
                     include __DIR__. '/financas_resumo.php';
                     break;
                 case 'list':

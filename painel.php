@@ -24,7 +24,7 @@ $tipo = $_SESSION['tipo'];
     <?php if ($tipo == 'adm') { ?>
         <a href="gerenciar_estoque.php">Gerenciar Estoque</a><br>
         <a href="financeiro/index.php">Gerenciar Finanças</a><br>
-        <a href="relatorios.php">Relatórios</a><br>
+        <a href="financeiro/relatorios.php">Relatórios</a><br>
         <a href="usuarios.php">Gerenciar Auxiliar</a><br>
     <?php } else { ?>
         <a href="gerenciar_estoque.php">Gerenciar Estoque</a><br>
