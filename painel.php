@@ -15,6 +15,7 @@ $tipo = $_SESSION['tipo'];
 <head>
     <meta charset="UTF-8">
     <title>Painel</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h2>Bem-vindo, <?php echo $nome; ?>!</h2>

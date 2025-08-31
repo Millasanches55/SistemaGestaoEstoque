@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Sistema de Gestão do Terreiro</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h2>Login</h2>

@@ -27,18 +27,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bind_param("ssdsi", $descricao, $tipo, $valor, $data, $id_terreiro);
             if ($stmt->execute()) {
                 // Redireciona com uma mensagem de sucesso
-                header("Location: financas.php?status=success");
+                header("Location: financas_add.php?status=success");
                 exit();
             } else {
                 // Redireciona com uma mensagem de erro
-                header("Location: financas.php?status=error");
+                header("Location: financas_add.php?status=error");
                 exit();
             }
             $stmt->close();
         }
     } else {
         // Redireciona com uma mensagem de erro de dados
-        header("Location: financas.php?status=error_data");
+        header("Location: financas_add.php?status=error_data");
         exit();
     }
 }
@@ -56,7 +56,7 @@ $conn->close();
 <body>
     <div class="container">
         <h2>Registrar Movimentação</h2>
-        <form method="POST" action="financas_add.php">
+        <form class="summary-box" method="POST" action="financas_add.php">
             <label>Tipo:</label>
             <select name="tipo">
                 <option value="arrecadacao">Arrecadação</option>

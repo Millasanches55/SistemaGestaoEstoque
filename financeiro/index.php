@@ -70,6 +70,7 @@ if ($action == 'resumo') {
         </div>
         <hr>
         <div class="content">
+        
             <?php
             // Lógica de roteamento simples
             switch ($action) {
@@ -85,6 +86,7 @@ if ($action == 'resumo') {
                         </div>
                     </div>
                     <?php
+                    include __DIR__. '/financas_resumo.php';
                     break;
                 case 'list':
                     include __DIR__ . '/financas_list.php';

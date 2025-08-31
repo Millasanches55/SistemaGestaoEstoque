@@ -56,6 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Cadastro do Terreiro</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h2>Cadastro do Administrador e do Terreiro</h2>

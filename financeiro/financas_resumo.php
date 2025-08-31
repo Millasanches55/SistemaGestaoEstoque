@@ -43,6 +43,20 @@ if ($stmt_despesas = $conn->prepare($sql_despesas)) {
 // Calcula o saldo total.
 $saldo_total = $arrecadacoes - $despesas;
 
+// --- CONSULTA PARA O HISTÓRICO DE MOVIMENTAÇÕES ---
+// Seleciona as últimas 10 movimentações do terreiro.
+$sql_historico = "SELECT descricao, valor, data FROM financas WHERE id_terreiro = ? ORDER BY data DESC LIMIT 10";
+$historico = [];
+if ($stmt_historico = $conn->prepare($sql_historico)) {
+    $stmt_historico->bind_param("i", $id_terreiro);
+    $stmt_historico->execute();
+    $result_historico = $stmt_historico->get_result();
+    while ($row = $result_historico->fetch_assoc()) {
+        $historico[] = $row;
+    }
+    $stmt_historico->close();
+}
+
 // Fecha a conexão com o banco de dados.
 $conn->close();
 ?>
@@ -58,13 +72,39 @@ $conn->close();
     <div class="container">
         <h2>Resumo Financeiro</h2>
         <div class="summary-box">
-            <div class="summary-item"><strong>Total de Arrecadações:</strong> <span class="arrecadacoes">R$ <?php echo number_format($arrecadacoes, 2, ',', '.'); ?></span></div>
-            <div class="summary-item"><strong>Total de Despesas:</strong> <span class="despesas">R$ <?php echo number_format($despesas, 2, ',', '.'); ?></span></div>
+            <div class="summary-box"><strong>Total de Arrecadações:</strong> <span class="arrecadacoes">R$ <?php echo number_format($arrecadacoes, 2, ',', '.'); ?></span></div>
+            <div class="summary-box"><strong>Total de Despesas:</strong> <span class="despesas">R$ <?php echo number_format($despesas, 2, ',', '.'); ?></span></div>
             <hr>
-            <div class="saldo">
+            <div class="summary-box">
                 <strong>Saldo Total:</strong>
                 <span class="<?php echo ($saldo_total >= 0) ? 'positivo' : 'negativo'; ?>">R$ <?php echo number_format($saldo_total, 2, ',', '.'); ?></span>
             </div>
+        </div>
+
+        <div class="historico-table">
+            <h3>Histórico Recente</h3>
+            <?php if (count($historico) > 0): ?>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($historico as $item): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($item['descricao']); ?></td>
+                                <td>R$ <?php echo number_format($item['valor'], 2, ',', '.'); ?></td>
+                                <td><?php echo date('d/m/Y', strtotime($item['data'])); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <p>Nenhuma movimentação recente encontrada.</p>
+            <?php endif; ?>
         </div>
     </div>
 </body>
