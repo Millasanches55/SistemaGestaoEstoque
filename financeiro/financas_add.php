@@ -51,8 +51,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>Registrar Movimentação</title>
-    <!-- Usa um caminho relativo para o CSS, garantindo que ele seja encontrado. -->
-    <link rel="stylesheet" href="estilo.css">
+    <!--<link rel="stylesheet" href="estilo.css">-->
 </head>
 <body>
     <div class="container">
