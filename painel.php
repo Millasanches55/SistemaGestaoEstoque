@@ -19,20 +19,20 @@ $tipo = $_SESSION['tipo'];
 </head>
 <body>
     <section>
-        <h2>Bem-vindo, <?php echo $nome; ?>!</h2>
-        <p>Você logou como: <b><?php echo strtoupper($tipo); ?></b></p>
-        
+    <h2>Bem-vindo, <?php echo $nome; ?>!</h2>
+    <p>Você logou como: <b><?php echo strtoupper($tipo); ?></b></p>
+
         <br><br>
 
-        <?php if ($tipo == 'adm') { ?>
+    <?php if ($tipo == 'adm') { ?>
             <a href="estoque.php" class='botao'>Gerenciar Estoque</a>
             <a href="financeiro/index.php" class='botao'>Gerenciar Finanças</a>
             <a href="financeiro/relatorios.php" class='botao'>Relatórios</a>
             <a href="usuarios.php" class='botao'>Gerenciar Auxiliar</a>
-        <?php } else { ?>
+    <?php } else { ?>
             <a href="estoque.php" class='botao'>Gerenciar Estoque</a>
-            <a href="relatorios.php" class='botao'>Consultar Relatórios</a>
-        <?php } ?>
+            <a href="financeiro/relatorios.php" class='botao'>Consultar Relatórios</a>
+    <?php } ?>
         <a href="perfilDoUsuario.php" class='botao'>Perfil</a>
 
         <a href="logout.php" class='botao'>Sair</a>
