@@ -13,36 +13,14 @@
         <br>
         <a href="painel.php" class='botao'><i class='bxr  bx-arrow-left-stroke'  ></i> Voltar</a>
 
-        <?php
-            try {
-                $pdo = new PDO("mysql:host=localhost;dbname=db_terreiro;charset=utf8", "root", "");
-                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                
-                $usuario = $pdo->prepare("SELECT * FROM usuarios");
-                $usuario->execute();
-
-                $usuario->setFetchMode(PDO::FETCH_ASSOC);
-
-        ?>
-
         <h2>Perfil do Usuário</h2>
         <h3>Dados Pessoais</h3>
         <?php
-                if ($usuario->rowCount() > 0) {
-                    $linha = $usuario->fetchAll();
+            session_start();
+            echo "<p><b>Nome:</b> " . $_SESSION["nome"] . "</p>";
 
-                    echo "<p><b>Nome:</b> " . $linha[0]["nome"] . "</p>";
-
-                    if ($linha[0]["tipo"] == "adm") echo "<p><b>Nível de Acesso:</b> Administrador";
-                    else if ($linha[0]["tipo"] == "auxiliar") echo "<p><b>Nível de Acesso:</b> Auxiliar";
-                }
-
-            } catch(PDOException $e) {
-                echo "Erro ao conectar: " . $e->getMessage();
-            }
-            
-
-
+            if ($_SESSION["tipo"] == "adm") echo "<p><b>Nível de Acesso:</b> Administrador";
+            else if ($_SESSION["tipo"] == "auxiliar") echo "<p><b>Nível de Acesso:</b> Auxiliar";
         ?>
         <br>
         <h3>Alterar Senha</h3>
