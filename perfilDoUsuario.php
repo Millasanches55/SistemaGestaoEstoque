@@ -22,6 +22,7 @@
                 $usuario->execute();
 
                 $usuario->setFetchMode(PDO::FETCH_ASSOC);
+                
         ?>
 
         <h2>Perfil do Usuário</h2>
