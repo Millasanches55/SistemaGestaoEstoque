@@ -102,7 +102,6 @@ if (isset($_GET['remover']) && $auxiliar) {
         </form>
         <br>
         <a href="usuarios.php?remover=1" onclick="return confirm('Deseja remover o auxiliar?')">❌ Remover Auxiliar</a>
-        lklllllll
     <?php } ?>
 </body>
 </html>
