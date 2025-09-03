@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         if ($stmt->execute()) {
             // Sucesso na inserção. Redireciona para o painel.
-            header("Location: index.php?action=resumo");
+            header("Location: financeiro/index.php?action=resumo");
             exit();
         } else {
             echo "Erro: " . $stmt->error;
