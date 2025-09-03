@@ -89,7 +89,9 @@ if (isset($_GET['remover']) && $auxiliar) {
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
+                <th>Ações</th>
             </tr>
+
         </table>
 
         <?php if (!$auxiliar) { ?>

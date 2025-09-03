@@ -23,6 +23,7 @@
             else if ($_SESSION["tipo"] == "auxiliar") echo "<p><b>Nível de Acesso:</b> Auxiliar";
         ?>
         <br>
+        <br>
         <h3>Alterar Senha</h3>
         <form action="perfilDoUsuario.php" method="post">
             Senha atual: <input type="password" name="senha_atual" required> <br>
@@ -37,20 +38,30 @@
                 $senha_nova = $_POST["senha_nova"];
                 $confirmar_senha = $_POST["confirmar_senha"];
 
+                $id = $_SESSION["id_usuario"];
+
                 $pdo = new PDO("mysql:host=localhost;dbname=db_terreiro;charset=utf8", "root", "");
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 
-                $usuario = $pdo->prepare("SELECT id, senha FROM usuarios");
+                $usuario = $pdo->prepare("SELECT senha FROM usuarios");
                 $usuario->execute();
 
                 $usuario->setFetchMode(PDO::FETCH_ASSOC);
 
                 if ($usuario->rowCount() > 0) {
-                    $linha = $usuario->fetchAll();
+                    $resultado = $usuario->fetchAll();
 
-                    if ($senha_atual == $linha[0]["senha"] && $senha_nova == $confirmar_senha) {
-                        $atualizacao = $pdo->prepare("UPDATE usuarios SET senha = $senha_nova WHERE id = 1");
-                        $atualizacao->execute();
+                    foreach ($resultado as $linha){
+                        if (password_verify($senha_atual, $linha["senha"]) && $senha_nova == $confirmar_senha) {
+                            $senha = password_hash($senha_nova, PASSWORD_DEFAULT);
+                            $atualizacao = $pdo->prepare("UPDATE usuarios SET senha = $senha WHERE id = $id");
+                            $atualizacao->execute();
+                            echo "Senha atualizada com sucesso.";
+                            break;
+                        }
+                    }
+                    if (!(password_verify($senha_atual, $linha["senha"])) || $senha_nova != $confirmar_senha) {
+                        echo "Senhas inválidas.";
                     }
                 }
             }
