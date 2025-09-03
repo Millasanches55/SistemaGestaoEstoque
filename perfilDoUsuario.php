@@ -39,7 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($senha_nova !== $confirmar_senha) {
         $mensagem = "❌ A nova senha e a confirmação não coincidem.";
     } else {
-        // Hash da nova senha
         $senha_hash = password_hash($senha_nova, PASSWORD_DEFAULT);
 
         if ($tipo == "adm") {
@@ -67,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt_u->execute();
         }
 
-        $_SESSION["nome"] = $nome; // Atualiza sessão
+        $_SESSION["nome"] = $nome;
         $mensagem = "✅ Dados atualizados com sucesso!";
     }
 }
