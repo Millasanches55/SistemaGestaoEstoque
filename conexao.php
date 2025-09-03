@@ -1,8 +1,8 @@
 <?php
 $host = "localhost";
-$user = "root";      // usuário padrão do XAMPP
-$pass = "";          // senha padrão (vazia no XAMPP)
-$db   = "db_terreiro"; // nome do banco que você criou
+$user = "root";     
+$pass = "";          
+$db   = "db_terreiro"; 
 
 $conn = new mysqli($host, $user, $pass, $db);
 
