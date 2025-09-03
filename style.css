@@ -1,15 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap');
 
 :root {
-    --azul-erp: #2f4050;
-    --azul-claro: #1ab394;
-    --cinza-fundo: #f3f3f4;
-    --cinza-card: #ffffff;
-    --cinza-borda: #e5e6e7;
-    --texto-primario: #2f2f2f;
-    --texto-secundario: #6b6b6b;
-    --raio: 6px;
-    --sombra: 0 2px 6px rgba(0, 0, 0, 0.08);
+    --azul-aero: #3c8dbc;
+    --azul-claro: #d0ecff;
+    --azul-gradiente: linear-gradient(to bottom, #e3f2fd, #b0d8f1);
+    --branco-vidro: rgba(255, 255, 255, 0.6);
+    --cinza-borda: #ccddee;
+    --sombra-leve: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --sombra-forte: 0 4px 20px rgba(0, 0, 0, 0.2);
+    --raio: 10px;
+    --texto-primario: #1a1a1a;
+    --texto-suave: #2e2e2e;
 }
 
 * {
@@ -20,119 +21,259 @@
 }
 
 body {
-    background: var(--cinza-fundo);
+    background: var(--azul-gradiente);
     color: var(--texto-primario);
     min-height: 100vh;
+    padding: 30px 10px;
 }
 
-/* HEADER FIXO */
 header {
-    background: var(--azul-erp);
+    background: linear-gradient(to right, #5faee3, #3c8dbc);
     color: white;
-    padding: 18px 30px;
-    font-size: 1.4rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: var(--sombra);
+    text-align: center;
+    padding: 25px;
+    font-size: 2rem;
+    border-radius: var(--raio) var(--raio) 0 0;
+    box-shadow: var(--sombra-forte);
 }
 
-/* SEÇÕES / CONTEÚDO */
 section {
-    max-width: 1100px;
-    margin: 30px auto;
-    background: var(--cinza-card);
+    max-width: 960px;
+    margin: 40px auto;
+    background: var(--branco-vidro);
+    backdrop-filter: blur(6px);
     border: 1px solid var(--cinza-borda);
     border-radius: var(--raio);
-    box-shadow: var(--sombra);
-    padding: 25px;
+    box-shadow: var(--sombra-leve);
+    padding: 30px;
 }
 
 h2 {
-    font-size: 1.3rem;
+    text-align: center;
     margin-bottom: 20px;
-    font-weight: 600;
-    color: var(--azul-erp);
-    border-bottom: 2px solid var(--azul-claro);
-    padding-bottom: 6px;
+    color: var(--azul-aero);
 }
 
-/* TABELAS */
 table {
     width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border: 1px solid var(--cinza-borda);
-    border-radius: var(--raio);
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: white;
+    border: 1px solid #b7d2eb;
+    border-radius: 8px;
     overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     font-size: 0.95rem;
 }
 
-thead {
-    background: var(--azul-erp);
-    color: white;
-    text-align: left;
-}
-
-th, td {
+th,
+td {
     padding: 12px 15px;
-    border-bottom: 1px solid var(--cinza-borda);
+    border-bottom: 1px solid #ddeaf4;
+    text-align: center;
 }
 
-tbody tr:nth-child(even) {
-    background: #f9f9f9;
-}
-
-tbody tr:hover {
-    background: #eef7f6;
-}
-
-/* FORMULÁRIOS */
-input, select {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 1px solid var(--cinza-borda);
-    border-radius: var(--raio);
-    background-color: #fff;
-    color: var(--texto-primario);
-    transition: border 0.2s, box-shadow 0.2s;
-}
-
-input:focus, select:focus {
-    outline: none;
-    border-color: var(--azul-claro);
-    box-shadow: 0 0 4px rgba(26, 179, 148, 0.4);
-}
-
-/* BOTÕES */
-.botao, #botao-cadastro {
-    background: var(--azul-claro);
-    color: white;
-    padding: 10px 18px;
-    border: none;
-    border-radius: var(--raio);
+th {
+    padding: 12px;
+    text-align: center;
     font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
+    color: #0c2c50;
+    border-right: 1px solid #cce5f9;
+    border-bottom: 1px solid #9bcdf1;
+    background: linear-gradient(to bottom, #cce6fc 0%, #b2d7f3 100%);
 }
 
-.botao:hover, #botao-cadastro:hover {
-    background: #159a7d;
+td {
+    background-color: #f9fcff;
 }
 
-/* AÇÕES NA TABELA */
 .opcoes-tabela {
     display: flex;
     justify-content: center;
-    gap: 8px;
+    gap: 10px;
 }
 
-/* LINKS INDEX */
+input,
+select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #aaccee;
+    border-radius: var(--raio);
+    background-color: #ffffff;
+    color: var(--texto-primario);
+    transition: box-shadow 0.2s;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(60, 141, 188, 0.5);
+}
+
+.botao,
+#botao-cadastro {
+    background: linear-gradient(to bottom, #5faee3, #3c8dbc);
+    color: white;
+    padding: 10px 20px;
+    border: 1px solid #2d6a9f;
+    border-radius: var(--raio);
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), var(--sombra-leve);
+    transition: background 0.3s, transform 0.2s;
+}
+
+.botao:hover,
+#botao-cadastro:hover {
+    background: linear-gradient(to bottom, #3c8dbc, #2b6fa8);
+    transform: scale(1.03);
+}
+
+.botoes-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
 #links-index {
     text-align: center;
     margin-top: 30px;
-    font-size: 0.9rem;
-    color: var(--texto-secundario);
+    font-size: 0.95rem;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: white;
+    border: 1px solid #b7d2eb;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-size: 0.95rem;
+}
+
+/* Repetição de estilo com seletor específico para cabeçalhos de tabela */
+thead tr {
+    background: linear-gradient(to bottom, #d1e9ff, #a6d2f5);
+    border-bottom: 2px solid #7ab2e2;
+    color: #1f1f1f;
+    text-shadow: 0 1px white;
+}
+
+th {
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
+    color: #0c2c50;
+    border-right: 1px solid #cce5f9;
+    border-bottom: 1px solid #9bcdf1;
+    background: linear-gradient(to bottom, #cce6fc 0%, #b2d7f3 100%);
+}
+
+th:last-child {
+    border-right: none;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2faff;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+tbody tr:hover {
+    background-color: #e0f2ff;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+    border-right: 1px solid #e0ecf3;
+    border-bottom: 1px solid #d0e6f6;
+    color: #1e1e1e;
+}
+
+td:last-child {
+    border-right: none;
+}
+
+.opcoes-tabela {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+
+
+/* Seção específica para cartões de TCC - organização visual e semântica clara */
+.cartao-tcc {
+    background: var(--branco-vidro);
+    border: 1px solid var(--cinza-borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra-leve);
+    backdrop-filter: blur(5px);
+    padding: 20px 25px;
+    margin: 20px 0;
+    transition: transform 0.2s ease;
+}
+
+.cartao-tcc:hover {
+    transform: scale(1.01);
+    box-shadow: var(--sombra-forte);
+}
+
+.cartao-tcc h3,
+.cartao-tcc h4 {
+    color: #1c3f66;
+    margin-bottom: 5px;
+}
+
+.cartao-tcc h3 span,
+.cartao-tcc h4 span {
+    font-weight: normal;
+    color: var(--texto-suave);
+}
+
+.lista-alunos {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 10px;
+}
+
+.lista-alunos li {
+    background: #f2faff;
+    border: 1px solid #c6e4f8;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    box-shadow: inset 0 1px 0 #c4e0f6;
+}
+
+
+
+
+/* Professores - bloco visual equivalente a alunos */
+
+.lista-professores {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 10px;
+}
+
+.lista-professores li {
+    background: #f0f9ff;
+    border: 1px solid #c4e0f6;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    box-shadow: inset 0 1px 0 #c4e0f6;
 }
