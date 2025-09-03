@@ -81,27 +81,36 @@ if (isset($_GET['remover']) && $auxiliar) {
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h2>Gerenciar Auxiliar</h2>
-    <p><a href="painel.php">⬅ Voltar ao Painel</a></p>
+    <section>
+        <h2>Gerenciar Auxiliar</h2>
+        <p><a href="painel.php">⬅ Voltar ao Painel</a></p>
 
-    <?php if (!$auxiliar) { ?>
-        <h3>Cadastrar Auxiliar</h3>
-        <form method="post">
-            Nome: <input type="text" name="nome" required><br><br>
-            Usuário: <input type="text" name="usuario" required><br><br>
-            Senha: <input type="password" name="senha" required><br><br>
-            <button type="submit" name="cadastrar">Cadastrar</button>
-        </form>
-    <?php } else { ?>
-        <h3>Auxiliar Atual</h3>
-        <form method="post">
-            Nome: <input type="text" name="nome" value="<?php echo htmlspecialchars($auxiliar['nome']); ?>" required><br><br>
-            Usuário: <input type="text" name="usuario" value="<?php echo htmlspecialchars($auxiliar['usuario']); ?>" required><br><br>
-            Senha (deixe em branco para não alterar): <input type="password" name="senha"><br><br>
-            <button type="submit" name="editar">Salvar Alterações</button>
-        </form>
-        <br>
-        <a href="usuarios.php?remover=1" onclick="return confirm('Deseja remover o auxiliar?')">❌ Remover Auxiliar</a>
-    <?php } ?>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+            </tr>
+        </table>
+
+        <?php if (!$auxiliar) { ?>
+            <h3>Cadastrar Auxiliar</h3>
+            <form method="post">
+                Nome: <input type="text" name="nome" required><br><br>
+                Usuário: <input type="text" name="usuario" required><br><br>
+                Senha: <input type="password" name="senha" required><br><br>
+                <button type="submit" name="cadastrar">Cadastrar</button>
+            </form>
+        <?php } else { ?>
+            <h3>Auxiliar Atual</h3>
+            <form method="post">
+                Nome: <input type="text" name="nome" value="<?php echo htmlspecialchars($auxiliar['nome']); ?>" required><br><br>
+                Usuário: <input type="text" name="usuario" value="<?php echo htmlspecialchars($auxiliar['usuario']); ?>" required><br><br>
+                Senha (deixe em branco para não alterar): <input type="password" name="senha"><br><br>
+                <button type="submit" name="editar">Salvar Alterações</button>
+            </form>
+            <br>
+            <a href="usuarios.php?remover=1" onclick="return confirm('Deseja remover o auxiliar?')">❌ Remover Auxiliar</a>
+        <?php } ?>
+    </section>
 </body>
 </html>

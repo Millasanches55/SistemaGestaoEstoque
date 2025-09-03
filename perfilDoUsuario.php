@@ -22,7 +22,7 @@
                 $usuario->execute();
 
                 $usuario->setFetchMode(PDO::FETCH_ASSOC);
-                
+
         ?>
 
         <h2>Perfil do Usuário</h2>
@@ -34,7 +34,7 @@
                     echo "<p><b>Nome:</b> " . $linha[0]["nome"] . "</p>";
 
                     if ($linha[0]["tipo"] == "adm") echo "<p><b>Nível de Acesso:</b> Administrador";
-                    else echo "<p><b>Nível de Acesso:</b> Auxiliar";
+                    else if ($linha[0]["tipo"] == "auxiliar") echo "<p><b>Nível de Acesso:</b> Auxiliar";
                 }
 
             } catch(PDOException $e) {
