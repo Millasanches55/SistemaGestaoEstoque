@@ -109,4 +109,6 @@ if ($action == 'saldo') {
     </div>
 </body>
 </html>
-
+<?php
+$conn->close();
+?>
