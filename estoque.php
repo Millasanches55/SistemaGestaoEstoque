@@ -45,44 +45,46 @@ $result = $stmt->get_result();
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h2>Gerenciar Estoque</h2>
-    <p><a href="painel.php">⬅ Voltar ao Painel</a></p>
+    <section>
+        <h2>Gerenciar Estoque</h2>
+        <p><a href="painel.php">⬅ Voltar ao Painel</a></p>
 
-    <h3>Adicionar Item</h3>
-    <form method="post">
-        Nome do Produto: <input type="text" name="produto" required><br><br>
-        Quantidade: <input type="number" name="quantidade" min="1" required><br><br>
-        Tipo de Aquisição: 
-        <select name="origem" required>
-            <option value="compra">Compra</option>
-            <option value="doacao">Doação</option>
-        </select><br><br>
-        <button type="submit" name="adicionar">Adicionar</button>
-    </form>
+        <h3>Adicionar Item</h3>
+        <form method="post">
+            Nome do Produto: <input type="text" name="produto" required><br><br>
+            Quantidade: <input type="number" name="quantidade" min="1" required><br><br>
+            Tipo de Aquisição: 
+            <select name="origem" required>
+                <option value="compra">Compra</option>
+                <option value="doacao">Doação</option>
+            </select><br><br>
+            <button type="submit" name="adicionar">Adicionar</button>
+        </form>
 
-    <h3>Itens no Estoque</h3>
-    <table border="1" cellpadding="8">
-        <tr>
-            <th>ID</th>
-            <th>Produto</th>
-            <th>Quantidade</th>
-            <th>Origem</th>
-            <th>Data de Registro</th>
-            <th>Ações</th>
-        </tr>
-        <?php while ($row = $result->fetch_assoc()) { ?>
-        <tr>
-            <td><?php echo $row['id']; ?></td>
-            <td><?php echo $row['produto']; ?></td>
-            <td><?php echo $row['quantidade']; ?></td>
-            <td><?php echo ucfirst($row['origem']); ?></td>
-            <td><?php echo $row['data_registro']; ?></td>
-            <td>
-                <a href="editar_estoque.php?id=<?php echo $row['id']; ?>">Editar</a> | 
-                <a href="estoque.php?deletar=<?php echo $row['id']; ?>" onclick="return confirm('Deseja excluir este item?')">Excluir</a>
-            </td>
-        </tr>
-        <?php } ?>
-    </table>
+        <h3>Itens no Estoque</h3>
+        <table border="1" cellpadding="8">
+            <tr>
+                <th>ID</th>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Origem</th>
+                <th>Data de Registro</th>
+                <th>Ações</th>
+            </tr>
+            <?php while ($row = $result->fetch_assoc()) { ?>
+            <tr>
+                <td><?php echo $row['id']; ?></td>
+                <td><?php echo $row['produto']; ?></td>
+                <td><?php echo $row['quantidade']; ?></td>
+                <td><?php echo ucfirst($row['origem']); ?></td>
+                <td><?php echo $row['data_registro']; ?></td>
+                <td>
+                    <a href="editar_estoque.php?id=<?php echo $row['id']; ?>">Editar</a> | 
+                    <a href="estoque.php?deletar=<?php echo $row['id']; ?>" onclick="return confirm('Deseja excluir este item?')">Excluir</a>
+                </td>
+            </tr>
+            <?php } ?>
+        </table>
+    </section>
 </body>
 </html>
