@@ -12,5 +12,10 @@
         Senha: <input type="password" name="senha" required><br><br>
         <button type="submit">Entrar</button>
     </form>
+ <br><br>
+    <h2>Ainda não tem cadastro?</h2>
+    <form action="cadastro.php" method="get">
+        <button type="submit">Cadastrar Administrador e Assistente</button>
+    </form>
 </body>
 </html>
