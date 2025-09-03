@@ -3,7 +3,7 @@
 include __DIR__ . '/../conexao.php';
 
 // Inicia a sessão para garantir que o ID do terreiro está disponível
-
+session_start();
 
 // Verifica se o usuário está logado. Se não, redireciona para a página de login.
 if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['id_terreiro'])) {
@@ -51,7 +51,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>Registrar Movimentação</title>
-    <link rel="stylesheet" href="estilo.css">
+    <!--<link rel="stylesheet" href="estilo.css">-->
 </head>
 <body>
     <div class="container">
