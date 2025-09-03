@@ -2,8 +2,6 @@
 // Inclui o arquivo de conexão do banco.
 include __DIR__ . '/../conexao.php';
 
-// Inicia a sessão para garantir que o ID do terreiro está disponível.
-session_start();
 
 // Verifica se o usuário está logado. Se não, redireciona para a página de login.
 if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['id_terreiro'])) {
@@ -57,8 +55,6 @@ if ($stmt_historico = $conn->prepare($sql_historico)) {
     $stmt_historico->close();
 }
 
-// Fecha a conexão com o banco de dados.
-$conn->close();
 ?>
 
 <!DOCTYPE html>
