@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>Perfil do Usuário</title>
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <section>
         <h1>Sistema de Gestão de Estoque, Despesas e Arrecadações para Terreiros</h1>
+        <br>
+        <a href="painel.php" class='botao'><i class='bxr  bx-arrow-left-stroke'  ></i> Voltar</a>
 
         <?php
             try {
@@ -19,23 +22,18 @@
                 $usuario->execute();
 
                 $usuario->setFetchMode(PDO::FETCH_ASSOC);
+        ?>
 
+        <h2>Perfil do Usuário</h2>
+        <h3>Dados Pessoais</h3>
+        <?php
                 if ($usuario->rowCount() > 0) {
                     $linha = $usuario->fetchAll();
 
-                    echo "<h2>" . $linha[0]["nome"] . "</h2>";
-                }
+                    echo "<p><b>Nome:</b> " . $linha[0]["nome"] . "</p>";
 
-                
-                $nome_terreiro = $pdo->prepare("SELECT nome_terreiro FROM terreiro");
-                $nome_terreiro->execute();
-                
-                $nome_terreiro->setFetchMode(PDO::FETCH_ASSOC);
-
-                if ($nome_terreiro->rowCount() > 0) {
-                    $linha = $nome_terreiro->fetchAll(PDO::FETCH_COLUMN, 0);
-
-                    echo "<p>Terreiro: " . $linha[0] . "</p>";
+                    if ($linha[0]["tipo"] == "adm") echo "<p><b>Nível de Acesso:</b> Administrador";
+                    else echo "<p><b>Nível de Acesso:</b> Auxiliar";
                 }
 
             } catch(PDOException $e) {
@@ -46,7 +44,7 @@
 
         ?>
         <br>
-        <p><b>Alterar Senha</b></p>
+        <h3>Alterar Senha</h3>
         <form action="perfilDoUsuario.php" method="post">
             Senha atual: <input type="password" name="senha_atual" required> <br>
             Senha nova:  <input type="password" name="senha_nova" required> <br>

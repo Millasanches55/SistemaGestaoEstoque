@@ -59,31 +59,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h2>Cadastro do Administrador e do Terreiro</h2>
-    <form method="post" action="">
-        <fieldset>
-            <legend>Dados do Terreiro</legend>
-            Nome do Terreiro: <input type="text" name="nome_terreiro" required><br><br>
-            Endereço: <input type="text" name="endereco"><br><br>
-        </fieldset>
+    <section>
+        <h2>Cadastro do Administrador e do Terreiro</h2>
+        <form method="post" action="">
+            <fieldset>
+                <legend>Dados do Terreiro</legend>
+                Nome do Terreiro: <input type="text" name="nome_terreiro" required><br><br>
+                Endereço: <input type="text" name="endereco"><br><br>
+            </fieldset>
 
-        <fieldset>
-            <legend>Administrador</legend>
-            Nome: <input type="text" name="nome_adm" required><br><br>
-            Usuário: <input type="text" name="usuario_adm" required><br><br>
-            Senha: <input type="password" name="senha_adm" required><br><br>
-        </fieldset>
+            <fieldset>
+                <legend>Administrador</legend>
+                Nome: <input type="text" name="nome_adm" required><br><br>
+                Usuário: <input type="text" name="usuario_adm" required><br><br>
+                Senha: <input type="password" name="senha_adm" required><br><br>
+            </fieldset>
 
-        <fieldset>
-            <legend>Auxiliar (opcional)</legend>
-            Nome: <input type="text" name="nome_aux"><br><br>
-            Usuário: <input type="text" name="usuario_aux"><br><br>
-            Senha: <input type="password" name="senha_aux"><br><br>
-        </fieldset>
+            <fieldset>
+                <legend>Auxiliar (opcional)</legend>
+                Nome: <input type="text" name="nome_aux"><br><br>
+                Usuário: <input type="text" name="usuario_aux"><br><br>
+                Senha: <input type="password" name="senha_aux"><br><br>
+            </fieldset>
 
-        <button type="submit">Cadastrar</button>
-    </form>
+            <button type="submit">Cadastrar</button>
+        </form>
 
-    <p>Já possui conta? <a href="index.php">Fazer login</a></p>
+        <p>Já possui conta? <a href="index.php">Fazer login</a></p>
+    </section>
 </body>
 </html>
