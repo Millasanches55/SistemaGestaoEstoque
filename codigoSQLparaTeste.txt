@@ -1,0 +1,23 @@
+INSERT INTO financas (id_terreiro, tipo, descricao, valor, data) VALUES
+(1, 'arrecadacao', 'Doação de membro para festa de Yemanjá', 250.00, '2025-02-02'),
+(1, 'despesa', 'Compra de bebidas para a festa de Exu', 120.50, '2025-06-13'),
+(1, 'arrecadacao', 'Oferta de assistência para o Terreiro', 50.00, '2025-09-01'),
+(1, 'despesa', 'Material de limpeza e manutenção', 75.00, '2025-09-02'),
+(1, 'despesa', 'Decoração e velas para a Festa de Cosme e Damião', 180.75, '2025-09-27'),
+(1, 'arrecadacao', 'Contribuição de festa de Ogum', 300.00, '2025-04-23'),
+(1, 'despesa', 'Pagamento de conta de luz', 150.00, '2025-09-03'),
+(1, 'arrecadacao', 'Contribuição para a reforma do telhado', 100.00, '2025-09-04'),
+(1, 'despesa', 'Compra de flores para oferendas', 45.00, '2025-09-05'),
+(1, 'arrecadacao', 'Arrecadação de rifa para o fim do ano', 500.00, '2025-12-15');
+
+INSERT INTO estoque (id_terreiro, produto, quantidade, origem) VALUES
+(1, 'Velas Brancas', 50, 'compra'),
+(1, 'Ervas Secas', 10, 'doacao'),
+(1, 'Incenso de Arruda', 25, 'compra'),
+(1, 'Cachaça', 5, 'compra'),
+(1, 'Pipoca', 2, 'doacao'),
+(1, 'Farinha de Milho', 15, 'compra'),
+(1, 'Fitas de Cetim', 30, 'compra'),
+(1, 'Óleo de Dendê', 3, 'doacao'),
+(1, 'Carvão Vegetal', 20, 'compra'),
+(1, 'Flores Brancas', 8, 'doacao');

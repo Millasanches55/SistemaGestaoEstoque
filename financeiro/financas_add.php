@@ -43,12 +43,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Movimentação</title>
-    <link rel="stylesheet" href="/estilo.css">
+    <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
     <div class="container">
         <h2>Adicionar Movimentação Financeira</h2>
-        
         <form class="form-movimentacao" method="POST" action="financas_add.php">
             <div class="form-group">
                 <label for="tipo">Tipo:</label>
