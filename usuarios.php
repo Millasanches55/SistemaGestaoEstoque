@@ -84,16 +84,38 @@ if (isset($_GET['remover']) && $auxiliar) {
     <section>
         <h2>Gerenciar Auxiliar</h2>
         <a href="painel.php" class="botao">⬅ Voltar ao Painel</a>
-
-        <table>
+        <br><br>
+        <table id="tabela-usuarios">
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
-                <th>Ações</th>
+                <th>Tipo</th>
             </tr>
+            <?php
+                try {
+                    $pdo = new PDO("mysql:host=localhost;dbname=db_terreiro", "root", "");
+                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    
+                    $query = $pdo->prepare("SELECT id, nome, tipo FROM usuarios");
+                    $query->execute();
+                    $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
 
+                    foreach ($resultado as $linha) {
+                        echo "<tr>";
+                        
+                        echo "<td>" . $linha["id"] . "</td>";
+                        echo "<td>" . $linha["nome"] . "</td>";
+                        echo "<td>" . $linha["tipo"] . "</td>";
+
+                        echo "</tr>";
+                    }
+
+                } catch(PDOException $e) {
+                    echo "Erro: " . $e->getMessage();
+                }
+            ?>
         </table>
-
+        <br>
         <?php if (!$auxiliar) { ?>
             <h3>Cadastrar Auxiliar</h3>
             <form method="post">

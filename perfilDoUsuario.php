@@ -81,6 +81,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <section>
         <h1>Perfil do Usuário</h1>
+        <hr>
+        <br>
         <a class="botao" href="painel.php">⬅ Voltar</a>
 
         <h2>Editar Perfil</h2>
