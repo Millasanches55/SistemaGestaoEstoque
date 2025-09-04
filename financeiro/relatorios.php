@@ -66,12 +66,13 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relatórios</title>
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="../style.css">
     <style>
         .container {
             max-width: 900px;
             margin: 20px auto;
             padding: 20px;
+            text-align: center;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -112,18 +113,14 @@ $conn->close();
             border: 1px solid #ddd;
             text-align: left;
         }
-        th {
-            background-color: #007bff;
-            color: white;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Relatórios e Resumos</h1>
-        <div class="nav-menu">
-            <a href="../painel.php">Voltar</a>
-            <a href="exportar.php">Exportar para Excel</a>
+        <div class="botoes-container">
+            <a class="botao" href="../painel.php">Voltar</a>
+            <a class="botao" href="exportar.php">Exportar para Excel</a>
         </div>
 
         <!-- Seção de Relatório Financeiro -->

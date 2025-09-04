@@ -32,7 +32,7 @@ $dados_json = json_encode($movimentacoes);
     <meta charset="UTF-8">
     <title>Dashboard Financeiro</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div class="container">

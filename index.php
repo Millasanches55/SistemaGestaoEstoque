@@ -16,12 +16,12 @@
     <form action="login.php" method="post">
         Usuário: <input type="text" name="usuario" required><br><br>
         Senha: <input type="password" name="senha" required><br><br>
-        <button type="submit">Entrar</button>
+        <button class="botao" type="submit">Entrar</button>
     </form>
  <br><br>
     <h2>Ainda não tem cadastro?</h2>
     <form action="cadastro.php" method="get">
-        <button type="submit">Cadastrar Administrador e Assistente</button>
+        <button class="botao" type="submit">Cadastrar Administrador e Assistente</button>
     </form>
 </body>
 </html>

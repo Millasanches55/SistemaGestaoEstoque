@@ -58,31 +58,40 @@ if ($action == 'saldo') {
 <head>
     <meta charset="UTF-8">
     <title>Módulo Financeiro</title>
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        /* estilo só para a página de saldo */
+        .saldo-financeiro {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .saldo-financeiro .valor {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="nav-menu">
-            <a href="index.php?action=saldo">Saldo</a>
-            <a href="index.php?action=resumo">Resumo</a>
-            <a href="index.php?action=list">Listar Movimentações</a>
-            <a href="index.php?action=add">Adicionar Movimentação</a>
-            <a href="index.php?action=dashboard">Dashboard</a>
+    <section>
+        <div class=".botoes-container">
+            <a class="botao" href="../painel.php">Voltar</a>
+            <a class="botao" href="index.php?action=saldo">Saldo</a>
+            <a class="botao" href="index.php?action=resumo">Resumo</a>
+            <a class="botao" href="index.php?action=list">Listar Movimentações</a>
+            <a class="botao" href="index.php?action=add">Adicionar Movimentação</a>
+            <a class="botao" href="index.php?action=dashboard">Dashboard</a>
         </div>
-        <hr>
-        <div class="content">
-        
+        <br><hr>
+        <section>
             <?php
             // Lógica de roteamento simples
             switch ($action) {
                 case 'saldo':
                     ?>
-                    <div class="summary-box">
+                    <div class="saldo-financeiro">
                         <h2>Saldo Financeiro</h2>
-                        <div class="saldo-value">
-                            <span class="<?php echo ($saldo_total >= 0) ? 'arrecadacoes' : 'despesas'; ?>">
-                                R$ <?php echo number_format($saldo_total, 2, ',', '.'); ?>
-                            </span>
+                        <div class="valor" style="color: <?php echo ($saldo_total >= 0) ? 'green' : 'red'; ?>">
+                            R$ <?php echo number_format($saldo_total, 2, ',', '.'); ?>
                         </div>
                     </div>
                     <?php
@@ -105,8 +114,8 @@ if ($action == 'saldo') {
                     break;
             }
             ?>
-        </div>
-    </div>
+        </section>
+    </section>
 </body>
 </html>
 <?php

@@ -83,7 +83,7 @@ if (isset($_GET['remover']) && $auxiliar) {
 <body>
     <section>
         <h2>Gerenciar Auxiliar</h2>
-        <p><a href="painel.php">⬅ Voltar ao Painel</a></p>
+        <a href="painel.php" class="botao">⬅ Voltar ao Painel</a>
 
         <table>
             <tr>
@@ -108,10 +108,10 @@ if (isset($_GET['remover']) && $auxiliar) {
                 Nome: <input type="text" name="nome" value="<?php echo htmlspecialchars($auxiliar['nome']); ?>" required><br><br>
                 Usuário: <input type="text" name="usuario" value="<?php echo htmlspecialchars($auxiliar['usuario']); ?>" required><br><br>
                 Senha (deixe em branco para não alterar): <input type="password" name="senha"><br><br>
-                <button type="submit" name="editar">Salvar Alterações</button>
+                <button class="botao" type="submit" name="editar">Salvar Alterações</button>
             </form>
             <br>
-            <a href="usuarios.php?remover=1" onclick="return confirm('Deseja remover o auxiliar?')">❌ Remover Auxiliar</a>
+            <a class="botao" href="usuarios.php?remover=1" onclick="return confirm('Deseja remover o auxiliar?')">❌ Remover Auxiliar</a>
         <?php } ?>
     </section>
 </body>

@@ -1,38 +1,66 @@
 <?php
-// Inclui o arquivo de conexão do banco.
+// Ativa exibição de erros (importante durante desenvolvimento)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Inclui o arquivo de conexão com o banco de dados
 include __DIR__ . '/../conexao.php';
 
+// Inicia a sessão
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-// Verifica se o usuário está logado. Se não, redireciona para a página de login.
+// Verifica se o usuário está logado corretamente
 if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['id_terreiro'])) {
     header("Location: ../index.php");
     exit();
 }
 
+// Recupera o ID do terreiro a partir da sessão
 $id_terreiro = $_SESSION['id_terreiro'];
 
-// Lógica para processar o formulário
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $tipo = $_POST['tipo'];
-    $descricao = $_POST['descricao'];
-    $valor = $_POST['valor'];
-    $data = $_POST['data'];
+// Variável para armazenar mensagens
+$mensagem = '';
 
-    // Prepara a query SQL para inserir os dados.
-    $sql = "INSERT INTO financas (id_terreiro, tipo, descricao, valor, data) VALUES (?, ?, ?, ?, ?)";
-    
-    // Usa declarações preparadas para evitar injeção de SQL.
-    if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("isssd", $id_terreiro, $tipo, $descricao, $valor, $data);
-        
-        if ($stmt->execute()) {
-            // Sucesso na inserção. Redireciona para o painel.
-            header("Location: financeiro/index.php?action=resumo");
-            exit();
+// Processamento do formulário
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // Verifica se todos os campos foram preenchidos
+    if (!empty($_POST['tipo']) && !empty($_POST['descricao']) && !empty($_POST['valor']) && !empty($_POST['data'])) {
+
+        // Obtém os dados do formulário
+        $tipo = $_POST['tipo'];
+        $descricao = $_POST['descricao'];
+        $valor = floatval($_POST['valor']);
+        $data = $_POST['data'];
+
+        // Verifica se a conexão está OK
+        if ($conn->connect_error) {
+            $mensagem = "Erro de conexão: " . $conn->connect_error;
         } else {
-            echo "Erro: " . $stmt->error;
+            // Prepara a query
+            $sql = "INSERT INTO financas (id_terreiro, tipo, descricao, valor, data) VALUES (?, ?, ?, ?, ?)";
+
+            if ($stmt = $conn->prepare($sql)) {
+                // Faz o bind dos parâmetros
+                $stmt->bind_param("issds", $id_terreiro, $tipo, $descricao, $valor, $data);
+
+                // Executa e verifica sucesso
+                if ($stmt->execute()) {
+                    $mensagem = "✅ Movimentação adicionada com sucesso!";
+                } else {
+                    $mensagem = "❌ Erro ao executar: " . $stmt->error;
+                }
+
+                $stmt->close();
+            } else {
+                $mensagem = "❌ Erro na preparação da query: " . $conn->error;
+            }
         }
-        $stmt->close();
+    } else {
+        $mensagem = "⚠️ Preencha todos os campos obrigatórios.";
     }
 }
 ?>
@@ -43,37 +71,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Movimentação</title>
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
-<body>
-    <div class="container">
-        <h2>Adicionar Movimentação Financeira</h2>
-        <form class="form-movimentacao" method="POST" action="financas_add.php">
-            <div class="form-group">
-                <label for="tipo">Tipo:</label>
-                <select id="tipo" name="tipo">
-                    <option value="arrecadacao">Arrecadação</option>
-                    <option value="despesa">Despesa</option>
-                </select>
-            </div>
+    <body>
+        <section>
+            <h2>Adicionar Movimentação Financeira</h2>
 
-            <div class="form-group">
-                <label for="descricao">Descrição:</label>
-                <input type="text" id="descricao" name="descricao" required>
-            </div>
+            <!-- Exibição de mensagens -->
+            <?php if (!empty($mensagem)): ?>
+                <div class="message-box">
+                    <p><?php echo $mensagem; ?></p>
+                </div>
+            <?php endif; ?>
 
-            <div class="form-group">
-                <label for="valor">Valor:</label>
-                <input type="number" id="valor" name="valor" step="0.01" required>
-            </div>
+            <!-- Formulário de envio -->
+            <form class="container" method="POST" action="index.php?action=add">
 
-            <div class="form-group">
-                <label for="data">Data:</label>
-                <input type="date" id="data" name="data" required>
-            </div>
+                <div class="form-group">
+                    <label for="tipo">Tipo:</label>
+                    <select id="tipo" name="tipo" required>
+                        <option value="arrecadacao">Arrecadação</option>
+                        <option value="despesa">Despesa</option>
+                    </select>
+                </div>
 
-            <button type="submit" class="btn-submit">Salvar</button>
-        </form>
-    </div>
-</body>
+                <div class="form-group">
+                    <label for="descricao">Descrição:</label>
+                    <input type="text" id="descricao" name="descricao" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="valor">Valor:</label>
+                    <input type="number" id="valor" name="valor" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="data">Data:</label>
+                    <input type="date" id="data" name="data" required>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="botao">💾 Salvar</button>
+                </div>
+            </form>
+        </section>
+    </body>
 </html>

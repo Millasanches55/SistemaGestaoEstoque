@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <section>
         <h1>Perfil do Usuário</h1>
-        <a href="painel.php">⬅ Voltar</a>
+        <a class="botao" href="painel.php">⬅ Voltar</a>
 
         <h2>Editar Perfil</h2>
         <?php if ($mensagem) echo "<p><b>$mensagem</b></p>"; ?>
@@ -106,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             Nova senha: <input type="password" name="senha_nova" required><br><br>
             Confirmar nova senha: <input type="password" name="confirmar_senha" required><br><br>
 
-            <button type="submit">Salvar Alterações</button>
+            <button class="botao" type="submit">Salvar Alterações</button>
         </form>
     </section>
 </body>

@@ -32,7 +32,7 @@ if ($stmt = $conn->prepare($sql)) {
     <meta charset="UTF-8">
     <title>Lista de Movimentações</title>
     <!-- Inclui o arquivo de estilos CSS -->
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div class="container">

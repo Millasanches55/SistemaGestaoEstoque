@@ -1,9 +1,13 @@
 <?php
-// Inclui o arquivo de conexão do banco.
+// Inclui o arquivo de conexão do banco
 include __DIR__ . '/../conexao.php';
 
+// Garante sessão ativa
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-// Verifica se o usuário está logado. Se não, redireciona para a página de login.
+// Verifica se o usuário está logado
 if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['id_terreiro'])) {
     header("Location: ../index.php");
     exit();
@@ -11,52 +15,49 @@ if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['id_terreiro'])) {
 
 $id_terreiro = $_SESSION['id_terreiro'];
 
-// --- CONSULTAS SQL PARA CÁLCULO DO SALDO ---
-// Consulta para obter o total de arrecadações.
-$sql_arrecadacoes = "SELECT SUM(valor) AS total_arrecadacoes FROM financas WHERE id_terreiro = ? AND tipo = 'arrecadacao'";
+// --- CONSULTAS SQL ---
+// Arrecadações
 $arrecadacoes = 0;
-if ($stmt_arrecadacoes = $conn->prepare($sql_arrecadacoes)) {
-    $stmt_arrecadacoes->bind_param("i", $id_terreiro);
-    $stmt_arrecadacoes->execute();
-    $result_arrecadacoes = $stmt_arrecadacoes->get_result();
-    if ($row = $result_arrecadacoes->fetch_assoc()) {
-        $arrecadacoes = $row['total_arrecadacoes'] ?? 0;
+$sql_arrecadacoes = "SELECT SUM(valor) AS total FROM financas WHERE id_terreiro = ? AND tipo = 'arrecadacao'";
+if ($stmt = $conn->prepare($sql_arrecadacoes)) {
+    $stmt->bind_param("i", $id_terreiro);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($row = $res->fetch_assoc()) {
+        $arrecadacoes = $row['total'] ?? 0;
     }
-    $stmt_arrecadacoes->close();
+    $stmt->close();
 }
 
-// Consulta para obter o total de despesas.
-$sql_despesas = "SELECT SUM(valor) AS total_despesas FROM financas WHERE id_terreiro = ? AND tipo = 'despesa'";
+// Despesas
 $despesas = 0;
-if ($stmt_despesas = $conn->prepare($sql_despesas)) {
-    $stmt_despesas->bind_param("i", $id_terreiro);
-    $stmt_despesas->execute();
-    $result_despesas = $stmt_despesas->get_result();
-    if ($row = $result_despesas->fetch_assoc()) {
-        $despesas = $row['total_despesas'] ?? 0;
+$sql_despesas = "SELECT SUM(valor) AS total FROM financas WHERE id_terreiro = ? AND tipo = 'despesa'";
+if ($stmt = $conn->prepare($sql_despesas)) {
+    $stmt->bind_param("i", $id_terreiro);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($row = $res->fetch_assoc()) {
+        $despesas = $row['total'] ?? 0;
     }
-    $stmt_despesas->close();
+    $stmt->close();
 }
 
-// Calcula o saldo total.
+// Saldo total
 $saldo_total = $arrecadacoes - $despesas;
 
-// --- CONSULTA PARA O HISTÓRICO DE MOVIMENTAÇÕES ---
-// Seleciona as últimas 10 movimentações do terreiro.
-$sql_historico = "SELECT descricao, valor, data FROM financas WHERE id_terreiro = ? ORDER BY data DESC LIMIT 10";
+// Histórico de movimentações
 $historico = [];
-if ($stmt_historico = $conn->prepare($sql_historico)) {
-    $stmt_historico->bind_param("i", $id_terreiro);
-    $stmt_historico->execute();
-    $result_historico = $stmt_historico->get_result();
-    while ($row = $result_historico->fetch_assoc()) {
+$sql_historico = "SELECT descricao, valor, data FROM financas WHERE id_terreiro = ? ORDER BY data DESC LIMIT 10";
+if ($stmt = $conn->prepare($sql_historico)) {
+    $stmt->bind_param("i", $id_terreiro);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    while ($row = $res->fetch_assoc()) {
         $historico[] = $row;
     }
-    $stmt_historico->close();
+    $stmt->close();
 }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -67,41 +68,50 @@ if ($stmt_historico = $conn->prepare($sql_historico)) {
 <body>
     <div class="container">
         <h2>Resumo Financeiro</h2>
+
         <div class="summary-box">
-            <div class="summary-box"><strong>Total de Arrecadações:</strong> <span class="arrecadacoes">R$ <?php echo number_format($arrecadacoes, 2, ',', '.'); ?></span></div>
-            <div class="summary-box"><strong>Total de Despesas:</strong> <span class="despesas">R$ <?php echo number_format($despesas, 2, ',', '.'); ?></span></div>
-            <hr>
-            <div class="summary-box">
-                <strong>Saldo Total:</strong>
-                <span class="<?php echo ($saldo_total >= 0) ? 'positivo' : 'negativo'; ?>">R$ <?php echo number_format($saldo_total, 2, ',', '.'); ?></span>
-            </div>
+            <h3>Total de Arrecadações:</h3>
+            <span class="arrecadacoes">R$ <?php echo number_format($arrecadacoes, 2, ',', '.'); ?></span>
         </div>
 
-        <div class="historico-table">
-            <h3>Histórico Recente</h3>
+        <div class="summary-box">
+            <strong>Total de Despesas:</strong>
+            <span class="despesas">R$ <?php echo number_format($despesas, 2, ',', '.'); ?></span>
+        </div>
+
+        <hr>
+
+        <div class="summary-box">
+            <strong>Saldo Total:</strong>
+            <span class="<?php echo ($saldo_total >= 0) ? 'positivo' : 'negativo'; ?>">
+                R$ <?php echo number_format($saldo_total, 2, ',', '.'); ?>
+            </span>
+        </div>
+        <h2>Histórico Recente</h2>
             <?php if (count($historico) > 0): ?>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Descrição</th>
-                            <th>Valor</th>
-                            <th>Data</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($historico as $item): ?>
+                <div>
+                    <table>
+                        <thead>
                             <tr>
-                                <td><?php echo htmlspecialchars($item['descricao']); ?></td>
-                                <td>R$ <?php echo number_format($item['valor'], 2, ',', '.'); ?></td>
-                                <td><?php echo date('d/m/Y', strtotime($item['data'])); ?></td>
+                                <th class="tabela-header">Descrição</th>
+                                <th class="tabela-header">Valor</th>
+                                <th class="tabela-header">Data</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($historico as $item): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($item['descricao']); ?></td>
+                                    <td>R$ <?php echo number_format($item['valor'], 2, ',', '.'); ?></td>
+                                    <td><?php echo date('d/m/Y', strtotime($item['data'])); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             <?php else: ?>
                 <p>Nenhuma movimentação recente encontrada.</p>
             <?php endif; ?>
-        </div>
     </div>
 </body>
 </html>

@@ -47,7 +47,7 @@ $result = $stmt->get_result();
 <body>
     <section>
         <h2>Gerenciar Estoque</h2>
-        <p><a href="painel.php">⬅ Voltar ao Painel</a></p>
+        <p><a class="botao" href="painel.php">⬅ Voltar ao Painel</a></p>
 
         <h3>Adicionar Item</h3>
         <form method="post">
@@ -58,7 +58,7 @@ $result = $stmt->get_result();
                 <option value="compra">Compra</option>
                 <option value="doacao">Doação</option>
             </select><br><br>
-            <button type="submit" name="adicionar">Adicionar</button>
+            <button class="botao" type="submit" name="adicionar">Adicionar</button>
         </form>
 
         <h3>Itens no Estoque</h3>
