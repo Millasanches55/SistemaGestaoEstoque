@@ -1,4 +1,4 @@
---Código SQL para rodar no PHPMyAdmin
+-- Código SQL para rodar no PHPMyAdmin
 
 -- Criar o banco de dados
 CREATE DATABASE IF NOT EXISTS db_terreiro
