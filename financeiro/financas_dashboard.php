@@ -181,7 +181,7 @@ try {
                     y: saidasEstoqueMensais.map(d => d.valor),
                     name: 'Saídas de Estoque',
                     type: 'bar',
-                    marker: { color: '#e74c3c' }
+                    marker: { color: '#6e0861ff' }
                 };
                 const layout2 = {
                     title: 'Movimentações Financeiras e de Estoque Mensais',
@@ -208,7 +208,7 @@ try {
                     'arrecadacao': '#4CAF50',
                     'despesa': '#F44336',
                     'entrada_estoque': '#3498db',
-                    'saida_estoque': '#e74c3c'
+                    'saida_estoque': '#6e0861ff'
                 };
                 const tipoColors = Object.keys(dadosTipos).map(key => colorMap[key]);
 

@@ -74,7 +74,7 @@ $conn->close();
                                 ?>
                             </td>
                             <td>
-                                <span style="color: <?php echo ($mov['tipo'] == 'arrecadacao') ? 'green' : 'red'; ?>;">
+                                <span style="color: <?php echo ($mov['tipo'] == 'arrecadacao') ? 'green' : (($mov['tipo'] == 'saida_estoque') ? 'blue' : 'red'); ?>;">
                                     R$ <?php echo number_format($mov['valor'], 2, ',', '.'); ?>
                                 </span>
                             </td>
