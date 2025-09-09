@@ -2,8 +2,8 @@
 
 -- Criar o banco de dados
 CREATE DATABASE IF NOT EXISTS db_terreiro
-  DEFAULT CHARACTER SET utf8mb4
-  DEFAULT COLLATE utf8mb4_general_ci;
+    DEFAULT CHARACTER SET utf8mb4
+    DEFAULT COLLATE utf8mb4_general_ci;
 
 -- Usar o banco
 USE db_terreiro;
@@ -41,7 +41,7 @@ CREATE TABLE estoque (
 CREATE TABLE financas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_terreiro INT NOT NULL,
-    tipo ENUM('arrecadacao', 'despesa') NOT NULL,
+    tipo ENUM('arrecadacao', 'despesa', 'entrada_estoque', 'saida_estoque') NOT NULL,
     descricao VARCHAR(150) NOT NULL,
     valor DECIMAL(10,2) NOT NULL,
     data DATE NOT NULL,

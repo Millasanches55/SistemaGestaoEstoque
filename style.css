@@ -8,7 +8,7 @@
     --sombra-forte: 0 4px 20px rgba(0, 0, 0, 0.2);
     --raio: 10px;
     --texto-primario: #1a1a1a;
-    --cinza-claro: #e8edf9
+    --cinza-claro: #e8edf9;
 }
 
 * {
@@ -46,13 +46,30 @@ section {
     border-width: 1px;
     border-color: var(--azul-aero);
     border-spacing: 0;
-    td, th {
-        padding: 10px;
-        border-style: solid;
-        border-color: var(--azul-aero);
-        box-sizing: border-box;
-        border-width: 1px;
-    }
+    width: 100%;
+}
+
+#tabela-usuarios td,
+#tabela-usuarios th {
+    padding: 10px;
+    border-style: solid;
+    border-color: var(--azul-aero);
+    box-sizing: border-box;
+    border-width: 1px;
+}
+
+#tabela-usuarios thead th {
+    background-color: var(--azul-aero);
+    color: white;
+    text-align: left;
+}
+
+#tabela-usuarios tbody tr:nth-child(even) {
+    background-color: #f2f8ff;
+}
+
+#tabela-usuarios tbody tr:hover {
+    background-color: #e0f0ff;
 }
 
 /* ====== CARD PRINCIPAL ====== */
@@ -140,6 +157,7 @@ select:focus {
     color: #2d7a35;
     font-weight: 600;
 }
+
 .summary-box {
     text-align: center;
     padding: 20px;
@@ -147,16 +165,20 @@ select:focus {
     border-radius: 8px;
     background-color: #f9f9f9;
 }
+
 .saldo-value {
     font-size: 2.5em;
     font-weight: bold;
     margin: 10px 0;
+    color: #138000; /* Verde escuro */
 }
+
 .message-box .arrecadacoes {
-    color: #138000;    /* verde escuro */
+    color: #138000;
     font-weight: 700;
     font-size: 1.05rem;
 }
+
 .despesas {
     color: red;
 }

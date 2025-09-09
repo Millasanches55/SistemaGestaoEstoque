@@ -90,12 +90,12 @@ if ($stmt = $conn->prepare($sql_historico)) {
         <h2>Histórico Recente</h2>
             <?php if (count($historico) > 0): ?>
                 <div>
-                    <table>
+                    <table class="historico-table">
                         <thead>
                             <tr>
-                                <th class="tabela-header">Descrição</th>
-                                <th class="tabela-header">Valor</th>
-                                <th class="tabela-header">Data</th>
+                                <th>Descrição</th>
+                                <th>Valor</th>
+                                <th>Data</th>
                             </tr>
                         </thead>
                         <tbody>

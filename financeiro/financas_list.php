@@ -2,6 +2,8 @@
 // Inclui o arquivo de conexão do banco, que deve existir na mesma pasta ou em um caminho acessível
 include __DIR__ . '/../conexao.php';
 
+// Inicia a sessão para garantir que o ID do terreiro está disponível
+session_start();
 
 // Verifica se o usuário está logado. Se não, redireciona para a página de login.
 if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['id_terreiro'])) {
@@ -12,8 +14,9 @@ if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['id_terreiro'])) {
 $id_terreiro = $_SESSION['id_terreiro'] ?? 1;
 
 // Busca as movimentações financeiras no banco de dados para o terreiro logado
+// Agora, a consulta também seleciona o campo 'tipo_original'
 $movimentacoes = [];
-$sql = "SELECT id, descricao, tipo, valor, data FROM financas WHERE id_terreiro = ? ORDER BY data DESC";
+$sql = "SELECT id, descricao, tipo, valor, data, tipo_original FROM financas WHERE id_terreiro = ? ORDER BY data DESC";
 if ($stmt = $conn->prepare($sql)) {
     $stmt->bind_param("i", $id_terreiro);
     $stmt->execute();
@@ -24,6 +27,7 @@ if ($stmt = $conn->prepare($sql)) {
     $stmt->close();
 }
 
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +36,7 @@ if ($stmt = $conn->prepare($sql)) {
     <meta charset="UTF-8">
     <title>Lista de Movimentações</title>
     <!-- Inclui o arquivo de estilos CSS -->
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
     <div class="container">
@@ -56,7 +60,19 @@ if ($stmt = $conn->prepare($sql)) {
                         <tr>
                             <td><?php echo date('d/m/Y', strtotime($mov['data'])); ?></td>
                             <td><?php echo htmlspecialchars($mov['descricao']); ?></td>
-                            <td><?php echo ucfirst($mov['tipo']); ?></td>
+                            <td>
+                                <?php 
+                                    // Se 'tipo_original' existir, exibe o tipo de estoque
+                                    if ($mov['tipo_original'] === 'estoque_entrada') {
+                                        echo 'Entrada de Estoque';
+                                    } else if ($mov['tipo_original'] === 'estoque_saida') {
+                                        echo 'Saída de Estoque';
+                                    } else {
+                                        // Caso contrário, exibe o tipo financeiro padrão
+                                        echo ucfirst($mov['tipo']); 
+                                    }
+                                ?>
+                            </td>
                             <td>
                                 <span style="color: <?php echo ($mov['tipo'] == 'arrecadacao') ? 'green' : 'red'; ?>;">
                                     R$ <?php echo number_format($mov['valor'], 2, ',', '.'); ?>
