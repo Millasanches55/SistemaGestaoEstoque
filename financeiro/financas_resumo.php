@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Verifica se o usuário está logado
-if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['id_terreiro'])) {
+if (!isset($_SESSION['id_usuario']) || $_SESSION["tipo"] !== "adm") {
     header("Location: ../index.php");
     exit();
 }
