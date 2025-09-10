@@ -25,18 +25,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Determina o tipo financeiro a ser inserido na tabela 'financas'
         $tipo_financeiro = $tipo;
         if ($tipo === 'estoque_entrada') {
-            $tipo_financeiro = 'despesa';
+            $tipo_financeiro = 'entrada';
         } elseif ($tipo === 'estoque_saida') {
+            $tipo_financeiro = 'saida';
+        } elseif ($tipo === 'arrecadacao') {
             $tipo_financeiro = 'arrecadacao';
+        } elseif ($tipo === 'despesa') {
+            $tipo_financeiro = 'despesa';
         }
 
         // Inserir na tabela de finanças
-        // Agora, a query salva também o tipo_original
         $sql = "INSERT INTO financas (id_terreiro, tipo, descricao, valor, data) VALUES (?, ?, ?, ?, ?)";
         
         if ($stmt = $conn->prepare($sql)) {
-            // Usa o tipo financeiro e o tipo original corretos para o banco de dados
-            $stmt->bind_param("issdss", $id_terreiro, $tipo_financeiro, $descricao, $valor, $data);
+            // Usa o tipo financeiro correto para o banco de dados
+            $stmt->bind_param("issds", $id_terreiro, $tipo_financeiro, $descricao, $valor, $data); // Inteiro, String, String, Double, String
             if ($stmt->execute()) {
                 // Inserir ou atualizar no estoque se for entrada ou saída
                 if ($tipo === 'estoque_entrada' || $tipo === 'estoque_saida') {

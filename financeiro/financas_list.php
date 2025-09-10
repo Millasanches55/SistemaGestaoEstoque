@@ -58,6 +58,18 @@ $conn->close();
                             <td><?php echo date('d/m/Y', strtotime($mov['data'])); ?></td>
                             <td><?php echo htmlspecialchars($mov['descricao']); ?></td>
                             <td>
+                                <?php 
+                                    // Se 'tipo' existir, exibe o tipo de estoque
+                                    if ($mov['tipo'] === 'estoque_entrada') {
+                                        echo 'Entrada de Estoque';
+                                    } else if ($mov['tipo'] === 'estoque_saida') {
+                                        echo 'Saída de Estoque';
+                                    } else {
+                                        echo ucfirst($mov['tipo']); // Arrecadação ou Despesa
+                                    } 
+                                ?>
+                            </td>
+                            <td>
                                 <span style="color: <?php echo ($mov['tipo'] == 'arrecadacao') ? 'green' : (($mov['tipo'] == 'saida_estoque') ? 'blue' : 'red'); ?>;">
                                     R$ <?php echo number_format($mov['valor'], 2, ',', '.'); ?>
                                 </span>
