@@ -118,6 +118,3 @@ if ($action == 'saldo') {
     </section>
 </body>
 </html>
-<?php
-$conn->close();
-?>

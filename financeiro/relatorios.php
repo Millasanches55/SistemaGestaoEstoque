@@ -74,12 +74,12 @@ $conn->close();
 <body>
     <section class="card">
         <div class="nav-menu">
-            <a href="../painel.php" class="botao">Voltar Ao Painel</a>
+            <a href="../painel.php" class="botao"><i class='bx  bx-arrow-left-stroke-circle'  ></i> Voltar Ao Painel</a>
             <?php if ($_SESSION["tipo"] == "adm"): ?>
                 <a href="index.php?action=resumo" class="botao">Resumo Financeiro</a>
             <?php endif;?>
         </div>
-        
+        <br>
         <h2><i class='bx  bx-list-ul-square'  ></i> Relatórios Detalhados</h2>
         
         <!-- Seção de Resumo Financeiro -->
