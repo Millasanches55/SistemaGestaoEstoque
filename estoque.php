@@ -62,8 +62,9 @@ $result = $stmt->get_result();
             </select><br><br>
             <button class="botao" type="submit" name="adicionar">Adicionar</button>
         </form>
-
+        <br>
         <h3>Itens no Estoque</h3>
+        <br>
         <table id="tabela-estoque">
             <tr>
                 <th>ID</th>
