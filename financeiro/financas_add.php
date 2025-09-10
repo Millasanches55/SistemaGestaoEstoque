@@ -21,12 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $data = $_POST['data'];
         $produto = $_POST['produto'] ?? null;
         $quantidade = $_POST['quantidade'] ?? 0;
-<<<<<<< Updated upstream
-        
-        // Define o tipo original da movimentação para ser salvo no banco de dados
-        //$tipo_original = $tipo;
-=======
->>>>>>> Stashed changes
 
         // Determina o tipo financeiro a ser inserido na tabela 'financas'
         $tipo_financeiro = $tipo;
