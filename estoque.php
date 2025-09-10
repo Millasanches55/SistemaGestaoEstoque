@@ -43,13 +43,15 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <title>Gerenciar Estoque</title>
     <link rel="stylesheet" href="style.css">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <section>
-        <h2>Gerenciar Estoque</h2>
-        <p><a class="botao" href="painel.php">⬅ Voltar ao Painel</a></p>
-
+        <h2><i class='bx  bx-box-alt'  ></i> Gerenciar Estoque</h2>
+        <p><a class="botao" href="painel.php"><i class='bx  bx-arrow-left-stroke-circle'  ></i>  Voltar ao Painel</a></p>
+        <br>
         <h3>Adicionar Item</h3>
+        <br>
         <form method="post">
             Nome do Produto: <input type="text" name="produto" required><br><br>
             Quantidade: <input type="number" name="quantidade" min="1" required><br><br>

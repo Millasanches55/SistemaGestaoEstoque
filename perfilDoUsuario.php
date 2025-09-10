@@ -77,15 +77,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Perfil do Usuário</title>
     <link rel="stylesheet" href="style.css">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <section>
-        <h1>Perfil do Usuário</h1>
+        <h2><i class='bx  bx-user'  ></i> Perfil do Usuário</h2>
         <hr>
         <br>
-        <a class="botao" href="painel.php">⬅ Voltar</a>
-
-        <h2>Editar Perfil</h2>
+        <a class="botao" href="painel.php"><i class='bx  bx-arrow-left-stroke-circle'  ></i>  Voltar</a>
+        <br><br>
+        <h3>Editar Perfil</h3>
         <?php if ($mensagem) echo "<p><b>$mensagem</b></p>"; ?>
 
         <form method="post">

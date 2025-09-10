@@ -56,25 +56,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Editar Item do Estoque</title>
     <link rel="stylesheet" href="style.css">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
-    <h2>Editar Item do Estoque</h2>
-    <p><a href="estoque.php">⬅ Voltar ao Estoque</a></p>
+    <section>
+        <h2><i class='bx  bx-edit'  ></i> Editar Item do Estoque</h2>
+            <a href="estoque.php" class="botao"><i class='bx  bx-arrow-left-stroke-circle'  ></i> Voltar ao Estoque</a>
+            <br><br>
+            <form method="post">
+                Nome do Produto: 
+                <input type="text" name="nome" value="<?php echo htmlspecialchars($item['produto']); ?>" required><br><br>
 
-    <form method="post">
-        Nome do Produto: 
-        <input type="text" name="nome" value="<?php echo htmlspecialchars($item['produto']); ?>" required><br><br>
+                Quantidade: 
+                <input type="number" name="quantidade" min="1" value="<?php echo $item['quantidade']; ?>" required><br><br>
 
-        Quantidade: 
-        <input type="number" name="quantidade" min="1" value="<?php echo $item['quantidade']; ?>" required><br><br>
+                Tipo de Aquisição:
+                <select name="tipo_aquisicao" required>
+                    <option value="compra" <?php if($item['origem']=="compra") echo "selected"; ?>>Compra</option>
+                    <option value="doacao" <?php if($item['origem']=="doacao") echo "selected"; ?>>Doação</option>
+                </select><br><br>
 
-        Tipo de Aquisição:
-        <select name="tipo_aquisicao" required>
-            <option value="compra" <?php if($item['origem']=="compra") echo "selected"; ?>>Compra</option>
-            <option value="doacao" <?php if($item['origem']=="doacao") echo "selected"; ?>>Doação</option>
-        </select><br><br>
-
-        <button type="submit">Salvar Alterações</button>
-    </form>
+                <button type="submit" class="botao">Salvar Alterações</button>
+            </form>
+    </section>
 </body>
 </html>

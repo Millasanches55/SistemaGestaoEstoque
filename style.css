@@ -149,12 +149,6 @@ select:focus {
     transition: all 2s;
 }
 
-.botoes-painel {
-    display: grid;
-    grid-template-columns: 200px 200px;
-    gap: 10px;
-}
-
 /* ====== MENSAGEM ====== */
 .message-box {
     display: flex;
