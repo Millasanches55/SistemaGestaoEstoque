@@ -105,10 +105,11 @@ try {
     <title>Dashboard Financeiro</title>
     <link rel="stylesheet" href="../estilo.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <div class="container">
-        <h2>Dashboard Financeiro</h2>
+        <h2><i class='bx  bx-dashboard-alt'  ></i> Dashboard Financeiro</h2>
 
         <div class="dashboard-grid">
             <!-- Gráfico de Saldo Histórico (Linha) -->

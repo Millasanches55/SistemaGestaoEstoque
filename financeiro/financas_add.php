@@ -95,6 +95,7 @@ $conn->close();
     <meta charset="UTF-8">
     <title>Adicionar Movimentação</title>
     <link rel="stylesheet" href="../style.css">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
     <style>
         .estoque-field {
             display: none;
@@ -103,7 +104,7 @@ $conn->close();
 </head>
 <body>
     <div class="container">
-        <h2>Adicionar Movimentação Financeira</h2>
+        <h2><i class='bx  bx-plus-circle'  ></i> Adicionar Movimentação Financeira</h2>
         <form method="POST" action="index.php?action=add">
             <div class="form-group">
                 <label for="tipo">Tipo:</label>

@@ -37,7 +37,7 @@ $conn->close();
 </head>
 <body>
     <div class="container">
-        <h2>Lista de Movimentações</h2>
+        <h2><i class='bx  bx-list'  ></i> Lista de Movimentações</h2>
         <table class="historico-table">
             <thead>
                 <tr>

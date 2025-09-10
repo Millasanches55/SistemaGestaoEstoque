@@ -64,10 +64,11 @@ if ($stmt = $conn->prepare($sql_historico)) {
     <meta charset="UTF-8">
     <title>Resumo Financeiro</title>
     <link rel="stylesheet" href="estilo.css">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <div class="container">
-        <h2>Resumo Financeiro</h2>
+        <h2><i class='bx  bx-dollar-circle'  ></i> Resumo Financeiro</h2>
 
         <div class="summary-box">
             <h3>Total de Arrecadações:</h3>
