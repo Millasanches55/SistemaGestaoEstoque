@@ -1,7 +1,6 @@
 <?php
 // Inclui o arquivo de conexão do banco e inicia a sessão.
 include __DIR__ . '/../conexao.php';
-session_start();
 
 // Verifica se o usuário está logado. Se não, redireciona para a página de login.
 if (!isset($_SESSION['id_usuario']) || $_SESSION["tipo"] !== "adm") {
