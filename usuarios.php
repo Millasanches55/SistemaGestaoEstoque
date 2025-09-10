@@ -79,11 +79,12 @@ if (isset($_GET['remover']) && $auxiliar) {
     <meta charset="UTF-8">
     <title>Gerenciar Auxiliar</title>
     <link rel="stylesheet" href="style.css">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <section>
-        <h2>Gerenciar Auxiliar</h2>
-        <a href="painel.php" class="botao">⬅ Voltar ao Painel</a>
+        <h2><i class='bx  bx-user'  ></i> Gerenciar Auxiliar</h2>
+        <a href="painel.php" class="botao"><i class='bx  bx-arrow-left-stroke-circle'  ></i>  Voltar ao Painel</a>
         <br><br>
         <table id="tabela-usuarios">
             <tr>
