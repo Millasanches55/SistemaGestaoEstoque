@@ -35,9 +35,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Verifica senha atual
     if (!password_verify($senha_atual, $dados["senha"])) {
-        $mensagem = "❌ Senha atual incorreta.";
+        $mensagem = "<i class='bx  bx-x'  ></i>  Senha atual incorreta.";
     } elseif ($senha_nova !== $confirmar_senha) {
-        $mensagem = "❌ A nova senha e a confirmação não coincidem.";
+        $mensagem = "<i class='bx  bx-x'  ></i>  A nova senha e a confirmação não coincidem.";
     } else {
         $senha_hash = password_hash($senha_nova, PASSWORD_DEFAULT);
 
@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         $_SESSION["nome"] = $nome;
-        $mensagem = "✅ Dados atualizados com sucesso!";
+        $mensagem = "<i class='bx  bx-check'  ></i>  Dados atualizados com sucesso!";
     }
 }
 ?>
