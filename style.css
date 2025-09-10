@@ -40,7 +40,7 @@ section {
     box-shadow: 0px 0px 15px 2px var(--azul-aero);
 }
 
-#tabela-usuarios {
+#tabela-usuarios, #tabela-estoque {
     margin: auto;
     border-style: solid;
     border-width: 1px;
@@ -50,7 +50,9 @@ section {
 }
 
 #tabela-usuarios td,
-#tabela-usuarios th {
+#tabela-usuarios th,
+#tabela-estoque td,
+#tabela-estoque th {
     padding: 10px;
     border-style: solid;
     border-color: var(--azul-aero);

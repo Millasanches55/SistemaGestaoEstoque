@@ -64,7 +64,7 @@ $result = $stmt->get_result();
         </form>
 
         <h3>Itens no Estoque</h3>
-        <table border="1" cellpadding="8">
+        <table id="tabela-estoque">
             <tr>
                 <th>ID</th>
                 <th>Produto</th>

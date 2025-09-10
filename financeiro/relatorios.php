@@ -69,15 +69,16 @@ $conn->close();
     <title>Relatórios</title>
     <link rel="stylesheet" href="../style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <section class="card">
         <div class="nav-menu">
-            <a href="../painel.php" class="botao">Voltar Ao Painel</a>
+            <a href="../painel.php" class="botao"><i class='bx  bx-arrow-left-stroke-circle'  ></i>Voltar Ao Painel</a>
             <a href="index.php?action=resumo" class="botao">Resumo Financeiro</a>
         </div>
         
-        <h2>Relatórios Detalhados</h2>
+        <h2><i class='bx  bx-list-ul-square'  ></i> Relatórios Detalhados</h2>
         
         <!-- Seção de Resumo Financeiro -->
         <div class="content">

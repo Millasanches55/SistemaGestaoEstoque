@@ -83,7 +83,7 @@ if (isset($_GET['remover']) && $auxiliar) {
 </head>
 <body>
     <section>
-        <h2><i class='bx  bx-user'  ></i> Gerenciar Auxiliar</h2>
+        <h2><i class='bx  bx-group'  ></i>  Gerenciar Auxiliar</h2>
         <a href="painel.php" class="botao"><i class='bx  bx-arrow-left-stroke-circle'  ></i>  Voltar ao Painel</a>
         <br><br>
         <table id="tabela-usuarios">
