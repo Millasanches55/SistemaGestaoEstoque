@@ -13,10 +13,8 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION["tipo"] !== "adm") {
 
 $id_terreiro = $_SESSION['id_terreiro'] ?? 1;
 
-// Busca as movimentações financeiras no banco de dados para o terreiro logado
-// Agora, a consulta também seleciona o campo 'tipo_original'
 $movimentacoes = [];
-$sql = "SELECT id, descricao, tipo, valor, data, tipo_original FROM financas WHERE id_terreiro = ? ORDER BY data DESC";
+$sql = "SELECT id, descricao, tipo, valor, data FROM financas WHERE id_terreiro = ? ORDER BY data DESC";
 if ($stmt = $conn->prepare($sql)) {
     $stmt->bind_param("i", $id_terreiro);
     $stmt->execute();
@@ -60,19 +58,6 @@ $conn->close();
                         <tr>
                             <td><?php echo date('d/m/Y', strtotime($mov['data'])); ?></td>
                             <td><?php echo htmlspecialchars($mov['descricao']); ?></td>
-                            <td>
-                                <?php 
-                                    // Se 'tipo_original' existir, exibe o tipo de estoque
-                                    if ($mov['tipo_original'] === 'estoque_entrada') {
-                                        echo 'Entrada de Estoque';
-                                    } else if ($mov['tipo_original'] === 'estoque_saida') {
-                                        echo 'Saída de Estoque';
-                                    } else {
-                                        // Caso contrário, exibe o tipo financeiro padrão
-                                        echo ucfirst($mov['tipo']); 
-                                    }
-                                ?>
-                            </td>
                             <td>
                                 <span style="color: <?php echo ($mov['tipo'] == 'arrecadacao') ? 'green' : (($mov['tipo'] == 'saida_estoque') ? 'blue' : 'red'); ?>;">
                                     R$ <?php echo number_format($mov['valor'], 2, ',', '.'); ?>
