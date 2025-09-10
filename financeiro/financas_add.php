@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         if ($stmt = $conn->prepare($sql)) {
             // Usa o tipo financeiro e o tipo original corretos para o banco de dados
-            $stmt->bind_param("issdss", $id_terreiro, $tipo_financeiro, $descricao, $valor, $data, $tipo_original);
+            $stmt->bind_param("issdss", $id_terreiro, $tipo_financeiro, $descricao, $valor, $data);
             if ($stmt->execute()) {
                 // Inserir ou atualizar no estoque se for entrada ou saída
                 if ($tipo === 'estoque_entrada' || $tipo === 'estoque_saida') {
