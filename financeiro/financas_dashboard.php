@@ -4,7 +4,7 @@ include __DIR__ . '/../conexao.php';
 session_start();
 
 // Verifica se o usuário está logado. Se não, redireciona para a página de login.
-if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['id_terreiro'])) {
+if (!isset($_SESSION['id_usuario']) || $_SESSION["tipo"] !== "adm") {
     header("Location: ../index.php");
     exit();
 }

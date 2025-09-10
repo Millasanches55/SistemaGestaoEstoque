@@ -34,7 +34,7 @@ $saldo = $arrecadacoes - $despesas;
 
 // --- Lógica para o histórico financeiro ---
 $historico = [];
-$sql_historico = "SELECT tipo, descricao, valor, data, tipo_original FROM financas WHERE id_terreiro = ? ORDER BY data DESC LIMIT 10";
+$sql_historico = "SELECT tipo, descricao, valor, data FROM financas WHERE id_terreiro = ? ORDER BY data DESC LIMIT 10";
 if ($stmt_historico = $conn->prepare($sql_historico)) {
     $stmt_historico->bind_param("i", $id_terreiro);
     $stmt_historico->execute();
@@ -74,8 +74,10 @@ $conn->close();
 <body>
     <section class="card">
         <div class="nav-menu">
-            <a href="../painel.php" class="botao"><i class='bx  bx-arrow-left-stroke-circle'  ></i>Voltar Ao Painel</a>
-            <a href="index.php?action=resumo" class="botao">Resumo Financeiro</a>
+            <a href="../painel.php" class="botao">Voltar Ao Painel</a>
+            <?php if ($_SESSION["tipo"] == "adm"): ?>
+                <a href="index.php?action=resumo" class="botao">Resumo Financeiro</a>
+            <?php endif;?>
         </div>
         
         <h2><i class='bx  bx-list-ul-square'  ></i> Relatórios Detalhados</h2>
@@ -110,15 +112,7 @@ $conn->close();
                             <tr>
                                 <td><?php echo date('d/m/Y', strtotime($item['data'])); ?></td>
                                 <td>
-                                    <?php 
-                                        if ($item['tipo_original'] === 'estoque_entrada') {
-                                            echo 'Entrada de Estoque';
-                                        } else if ($item['tipo_original'] === 'estoque_saida') {
-                                            echo 'Saída de Estoque';
-                                        } else {
-                                            echo ucfirst($item['tipo']);
-                                        }
-                                    ?>
+                                    <?php echo ucfirst($item['tipo']); ?>
                                 </td>
                                 <td><?php echo htmlspecialchars($item['descricao']); ?></td>
                                 <td>R$ <?php echo number_format($item['valor'], 2, ',', '.'); ?></td>
