@@ -144,7 +144,8 @@ $conn->close();
             </div>
             
             <div class="form-group">
-                <button type="submit">Salvar</button>
+                <br><br>
+                <button type="submit" class="botao">Salvar</button>
             </div>
         </form>
     </div>
