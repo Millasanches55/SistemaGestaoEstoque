@@ -114,6 +114,10 @@ select {
     transition: box-shadow 0.2s;
 }
 
+fieldset {
+    padding: 10px;
+}
+
 input:focus,
 select:focus {
     outline: none;
@@ -143,6 +147,12 @@ select:focus {
     background: linear-gradient(to bottom, #3c8dbc, #2b6fa8);
     transform: scale(1.05);
     transition: all 2s;
+}
+
+.botoes-painel {
+    display: grid;
+    grid-template-columns: 200px 200px;
+    gap: 10px;
 }
 
 /* ====== MENSAGEM ====== */

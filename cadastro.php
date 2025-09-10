@@ -81,10 +81,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 Usuário: <input type="text" name="usuario_aux"><br><br>
                 Senha: <input type="password" name="senha_aux"><br><br>
             </fieldset>
-
-            <button type="submit">Cadastrar</button>
+            <br>
+            <button class="botao" type="submit">Cadastrar</button>
         </form>
-
+        <br>
         <p>Já possui conta? <a href="index.php">Fazer login</a></p>
     </section>
 </body>
