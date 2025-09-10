@@ -59,6 +59,7 @@ if ($action == 'saldo') {
     <meta charset="UTF-8">
     <title>Módulo Financeiro</title>
     <link rel="stylesheet" href="../style.css">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
     <style>
         /* estilo só para a página de saldo */
         .saldo-financeiro {
@@ -74,7 +75,7 @@ if ($action == 'saldo') {
 <body>
     <section>
         <div class=".botoes-container">
-            <a class="botao" href="../painel.php">Voltar</a>
+            <a class="botao" href="../painel.php"><i class='bx  bx-arrow-left-stroke-circle'  ></i> Voltar</a>
             <a class="botao" href="index.php?action=saldo">Saldo</a>
             <a class="botao" href="index.php?action=resumo">Resumo</a>
             <a class="botao" href="index.php?action=list">Listar Movimentações</a>
