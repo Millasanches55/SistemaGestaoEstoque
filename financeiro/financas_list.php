@@ -105,33 +105,34 @@ $conn->close();
             </tbody>
         </table>
 
-        <h2>📦 Movimentações de Estoque</h2>
-        <table class="historico-table">
-            <thead>
+       <h2>📦 Movimentações de Estoque</h2>
+<table class="historico-table">
+    <thead>
+        <tr>
+            <th>Produto</th>
+            <th>Quantidade Atual</th>
+            <th>Entrada</th>
+            <th>Saída</th>
+            <th>Data da Última Movimentação</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (empty($estoque_mov)): ?>
+            <tr><td colspan="5">Nenhum produto encontrado.</td></tr>
+        <?php else: ?>
+            <?php foreach ($estoque_mov as $mov): ?>
                 <tr>
-                    <th>Data</th>
-                    <th>Produto</th>
-                    <th>Quantidade</th>
-                    <th>Tipo</th>
+                    <td><?php echo htmlspecialchars($mov['produto']); ?></td>
+                    <td><?php echo $mov['quantidade_atual']; ?></td>
+                    <td><?php echo $mov['entrada']; ?></td>
+                    <td><?php echo $mov['saida']; ?></td>
+                    <td><?php echo date('d/m/Y H:i', strtotime($mov['data_movimentacao'])); ?></td>
                 </tr>
-            </thead>
-            <tbody>
-                <?php if (empty($estoque_mov)): ?>
-                    <tr><td colspan="4">Nenhuma movimentação de estoque encontrada.</td></tr>
-                <?php else: ?>
-                    <?php foreach ($estoque_mov as $mov): ?>
-                        <tr>
-                            <td><?php echo date('d/m/Y H:i', strtotime($mov['data_registro'])); ?></td>
-                            <td><?php echo htmlspecialchars($mov['produto']); ?></td>
-                            <td><?php echo $mov['quantidade']; ?></td>
-                            <td>
-                                <?php echo ucfirst($mov['origem']); ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </tbody>
-        </table>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </tbody>
+</table>
+
     </div>
 </body>
 </html>
