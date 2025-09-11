@@ -81,13 +81,12 @@ $conn->close();
         </div>
         <br>
         <h2><i class='bx  bx-list-ul-square'  ></i> Relatórios Detalhados</h2>
-        
         <!-- Seção de Resumo Financeiro -->
         <div class="content">
             <h3>Resumo Financeiro</h3>
             <div class="summary-box">
-                <p>Arrecadações: <span class="arrecadacoes">R$ <?php echo number_format($arrecadacoes, 2, ',', '.'); ?></span></p>
-                <p>Despesas: <span class="despesas">R$ <?php echo number_format($despesas, 2, ',', '.'); ?></span></p>
+                <p>Arrecadações e Entradas: <span class="arrecadacoes">R$ <?php echo number_format($arrecadacoes, 2, ',', '.'); ?></span></p>
+                <p>Despesas e Saídas: <span class="despesas">R$ <?php echo number_format($despesas, 2, ',', '.'); ?></span></p>
                 <p>Saldo Atual: <span class="saldo-value"><?php echo number_format($saldo, 2, ',', '.'); ?></span></p>
             </div>
         </div>

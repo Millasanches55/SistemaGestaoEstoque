@@ -2,8 +2,6 @@
 // Inclui o arquivo de conexão do banco, que deve existir na mesma pasta ou em um caminho acessível
 include __DIR__ . '/../conexao.php';
 
-// Inicia a sessão para garantir que o ID do terreiro está disponível
-
 // Verifica se o usuário está logado. Se não, redireciona para a página de login.
 if (!isset($_SESSION['id_usuario']) || $_SESSION["tipo"] !== "adm") {
     header("Location: ../index.php");
@@ -25,9 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Determina o tipo financeiro a ser inserido na tabela 'financas'
         $tipo_financeiro = $tipo;
         if ($tipo === 'estoque_entrada') {
-            $tipo_financeiro = 'entrada';
+            $tipo_financeiro = 'entrada_estoque';
         } elseif ($tipo === 'estoque_saida') {
-            $tipo_financeiro = 'saida';
+            $tipo_financeiro = 'saida_estoque';
         } elseif ($tipo === 'arrecadacao') {
             $tipo_financeiro = 'arrecadacao';
         } elseif ($tipo === 'despesa') {
@@ -72,7 +70,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $stmt_check->close();
                     }
                 }
-                
+                echo "<p style='color: green;'>
+                        <i class='bx bx-check-circle'></i> Movimentação adicionada com sucesso.
+                    </p>";
+
                 // Redireciona para a lista de movimentações após a inserção
                 header("Location: index.php?action=list");
                 exit();
