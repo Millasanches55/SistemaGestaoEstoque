@@ -29,19 +29,39 @@ if ($stmt = $conn->prepare($sql)) {
 // Movimentações de Estoque (entrada e saída)
 // Movimentações de Estoque (entrada e saída)
 $estoque_mov = [];
-$sql = "SELECT produto, quantidade, origem, data_registro 
-        FROM estoque 
-        WHERE id_terreiro = ? 
-        ORDER BY data_registro DESC";
-if ($stmt = $conn->prepare($sql)) {
-    $stmt->bind_param("i", $id_terreiro);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    while ($row = $result->fetch_assoc()) {
-        $estoque_mov[] = $row;
-    }
-    $stmt->close();
+$sql = "
+    SELECT 
+        e.produto,
+        e.quantidade AS quantidade_atual,
+        COALESCE(h_entrada.quantidade, 0) AS entrada,
+        COALESCE(h_saida.quantidade, 0) AS saida,
+        COALESCE(h_entrada.data_registro, h_saida.data_registro, e.data_registro) AS data_movimentacao
+    FROM estoque e
+    LEFT JOIN (
+        SELECT id_estoque, SUM(quantidade) AS quantidade, MAX(data_registro) AS data_registro
+        FROM estoque_historico
+        WHERE tipo = 'entrada'
+        GROUP BY id_estoque
+    ) h_entrada ON e.id = h_entrada.id_estoque
+    LEFT JOIN (
+        SELECT id_estoque, SUM(quantidade) AS quantidade, MAX(data_registro) AS data_registro
+        FROM estoque_historico
+        WHERE tipo = 'saida'
+        GROUP BY id_estoque
+    ) h_saida ON e.id = h_saida.id_estoque
+    WHERE e.id_terreiro = ?
+    ORDER BY e.produto ASC
+";
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id_terreiro);
+$stmt->execute();
+$result = $stmt->get_result();
+while ($row = $result->fetch_assoc()) {
+    $estoque_mov[] = $row;
 }
+
+
 
 
 $conn->close();
@@ -86,33 +106,34 @@ $conn->close();
             </tbody>
         </table>
 
-        <h2>📦 Movimentações de Estoque</h2>
+   <h2>📦 Movimentações de Estoque</h2>
 <table class="historico-table">
     <thead>
         <tr>
-            <th>Data</th>
             <th>Produto</th>
-            <th>Quantidade</th>
-            <th>Tipo</th>
+            <th>Quantidade Atual</th>
+            <th>Entrada</th>
+            <th>Saída</th>
+            <th>Data da Última Movimentação</th>
         </tr>
     </thead>
     <tbody>
         <?php if (empty($estoque_mov)): ?>
-            <tr><td colspan="4">Nenhuma movimentação de estoque encontrada.</td></tr>
+            <tr><td colspan="5">Nenhum produto encontrado.</td></tr>
         <?php else: ?>
             <?php foreach ($estoque_mov as $mov): ?>
                 <tr>
-                    <td><?php echo date('d/m/Y H:i', strtotime($mov['data_registro'])); ?></td>
                     <td><?php echo htmlspecialchars($mov['produto']); ?></td>
-                    <td><?php echo $mov['quantidade']; ?></td>
-                    <td>
-                        <?php echo ucfirst($mov['origem']); ?>
-                    </td>
+                    <td><?php echo $mov['quantidade_atual']; ?></td>
+                    <td><?php echo $mov['entrada']; ?></td>
+                    <td><?php echo $mov['saida']; ?></td>
+                    <td><?php echo date('d/m/Y H:i', strtotime($mov['data_movimentacao'])); ?></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>
     </tbody>
 </table>
+
 
     </div>
 </body>

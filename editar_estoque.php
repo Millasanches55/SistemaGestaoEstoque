@@ -32,22 +32,44 @@ $item = $result->fetch_assoc();
 // Atualizar item
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $_POST['nome'];
-    $quantidade = $_POST['quantidade'];
+    $nova_quantidade = (int)$_POST['quantidade'];
     $tipo_aquisicao = $_POST['tipo_aquisicao'];
 
-    $sql = "UPDATE estoque 
-            SET produto = ?, quantidade = ?, origem = ? 
-            WHERE id = ? AND id_terreiro = ?";
+    // Pega a quantidade atual
+    $sql = "SELECT quantidade, produto FROM estoque WHERE id = ? AND id_terreiro = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sisii", $nome, $quantidade, $tipo_aquisicao, $id, $_SESSION["id_terreiro"]);
-    
-    if ($stmt->execute()) {
-        header("Location: estoque.php");
-        exit;
-    } else {
-        echo "Erro ao atualizar o item.";
+    $stmt->bind_param("ii", $id, $_SESSION["id_terreiro"]);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $item_atual = $result->fetch_assoc();
+    $quantidade_atual = (int)$item_atual['quantidade'];
+    $produto = $item_atual['produto'];
+
+    // Calcula diferença
+    $dif = $nova_quantidade - $quantidade_atual;
+
+    // Atualiza estoque
+    $sql_update = "UPDATE estoque SET produto = ?, quantidade = ?, origem = ? WHERE id = ? AND id_terreiro = ?";
+    $stmt_update = $conn->prepare($sql_update);
+    $stmt_update->bind_param("sisii", $nome, $nova_quantidade, $tipo_aquisicao, $id, $_SESSION["id_terreiro"]);
+    $stmt_update->execute();
+
+    // Se houver diferença, registra no histórico
+    if ($dif != 0) {
+        $tipo_mov = ($dif > 0) ? 'entrada' : 'saida';
+        $quantidade_mov = abs($dif);
+
+        $sql_hist = "INSERT INTO estoque_historico (id_estoque, produto, quantidade, tipo) 
+                     VALUES (?, ?, ?, ?)";
+        $stmt_hist = $conn->prepare($sql_hist);
+        $stmt_hist->bind_param("isis", $id, $produto, $quantidade_mov, $tipo_mov);
+        $stmt_hist->execute();
     }
+
+    header("Location: estoque.php");
+    exit;
 }
+
 ?>
 
 <!DOCTYPE html>
