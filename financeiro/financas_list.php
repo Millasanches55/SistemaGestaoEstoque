@@ -27,7 +27,6 @@ if ($stmt = $conn->prepare($sql)) {
 }
 
 // Movimentações de Estoque (entrada e saída)
-// Movimentações de Estoque (entrada e saída)
 $estoque_mov = [];
 $sql = "SELECT produto, quantidade, origem, data_registro 
         FROM estoque 
@@ -87,33 +86,32 @@ $conn->close();
         </table>
 
         <h2>📦 Movimentações de Estoque</h2>
-<table class="historico-table">
-    <thead>
-        <tr>
-            <th>Data</th>
-            <th>Produto</th>
-            <th>Quantidade</th>
-            <th>Tipo</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php if (empty($estoque_mov)): ?>
-            <tr><td colspan="4">Nenhuma movimentação de estoque encontrada.</td></tr>
-        <?php else: ?>
-            <?php foreach ($estoque_mov as $mov): ?>
+        <table class="historico-table">
+            <thead>
                 <tr>
-                    <td><?php echo date('d/m/Y H:i', strtotime($mov['data_registro'])); ?></td>
-                    <td><?php echo htmlspecialchars($mov['produto']); ?></td>
-                    <td><?php echo $mov['quantidade']; ?></td>
-                    <td>
-                        <?php echo ucfirst($mov['origem']); ?>
-                    </td>
+                    <th>Data</th>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Tipo</th>
                 </tr>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </tbody>
-</table>
-
+            </thead>
+            <tbody>
+                <?php if (empty($estoque_mov)): ?>
+                    <tr><td colspan="4">Nenhuma movimentação de estoque encontrada.</td></tr>
+                <?php else: ?>
+                    <?php foreach ($estoque_mov as $mov): ?>
+                        <tr>
+                            <td><?php echo date('d/m/Y H:i', strtotime($mov['data_registro'])); ?></td>
+                            <td><?php echo htmlspecialchars($mov['produto']); ?></td>
+                            <td><?php echo $mov['quantidade']; ?></td>
+                            <td>
+                                <?php echo ucfirst($mov['origem']); ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>
