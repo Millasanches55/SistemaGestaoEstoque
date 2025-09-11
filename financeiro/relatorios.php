@@ -78,6 +78,7 @@ $conn->close();
             <?php if ($_SESSION["tipo"] == "adm"): ?>
                 <a href="index.php?action=resumo" class="botao">Resumo Financeiro</a>
             <?php endif;?>
+            <a href="exportar.php" class="botao">Exportar para Excel</a>
         </div>
         <br>
         <h2><i class='bx  bx-list-ul-square'  ></i> Relatórios Detalhados</h2>
