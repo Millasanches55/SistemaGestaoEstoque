@@ -1,88 +1,110 @@
 <?php
-// Inclui o arquivo de conexão do banco.
+include __DIR__ . '/SimpleXLSXGen.php';
 include __DIR__ . '/../conexao.php';
-
-// Inicia a sessão para garantir que o ID do terreiro está disponível.
 session_start();
 
-// Verifica se o usuário está logado. Se não, redireciona para a página de login.
-if (!isset($_SESSION['id_usuario']) || $_SESSION["tipo"] !== "adm") {
+if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['id_terreiro']) || $_SESSION['tipo'] !== 'adm') {
     header("Location: ../index.php");
     exit();
 }
 
 $id_terreiro = $_SESSION['id_terreiro'];
 
-// Define o cabeçalho para download do arquivo CSV
-header('Content-Type: text/csv');
-header('Content-Disposition: attachment; filename="relatorio_financeiro.csv"');
+// -------------------------
+// Resumo Financeiro
+// -------------------------
+$arrecadacoes = 0;
+$despesas = 0;
 
-// Abre um ponteiro para o output do arquivo
-$output = fopen('php://output', 'w');
+$sql_resumo = "SELECT tipo, SUM(valor) AS total FROM financas WHERE id_terreiro = ? GROUP BY tipo";
+if ($stmt = $conn->prepare($sql_resumo)) {
+    $stmt->bind_param("i", $id_terreiro);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        if ($row['tipo'] == 'arrecadacao') $arrecadacoes = $row['total'];
+        else if ($row['tipo'] == 'despesa') $despesas = $row['total'];
+    }
+    $stmt->close();
+}
 
-// --- DADOS DA TABELA DE MOVIMENTAÇÕES ---
-// Título da primeira tabela
-fputcsv($output, ['Relatório de Movimentações Detalhadas']);
-// Linha em branco para separar
-fputcsv($output, ['']);
+$saldo = $arrecadacoes - $despesas;
 
-// Cabeçalho da tabela
-fputcsv($output, ['ID', 'Descrição', 'Tipo', 'Valor', 'Data']);
+// -------------------------
+// Prepara os dados para a planilha
+// -------------------------
+$data = [];
 
-// Consulta SQL para obter as movimentações
-$sql_financas_export = "SELECT id, descricao, tipo, valor, data FROM financas WHERE id_terreiro = ? ORDER BY data DESC";
-if ($stmt_export = $conn->prepare($sql_financas_export)) {
-    $stmt_export->bind_param("i", $id_terreiro);
-    $stmt_export->execute();
-    $result_export = $stmt_export->get_result();
+// 💰 Resumo Financeiro
+$data[] = ['💰 RESUMO FINANCEIRO'];
+$data[] = [];
+$data[] = ['Arrecadações','Despesas','Saldo'];
+$data[] = [$arrecadacoes, $despesas, $saldo];
+$data[] = [];
 
-    while ($row = $result_export->fetch_assoc()) {
-        fputcsv($output, [
-            $row['id'],
-            $row['descricao'],
-            ucfirst($row['tipo']),
-            number_format($row['valor'], 2, ',', '.'),
+// 📄 Movimentações Detalhadas
+$data[] = ['📄 MOVIMENTAÇÕES DETALHADAS'];
+$data[] = [];
+$data[] = ['ID','Descrição','Tipo','Valor','Data'];
+
+$sql_financas = "SELECT id, descricao, tipo, valor, data FROM financas WHERE id_terreiro = ? ORDER BY data DESC";
+if ($stmt = $conn->prepare($sql_financas)) {
+    $stmt->bind_param("i", $id_terreiro);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $linha_num = 0;
+    while ($row = $result->fetch_assoc()) {
+        $tipoEmoji = $row['tipo'] == 'arrecadacao' ? '💰' : '📉';
+        // Zebra striping: adiciona prefixo alternado
+        $prefixo = $linha_num % 2 === 0 ? '• ' : '- ';
+        $data[] = [
+            $prefixo . $row['id'],
+            $prefixo . $row['descricao'],
+            $prefixo . $tipoEmoji . ' ' . ucfirst($row['tipo']),
+            $row['valor'],
             date('d/m/Y', strtotime($row['data']))
-        ]);
+        ];
+        $linha_num++;
     }
-    $stmt_export->close();
+    $stmt->close();
 }
 
-// --- DADOS DOS GRÁFICOS ---
-// Linha em branco para separar
-fputcsv($output, ['']);
-// Título do gráfico de barras
-fputcsv($output, ['Dados Mensais - Arrecadações vs. Despesas']);
-// Linha em branco para separar
-fputcsv($output, ['']);
+$data[] = [];
 
-// Cabeçalho da tabela
-fputcsv($output, ['Mês', 'Arrecadações', 'Despesas']);
+// 📦 Estoque Completo
+$data[] = ['📦 RESUMO COMPLETO DE ESTOQUE'];
+$data[] = [];
 
-// Consulta SQL para obter os dados mensais
-$sql_mensal = "SELECT
-    DATE_FORMAT(data, '%Y-%m') as mes,
-    SUM(CASE WHEN tipo = 'arrecadacao' THEN valor ELSE 0 END) AS arrecadacoes,
-    SUM(CASE WHEN tipo = 'despesa' THEN valor ELSE 0 END) AS despesas
-FROM financas
-WHERE id_terreiro = ?
-GROUP BY mes
-ORDER BY mes";
-if ($stmt_mensal = $conn->prepare($sql_mensal)) {
-    $stmt_mensal->bind_param("i", $id_terreiro);
-    $stmt_mensal->execute();
-    $result_mensal = $stmt_mensal->get_result();
-    while ($row = $result_mensal->fetch_assoc()) {
-        fputcsv($output, [
-            $row['mes'],
-            number_format($row['arrecadacoes'], 2, ',', '.'),
-            number_format($row['despesas'], 2, ',', '.')
-        ]);
+$result_colunas = $conn->query("SHOW COLUMNS FROM estoque");
+$colunas = [];
+while ($col = $result_colunas->fetch_assoc()) $colunas[] = $col['Field'];
+$data[] = $colunas; // cabeçalho do estoque
+
+$sql_estoque = "SELECT * FROM estoque WHERE id_terreiro = ?";
+if ($stmt = $conn->prepare($sql_estoque)) {
+    $stmt->bind_param("i", $id_terreiro);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $linha_num = 0;
+    while ($row = $result->fetch_assoc()) {
+        $linha = [];
+        $prefixo = $linha_num % 2 === 0 ? '• ' : '- ';
+        foreach ($colunas as $col) {
+            $linha[] = $prefixo . $row[$col];
+        }
+        $data[] = $linha;
+        $linha_num++;
     }
-    $stmt_mensal->close();
+    $stmt->close();
 }
 
-// Fecha a conexão e o ponteiro do arquivo
 $conn->close();
-fclose($output);
+
+// -------------------------
+// Cria XLSX e força download
+// -------------------------
+$xlsx = new \Shuchkin\SimpleXLSXGen();
+$xlsx->addSheet($data,'Relatorio');
+$xlsx->downloadAs('relatorio_financeiro.xlsx');
 exit();
+?>
