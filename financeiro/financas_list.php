@@ -27,12 +27,12 @@ if ($stmt = $conn->prepare($sql)) {
 }
 
 // Movimentações de Estoque (entrada e saída)
+// Movimentações de Estoque (entrada e saída)
 $estoque_mov = [];
-$sql = "SELECT f.id, f.descricao, f.tipo, e.produto, e.quantidade, f.data
-        FROM financas f
-        JOIN estoque e ON f.id_terreiro = e.id_terreiro
-        WHERE f.id_terreiro = ? AND (f.tipo = 'entrada_estoque' OR f.tipo = 'saida_estoque')
-        ORDER BY f.data DESC";
+$sql = "SELECT produto, quantidade, origem, data_registro 
+        FROM estoque 
+        WHERE id_terreiro = ? 
+        ORDER BY data_registro DESC";
 if ($stmt = $conn->prepare($sql)) {
     $stmt->bind_param("i", $id_terreiro);
     $stmt->execute();
@@ -42,6 +42,7 @@ if ($stmt = $conn->prepare($sql)) {
     }
     $stmt->close();
 }
+
 
 $conn->close();
 ?>
@@ -86,32 +87,33 @@ $conn->close();
         </table>
 
         <h2>📦 Movimentações de Estoque</h2>
-        <table class="historico-table">
-            <thead>
+<table class="historico-table">
+    <thead>
+        <tr>
+            <th>Data</th>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Tipo</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (empty($estoque_mov)): ?>
+            <tr><td colspan="4">Nenhuma movimentação de estoque encontrada.</td></tr>
+        <?php else: ?>
+            <?php foreach ($estoque_mov as $mov): ?>
                 <tr>
-                    <th>Data</th>
-                    <th>Produto</th>
-                    <th>Quantidade</th>
-                    <th>Tipo</th>
+                    <td><?php echo date('d/m/Y H:i', strtotime($mov['data_registro'])); ?></td>
+                    <td><?php echo htmlspecialchars($mov['produto']); ?></td>
+                    <td><?php echo $mov['quantidade']; ?></td>
+                    <td>
+                        <?php echo ucfirst($mov['origem']); ?>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                <?php if (empty($estoque_mov)): ?>
-                    <tr><td colspan="4">Nenhuma movimentação de estoque encontrada.</td></tr>
-                <?php else: ?>
-                    <?php foreach ($estoque_mov as $mov): ?>
-                        <tr>
-                            <td><?php echo date('d/m/Y', strtotime($mov['data'])); ?></td>
-                            <td><?php echo htmlspecialchars($mov['produto']); ?></td>
-                            <td><?php echo $mov['quantidade']; ?></td>
-                            <td>
-                                <?php echo ($mov['tipo'] == 'entrada_estoque') ? 'Entrada' : 'Saída'; ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </tbody>
-        </table>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </tbody>
+</table>
+
     </div>
 </body>
 </html>
