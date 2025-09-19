@@ -102,7 +102,7 @@ $conn->close();
                     <th>Quantidade Atual</th>
                     <th>Entrada</th>
                     <th>Saída</th>
-                    <th>Data da Última Movimentação</th>
+                    <th>Última Movimentação</th>
                 </tr>
             </thead>
             <tbody>

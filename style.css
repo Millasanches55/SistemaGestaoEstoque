@@ -176,7 +176,7 @@ select:focus {
     font-size: 2.5em;
     font-weight: bold;
     margin: 10px 0;
-    color: #138000; /* Verde escuro */
+    color: var(--verde-escuro); 
 }
 
 .message-box .arrecadacoes {
