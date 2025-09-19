@@ -2,6 +2,9 @@
 // Inclui o arquivo de conexão do banco, que deve existir na mesma pasta ou em um caminho acessível
 include __DIR__ . '/../conexao.php';
 
+// Inicia a sessão para garantir que o ID do terreiro está disponível.
+session_start();
+
 // Verifica se o usuário está logado. Se não, redireciona para a página de login.
 if (!isset($_SESSION['id_usuario']) || $_SESSION["tipo"] !== "adm") {
     header("Location: ../index.php");
@@ -12,81 +15,103 @@ $id_terreiro = $_SESSION['id_terreiro'] ?? 1;
 
 // Processa o formulário se ele foi submetido via POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['tipo']) && isset($_POST['descricao']) && isset($_POST['valor']) && isset($_POST['data'])) {
-        $tipo = $_POST['tipo'];
-        $descricao = $_POST['descricao'];
-        $valor = $_POST['valor'];
-        $data = $_POST['data'];
-        $produto = $_POST['produto'] ?? null;
-        $quantidade = $_POST['quantidade'] ?? 0;
+    // Garante que todos os campos estão definidos para evitar erros.
+    $tipo = $_POST['tipo'] ?? null;
+    $descricao = $_POST['descricao'] ?? null;
+    $valor = $_POST['valor'] ?? 0;
+    $data = $_POST['data'] ?? date('Y-m-d');
+    $produto = $_POST['produto'] ?? null;
+    $quantidade = $_POST['quantidade'] ?? 0;
+    $origem = $_POST['origem'] ?? null;
 
-        // Determina o tipo financeiro a ser inserido na tabela 'financas'
-        $tipo_financeiro = $tipo;
-        if ($tipo === 'estoque_entrada') {
-            $tipo_financeiro = 'entrada_estoque';
-        } elseif ($tipo === 'estoque_saida') {
-            $tipo_financeiro = 'saida_estoque';
-        } elseif ($tipo === 'arrecadacao') {
-            $tipo_financeiro = 'arrecadacao';
-        } elseif ($tipo === 'despesa') {
-            $tipo_financeiro = 'despesa';
+    // A variável $tipo_financeiro pode receber os valores mais longos pois a coluna `tipo` na tabela `financas` foi ajustada.
+    $tipo_financeiro = $tipo;
+
+    // Inicia a transação para garantir a integridade dos dados
+    $conn->begin_transaction();
+
+    try {
+        // 1. Inserir na tabela de finanças
+        $sql_financas = "INSERT INTO financas (id_terreiro, tipo, descricao, valor, data) VALUES (?, ?, ?, ?, ?)";
+        
+        if ($stmt_financas = $conn->prepare($sql_financas)) {
+            $stmt_financas->bind_param("issds", $id_terreiro, $tipo_financeiro, $descricao, $valor, $data);
+            $stmt_financas->execute();
+            $stmt_financas->close();
+        } else {
+            throw new Exception("Erro na preparação da query de finanças: " . $conn->error);
         }
 
-        // Inserir na tabela de finanças
-        $sql = "INSERT INTO financas (id_terreiro, tipo, descricao, valor, data) VALUES (?, ?, ?, ?, ?)";
-        
-        if ($stmt = $conn->prepare($sql)) {
-            // Usa o tipo financeiro correto para o banco de dados
-            $stmt->bind_param("issds", $id_terreiro, $tipo_financeiro, $descricao, $valor, $data); 
-            // Inteiro, String, String, Double, String
-            if ($stmt->execute()) {
-                // Inserir ou atualizar no estoque se for entrada ou saída
-                if ($tipo === 'estoque_entrada' || $tipo === 'estoque_saida') {
-                    $quantidade_final = ($tipo === 'estoque_entrada') ? $quantidade : -$quantidade;
-                    
-                    // Verificar se o produto já existe
-                    $sql_check = "SELECT quantidade FROM estoque WHERE id_terreiro = ? AND produto = ?";
-                    if ($stmt_check = $conn->prepare($sql_check)) {
-                        $stmt_check->bind_param("is", $id_terreiro, $produto);
-                        $stmt_check->execute();
-                        $result_check = $stmt_check->get_result();
-                        if ($row = $result_check->fetch_assoc()) {
-                            // Produto existe, então atualiza a quantidade
-                            $nova_quantidade = $row['quantidade'] + $quantidade_final;
-                            $sql_estoque = "UPDATE estoque SET quantidade = ? WHERE id_terreiro = ? AND produto = ?";
-                            if ($stmt_estoque = $conn->prepare($sql_estoque)) {
-                                $stmt_estoque->bind_param("dis", $nova_quantidade, $id_terreiro, $produto);
-                                $stmt_estoque->execute();
-                                $stmt_estoque->close();
-                            }
-                        } else {
-                            // Produto não existe, insere um novo
-                            $sql_estoque = "INSERT INTO estoque (id_terreiro, produto, quantidade, data_registro) VALUES (?, ?, ?, ?)";
-                            if ($stmt_estoque = $conn->prepare($sql_estoque)) {
-                                $stmt_estoque->bind_param("isss", $id_terreiro, $produto, $quantidade_final, $data);
-                                $stmt_estoque->execute();
-                                $stmt_estoque->close();
-                            }
-                        }
-                        $stmt_check->close();
+        // 2. Se for uma movimentação de estoque, atualiza a tabela 'estoque' e insere no histórico.
+        if ($tipo === 'estoque_entrada' || $tipo === 'estoque_saida') {
+            if (!$produto || !$quantidade || ($tipo === 'estoque_entrada' && !$origem)) {
+                throw new Exception("Por favor, preencha todos os campos obrigatórios para movimentação de estoque.");
+            }
+
+            $quantidade_movimentacao = ($tipo === 'estoque_entrada') ? $quantidade : -$quantidade;
+            
+            // Verificar se o produto já existe no estoque
+            $sql_check = "SELECT id, quantidade FROM estoque WHERE id_terreiro = ? AND produto = ?";
+            if ($stmt_check = $conn->prepare($sql_check)) {
+                $stmt_check->bind_param("is", $id_terreiro, $produto);
+                $stmt_check->execute();
+                $result_check = $stmt_check->get_result();
+
+                $id_estoque = null;
+
+                if ($row = $result_check->fetch_assoc()) {
+                    // Produto existe, então atualiza a quantidade
+                    $id_estoque = $row['id'];
+                    $nova_quantidade = $row['quantidade'] + $quantidade_movimentacao;
+                    $sql_estoque = "UPDATE estoque SET quantidade = ? WHERE id = ?";
+                    $stmt_estoque = $conn->prepare($sql_estoque);
+                    $stmt_estoque->bind_param("di", $nova_quantidade, $id_estoque);
+                    $stmt_estoque->execute();
+                    $stmt_estoque->close();
+                } else {
+                    // Produto não existe, insere um novo (somente para entrada)
+                    if ($tipo === 'estoque_entrada') {
+                        $sql_estoque = "INSERT INTO estoque (id_terreiro, produto, quantidade, origem) VALUES (?, ?, ?, ?)";
+                        $stmt_estoque = $conn->prepare($sql_estoque);
+                        $stmt_estoque->bind_param("isis", $id_terreiro, $produto, $quantidade_movimentacao, $origem);
+                        $stmt_estoque->execute();
+                        $id_estoque = $conn->insert_id;
+                        $stmt_estoque->close();
+                    } else {
+                        throw new Exception("Produto não encontrado no estoque para a ação de saída.");
                     }
                 }
-                echo "<p style='color: green;'>
-                        <i class='bx bx-check-circle'></i> Movimentação adicionada com sucesso.
-                    </p>";
-
-                // Redireciona para a lista de movimentações após a inserção
-                header("Location: index.php?action=list");
-                exit();
+                $stmt_check->close();
             } else {
-                echo "Erro ao salvar os dados: " . $stmt->error;
+                throw new Exception("Erro na preparação da query de verificação de estoque.");
             }
-            $stmt->close();
-        } else {
-            echo "Erro na preparação da query: " . $conn->error;
+
+            // 3. Registrar a movimentação na tabela estoque_historico
+            if ($id_estoque) {
+                $tipo_historico = ($tipo === 'estoque_entrada') ? 'estoque_entrada' : 'estoque_saida';
+                $sql_historico = "INSERT INTO estoque_historico (id_estoque, quantidade, tipo, data_registro) VALUES (?, ?, ?, NOW())";
+                $stmt_historico = $conn->prepare($sql_historico);
+                $stmt_historico->bind_param("ids", $id_estoque, $quantidade, $tipo_historico);
+                $stmt_historico->execute();
+                $stmt_historico->close();
+            } else {
+                throw new Exception("Não foi possível obter o ID do estoque para registrar o histórico.");
+            }
         }
-    } else {
-        echo "Por favor, preencha todos os campos.";
+
+        // Se tudo ocorreu bem, confirma as alterações no banco de dados.
+        $conn->commit();
+        echo "<p style='color: green;'>
+                <i class='bx bx-check-circle'></i> Movimentação adicionada com sucesso.
+            </p>";
+
+        // Redireciona para a lista de movimentações após a inserção
+        header("Location: index.php?action=list");
+        exit();
+
+    } catch (Exception $e) {
+        $conn->rollback(); // Reverte todas as operações em caso de erro.
+        echo "<p style='color: red;'>Erro: " . $e->getMessage() . "</p>";
     }
 }
 
@@ -146,6 +171,14 @@ $conn->close();
                 <input type="number" id="quantidade" name="quantidade" step="1">
             </div>
             
+            <div class="form-group estoque-field" id="origem-field">
+                <label for="origem">Origem:</label>
+                <select id="origem" name="origem">
+                    <option value="compra">Compra</option>
+                    <option value="doacao">Doação</option>
+                </select>
+            </div>
+            
             <div class="form-group">
                 <br><br>
                 <button type="submit" class="botao">Salvar</button>
@@ -157,12 +190,21 @@ $conn->close();
             const tipo = document.getElementById('tipo').value;
             const produtoField = document.getElementById('produto-field');
             const quantidadeField = document.getElementById('quantidade-field');
+            const origemField = document.getElementById('origem-field');
+
             if (tipo === 'estoque_entrada' || tipo === 'estoque_saida') {
                 produtoField.style.display = 'block';
                 quantidadeField.style.display = 'block';
+                // O campo de origem é visível apenas na entrada de estoque
+                if (tipo === 'estoque_entrada') {
+                    origemField.style.display = 'block';
+                } else {
+                    origemField.style.display = 'none';
+                }
             } else {
                 produtoField.style.display = 'none';
                 quantidadeField.style.display = 'none';
+                origemField.style.display = 'none';
             }
         }
     </script>

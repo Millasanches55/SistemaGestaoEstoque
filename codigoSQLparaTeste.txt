@@ -1,5 +1,4 @@
 -- Script de teste para a tabela 'financas' e 'estoque'
-
 -- Inserções para teste na tabela Finanças, incluindo arrecadações e despesas
 INSERT INTO financas (id_terreiro, tipo, descricao, valor, data) VALUES
 (1, 'arrecadacao', 'Doação de membro para festa de Yemanjá', 250.00, '2025-02-02'),
@@ -15,11 +14,11 @@ INSERT INTO financas (id_terreiro, tipo, descricao, valor, data) VALUES
 
 -- Novas inserções de teste para as movimentações de estoque na tabela Finanças
 INSERT INTO financas (id_terreiro, tipo, descricao, valor, data) VALUES
-(1, 'entrada_estoque', 'Entrada de velas brancas doadas', 30.00, '2025-09-10'),
-(1, 'saida_estoque', 'Saída de velas para gira', 15.00, '2025-09-10'),
-(1, 'entrada_estoque', 'Compra de azeite de dendê', 50.00, '2025-09-11'),
-(1, 'saida_estoque', 'Saída de pipoca para ebó', 5.00, '2025-09-12'),
-(1, 'entrada_estoque', 'Doação de fitas para a festa', 20.00, '2025-09-15');
+(1, 'estoque_entrada', 'Entrada de velas brancas doadas', 30.00, '2025-09-10'),
+(1, 'estoque_saida', 'Saída de velas para gira', 15.00, '2025-09-10'),
+(1, 'estoque_entrada', 'Compra de azeite de dendê', 50.00, '2025-09-11'),
+(1, 'estoque_saida', 'Saída de pipoca para ebó', 5.00, '2025-09-12'),
+(1, 'estoque_entrada', 'Doação de fitas para a festa', 20.00, '2025-09-15');
 
 -- Inserção para teste na tabela Estoque
 INSERT INTO estoque (id_terreiro, produto, quantidade, origem) VALUES

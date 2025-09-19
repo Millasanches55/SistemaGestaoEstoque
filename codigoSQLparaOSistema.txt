@@ -41,9 +41,19 @@ CREATE TABLE estoque (
 CREATE TABLE financas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_terreiro INT NOT NULL,
-    tipo ENUM('arrecadacao', 'despesa', 'entrada_estoque', 'saida_estoque') NOT NULL,
+    tipo ENUM('arrecadacao', 'despesa', 'estoque_entrada', 'estoque_saida') NOT NULL,
     descricao VARCHAR(150) NOT NULL,
     valor DECIMAL(10,2) NOT NULL,
     data DATE NOT NULL,
     FOREIGN KEY (id_terreiro) REFERENCES terreiro(id) ON DELETE CASCADE
+);
+
+-- Tabela: estoque_historico
+CREATE TABLE estoque_historico (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_estoque INT NOT NULL,
+    quantidade INT NOT NULL,
+    tipo ENUM('estoque_entrada', 'estoque_saida') NOT NULL,
+    data_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_estoque) REFERENCES estoque(id) ON DELETE CASCADE
 );
