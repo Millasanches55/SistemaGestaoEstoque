@@ -115,19 +115,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Busca todos os produtos do estoque para popular o select
+// Busca todos os produtos do estoque com suas quantidades
 $produtos_estoque = [];
-$sql_produtos = "SELECT produto FROM estoque WHERE id_terreiro = ?";
+$sql_produtos = "SELECT produto, quantidade FROM estoque WHERE id_terreiro = ?";
 $stmt_produtos = $conn->prepare($sql_produtos);
 $stmt_produtos->bind_param("i", $id_terreiro);
 $stmt_produtos->execute();
 $result_produtos = $stmt_produtos->get_result();
 
 while ($row = $result_produtos->fetch_assoc()) {
-    $produtos_estoque[] = $row['produto'];
+    $produtos_estoque[] = [
+        'nome' => $row['produto'],
+        'quantidade' => $row['quantidade']
+    ];
 }
 
 $stmt_produtos->close();
+
 
 // Fecha a conexão com o banco de dados
 $conn->close();
@@ -177,13 +181,21 @@ $conn->close();
             
             <div class="form-group estoque-field" id="produto-field">
                 <label for="produto">Produto:</label>
-                <select id="produto" name="produto">
+                
+                <!-- Campo de texto (entrada de estoque) -->
+                <input type="text" id="produto_texto" name="produto_texto" placeholder="Digite o nome do novo produto">
+
+                <!-- Campo de seleção (saída de estoque) -->
+                <select id="produto_select" name="produto_select">
                     <option value="">Selecione um produto</option>
-                    <?php foreach ($produtos_estoque as $produto): ?>
-                        <option value="<?= htmlspecialchars($produto) ?>"><?= htmlspecialchars($produto) ?></option>
+                    <?php foreach ($produtos_estoque as $p): ?>
+                        <option value="<?= htmlspecialchars($p['nome']) ?>">
+                            <?= htmlspecialchars($p['nome']) ?> — <?= htmlspecialchars($p['quantidade']) ?> unid.
+                        </option>
                     <?php endforeach; ?>
                 </select>
             </div>
+
 
             <div class="form-group estoque-field" id="quantidade-field">
                 <label for="quantidade">Quantidade:</label>
@@ -208,16 +220,24 @@ $conn->close();
         function toggleEstoqueField() {
             const tipo = document.getElementById('tipo').value;
             const produtoField = document.getElementById('produto-field');
+            const produtoTexto = document.getElementById('produto_texto');
+            const produtoSelect = document.getElementById('produto_select');
             const quantidadeField = document.getElementById('quantidade-field');
             const origemField = document.getElementById('origem-field');
 
             if (tipo === 'estoque_entrada' || tipo === 'estoque_saida') {
                 produtoField.style.display = 'block';
                 quantidadeField.style.display = 'block';
-                // O campo de origem é visível apenas na entrada de estoque
+
                 if (tipo === 'estoque_entrada') {
+                    // Mostrar input de texto e esconder o select
+                    produtoTexto.style.display = 'block';
+                    produtoSelect.style.display = 'none';
                     origemField.style.display = 'block';
                 } else {
+                    // Mostrar select e esconder o input
+                    produtoTexto.style.display = 'none';
+                    produtoSelect.style.display = 'block';
                     origemField.style.display = 'none';
                 }
             } else {
@@ -226,6 +246,9 @@ $conn->close();
                 origemField.style.display = 'none';
             }
         }
+
+        // Ao carregar a página, garantir o estado correto
+        document.addEventListener("DOMContentLoaded", toggleEstoqueField);
     </script>
 </body>
 </html>
