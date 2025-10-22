@@ -34,6 +34,7 @@ h2 {
 }
 
 section {
+    max-width: 900px;
     background-color: var(--cinza-claro);
     padding: 30px;
     border-radius: 15px;
@@ -60,7 +61,8 @@ section {
     border-width: 1px;
 }
 
-#tabela-estoque th {
+#tabela-estoque th,
+#tabela-usuarios th {
     background-color: #003c8c;
     color: white;
     padding: 8px;

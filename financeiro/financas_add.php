@@ -2,9 +2,6 @@
 // Inclui o arquivo de conexão do banco, que deve existir na mesma pasta ou em um caminho acessível
 include __DIR__ . '/../conexao.php';
 
-// Inicia a sessão para garantir que o ID do terreiro está disponível.
-session_start();
-
 // Verifica se o usuário está logado. Se não, redireciona para a página de login.
 if (!isset($_SESSION['id_usuario']) || $_SESSION["tipo"] !== "adm") {
     header("Location: ../index.php");

@@ -74,11 +74,11 @@ if (isset($_POST['acao'])) {
         }
 
         $conn->commit();
-        echo "<p style='color: green;'>Movimentação de estoque registrada com sucesso.</p>";
+        echo "<p style='color: green; display: flex;'>Movimentação de estoque registrada com sucesso.</p><br>";
 
     } catch (Exception $e) {
         $conn->rollback();
-        echo "<p style='color: red;'>Erro na movimentação: " . $e->getMessage() . "</p>";
+        echo "<p style='color: red; display: flex;'>Erro na movimentação: " . $e->getMessage() . "</p><br>";
     }
 }
 
@@ -92,7 +92,7 @@ if (isset($_GET['deletar'])) {
 }
 
 // --- LISTAR ITENS ---
-$sql = "SELECT * FROM estoque WHERE id_terreiro = ? ORDER BY produto";
+$sql = "SELECT * FROM estoque WHERE id_terreiro = ? ORDER BY id";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id_terreiro);
 $stmt->execute();

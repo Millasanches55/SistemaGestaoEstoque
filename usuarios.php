@@ -123,7 +123,7 @@ if (isset($_GET['remover']) && $auxiliar) {
                 Nome: <input type="text" name="nome" required><br><br>
                 Usuário: <input type="text" name="usuario" required><br><br>
                 Senha: <input type="password" name="senha" required><br><br>
-                <button type="submit" name="cadastrar">Cadastrar</button>
+                <button class="botao" type="submit" name="cadastrar">Cadastrar</button>
             </form>
         <?php } else { ?>
             <h3>Auxiliar Atual</h3>
