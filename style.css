@@ -28,9 +28,11 @@ body {
 }
 
 h2 {
-    text-align: center;
     margin-bottom: 25px;
     color: var(--azul-aero);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 section {
@@ -63,7 +65,7 @@ section {
 
 #tabela-estoque th,
 #tabela-usuarios th {
-    background-color: #003c8c;
+    background-color: var(--azul-aero);
     color: white;
     padding: 8px;
 }

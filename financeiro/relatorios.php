@@ -72,13 +72,13 @@ $conn->close();
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
-    <section class="card">
+    <section>
         <div class="nav-menu">
             <a href="../painel.php" class="botao"><i class='bx  bx-arrow-left-stroke-circle'  ></i> Voltar Ao Painel</a>
             <?php if ($_SESSION["tipo"] == "adm"): ?>
                 <a href="index.php?action=resumo" class="botao">Resumo Financeiro</a>
             <?php endif;?>
-            <a href="exportar.php" class="botao">Exportar para Excel</a>
+            <a href="exportar.php" class="botao">Exportar para Excel<i class='bxr  bx-arrow-to-bottom-stroke'  ></i> </a>
         </div>
         <br>
         <h2><i class='bx  bx-list-ul-square'  ></i> Relatórios Detalhados</h2>
@@ -92,7 +92,7 @@ $conn->close();
             </div>
         </div>
         
-        <hr>
+        <hr><br>
         
         <!-- Seção de Relatório Financeiro -->
         <div class="content">
@@ -125,7 +125,7 @@ $conn->close();
             </table>
         </div>
         
-        <hr>
+        <hr><br>
         
         <!-- Seção de Relatório de Estoque -->
         <div class="content">
