@@ -64,20 +64,22 @@ $res_hist = $stmt->get_result();
 
 <div class="card">
     <h2><i class='bxr  bx-dollar-circle' style='font-size: 1.5em;' ></i> Resumo Financeiro</h2>
-    <ul>
-        <li><strong>Arrecadações:</strong> <span style='color: green;'>R$ <?php echo number_format($total_arrecadacao, 2, ',', '.'); ?></span></li>
-        <li><strong>Despesas:</strong> <span class="despesas">R$ <?php echo number_format($total_despesa, 2, ',', '.'); ?></span></li>
-        <li><strong>Entrada de Estoque:</strong> <span class="despesas">R$ <?php echo number_format($total_estoque_entrada, 2, ',', '.'); ?></span></li>
-        <li><strong>Saída de Estoque:</strong> <span style='color: green;'>R$ <?php echo number_format($total_estoque_saida, 2, ',', '.'); ?></span></li>
-        <hr>
-        <li><strong>Total Receitas:</strong> <span style='color: green;'>R$ <?php echo number_format($total_receitas, 2, ',', '.'); ?></span></li>
-        <li><strong>Total Despesas:</strong> <span class="despesas">R$ <?php echo number_format($total_despesas, 2, ',', '.'); ?></span></li>
-        <li><strong>Saldo:</strong>
-            <span class="saldo-value" style="color: <?php echo ($saldo >= 0) ? 'green' : 'red'; ?>;">
-                R$ <?php echo number_format($saldo, 2, ',', '.'); ?>
-            </span>
-        </li>
-    </ul>
+    <div style="max-width: 400px; display: flex; justify-content: center; margin: auto;">
+        <div>
+            <p><strong>Arrecadações:</strong> <span style='color: green;'>R$ <?php echo number_format($total_arrecadacao, 2, ',', '.'); ?></span></p>
+            <p><strong>Despesas:</strong> <span class="despesas">R$ <?php echo number_format($total_despesa, 2, ',', '.'); ?></span></p>
+            <p><strong>Entrada de Estoque:</strong> <span class="despesas">R$ <?php echo number_format($total_estoque_entrada, 2, ',', '.'); ?></span></p>
+            <p><strong>Saída de Estoque:</strong> <span style='color: green;'>R$ <?php echo number_format($total_estoque_saida, 2, ',', '.'); ?></span></p>
+            <hr>
+            <p><strong>Total Receitas:</strong> <span style='color: green;'>R$ <?php echo number_format($total_receitas, 2, ',', '.'); ?></span></p>
+            <p><strong>Total Despesas:</strong> <span class="despesas">R$ <?php echo number_format($total_despesas, 2, ',', '.'); ?></span></p>
+            <p><strong>Saldo:</strong>
+                <span class="saldo-value" style="color: <?php echo ($saldo >= 0) ? 'green' : 'red'; ?>;">
+                    R$ <?php echo number_format($saldo, 2, ',', '.'); ?>
+                </span>
+            </p>
+        </div>
+    </div>
 </div>
 
 <div class='card' style="margin-top: 20px;">

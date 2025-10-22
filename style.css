@@ -36,7 +36,7 @@ h2 {
 }
 
 section {
-    max-width: 900px;
+    margin: 10px auto;
     background-color: var(--cinza-claro);
     padding: 30px;
     border-radius: 15px;
@@ -94,6 +94,7 @@ section {
     border-radius: var(--raio);
     box-shadow: var(--sombra-leve);
     padding: 30px 25px;
+    margin: auto;
 }
 
 /* ====== FORMULÁRIO ====== */
