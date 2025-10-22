@@ -1,6 +1,5 @@
 <?php
 include __DIR__ . '/../conexao.php';
-session_start();
 
 if (!isset($_SESSION['id_usuario']) || $_SESSION["tipo"] !== "adm") {
     header("Location: ../index.php");

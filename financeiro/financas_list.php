@@ -1,6 +1,5 @@
 <?php
 include __DIR__ . '/../conexao.php';
-session_start();
 
 // Verifica se o usuário está logado e é ADM
 if (!isset($_SESSION['id_usuario']) || $_SESSION["tipo"] !== "adm") {
