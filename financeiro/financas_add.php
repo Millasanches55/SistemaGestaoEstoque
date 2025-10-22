@@ -12,14 +12,25 @@ $id_terreiro = $_SESSION['id_terreiro'] ?? 1;
 
 // Processa o formulário se ele foi submetido via POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Garante que todos os campos estão definidos para evitar erros.
-    $tipo = $_POST['tipo'] ?? null;
-    $descricao = $_POST['descricao'] ?? null;
+    // Garante que todos os campos estão definidos
+    // Captura o tipo de movimentação
+    $tipo = $_POST['tipo'] ?? '';
+    $produto_texto = $_POST['produto_texto'] ?? '';
+    $produto_select = $_POST['produto_select'] ?? '';
+    $quantidade = $_POST['quantidade'] ?? 0;
+    $origem = $_POST['origem'] ?? 'compra';
+    $descricao = $_POST['descricao'] ?? '';
     $valor = $_POST['valor'] ?? 0;
     $data = $_POST['data'] ?? date('Y-m-d');
-    $produto = $_POST['produto'] ?? null;
-    $quantidade = $_POST['quantidade'] ?? 0;
-    $origem = $_POST['origem'] ?? null;
+
+    // define o produto com base no tipo
+    if ($tipo === 'estoque_entrada') {
+        $produto = $produto_texto; // novo produto digitado
+    } elseif ($tipo === 'estoque_saida') {
+        $produto = $produto_select; // produto selecionado
+    } else {
+        $produto = '';
+    }
 
     // A variável $tipo_financeiro pode receber os valores mais longos pois a coluna `tipo` na tabela `financas` foi ajustada.
     $tipo_financeiro = $tipo;
@@ -41,8 +52,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // 2. Se for uma movimentação de estoque, atualiza a tabela 'estoque' e insere no histórico.
         if ($tipo === 'estoque_entrada' || $tipo === 'estoque_saida') {
-            if (!$produto || !$quantidade || ($tipo === 'estoque_entrada' && !$origem)) {
-                throw new Exception("Por favor, preencha todos os campos obrigatórios para movimentação de estoque.");
+            // Define "compra" como origem padrão para entradas
+            if ($tipo === 'estoque_entrada' && empty($origem)) {
+                $origem = 'compra';
+            }
+            // Validação: precisa ter produto e quantidade válidos
+            if (empty($produto) || empty($quantidade)) {
+                throw new Exception("Por favor, informe o produto e a quantidade para movimentação de estoque.");
             }
 
             $quantidade_movimentacao = ($tipo === 'estoque_entrada') ? $quantidade : -$quantidade;
