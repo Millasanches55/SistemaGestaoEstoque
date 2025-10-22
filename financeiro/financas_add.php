@@ -115,6 +115,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
+// Busca todos os produtos do estoque para popular o select
+$produtos_estoque = [];
+$sql_produtos = "SELECT produto FROM estoque WHERE id_terreiro = ?";
+$stmt_produtos = $conn->prepare($sql_produtos);
+$stmt_produtos->bind_param("i", $id_terreiro);
+$stmt_produtos->execute();
+$result_produtos = $stmt_produtos->get_result();
+
+while ($row = $result_produtos->fetch_assoc()) {
+    $produtos_estoque[] = $row['produto'];
+}
+
+$stmt_produtos->close();
+
 // Fecha a conexão com o banco de dados
 $conn->close();
 ?>
@@ -163,7 +177,12 @@ $conn->close();
             
             <div class="form-group estoque-field" id="produto-field">
                 <label for="produto">Produto:</label>
-                <input type="text" id="produto" name="produto">
+                <select id="produto" name="produto">
+                    <option value="">Selecione um produto</option>
+                    <?php foreach ($produtos_estoque as $produto): ?>
+                        <option value="<?= htmlspecialchars($produto) ?>"><?= htmlspecialchars($produto) ?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
 
             <div class="form-group estoque-field" id="quantidade-field">
