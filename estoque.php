@@ -12,32 +12,58 @@ $id_terreiro = $_SESSION["id_terreiro"];
 
 // --- Processar Ações (Adicionar/Remover) ---
 if (isset($_POST['acao'])) {
-    $produto = $_POST['produto'] ?? null;
+    $produto = trim($_POST['produto'] ?? '');
     $quantidade = $_POST['quantidade'] ?? 0;
     $acao = $_POST['acao'];
     $origem = $_POST['origem'] ?? null;
-    
-    // Inicia a transação para garantir que ambas as operações sejam concluídas
+
+    // Normaliza nome (remove acentos e converte para minúsculas)
+    function normalizarTexto($texto) {
+        $texto = mb_strtolower($texto, 'UTF-8');
+        $texto = preg_replace('/[áàãâä]/u', 'a', $texto);
+        $texto = preg_replace('/[éèêë]/u', 'e', $texto);
+        $texto = preg_replace('/[íìîï]/u', 'i', $texto);
+        $texto = preg_replace('/[óòõôö]/u', 'o', $texto);
+        $texto = preg_replace('/[úùûü]/u', 'u', $texto);
+        $texto = preg_replace('/ç/u', 'c', $texto);
+        return trim($texto);
+    }
+
+    $produto_normalizado = normalizarTexto($produto);
+
     $conn->begin_transaction();
 
-
     try {
-        // Encontra o ID do produto no estoque para registrar no histórico
-        $sql_find_product = "SELECT id, quantidade FROM estoque WHERE id_terreiro = ? AND produto = ?";
-        $stmt_find = $conn->prepare($sql_find_product);
-        $stmt_find->bind_param("is", $id_terreiro, $produto);
-        $stmt_find->execute();
-        $result_find = $stmt_find->get_result();
+        // Buscar todos os produtos do terreiro
+        $sql_all = "SELECT id, produto, quantidade FROM estoque WHERE id_terreiro = ?";
+        $stmt_all = $conn->prepare($sql_all);
+        $stmt_all->bind_param("i", $id_terreiro);
+        $stmt_all->execute();
+        $result_all = $stmt_all->get_result();
 
         $id_estoque = null;
+        $quantidade_atual = 0;
+        $produto_encontrado = null;
+        $maior_similaridade = 0;
+
+        // Verifica similaridade com todos os produtos
+        while ($row = $result_all->fetch_assoc()) {
+            $existente_normalizado = normalizarTexto($row['produto']);
+            similar_text($produto_normalizado, $existente_normalizado, $percent);
+            if ($percent > 85 && $percent > $maior_similaridade) {
+                $maior_similaridade = $percent;
+                $id_estoque = $row['id'];
+                $quantidade_atual = $row['quantidade'];
+                $produto_encontrado = $row['produto'];
+            }
+        }
+        $stmt_all->close();
+
         $nova_quantidade = $quantidade;
         $tipo_historico = ($acao === 'adicionar') ? 'estoque_entrada' : 'estoque_saida';
 
-
-        if ($row = $result_find->fetch_assoc()) {
-            $id_estoque = $row['id'];
-            $quantidade_atual = $row['quantidade'];
-            
+        if ($produto_encontrado) {
+            // Produto similar encontrado → atualizar
             if ($acao === 'adicionar') {
                 $nova_quantidade = $quantidade_atual + $quantidade;
             } else {
@@ -47,16 +73,16 @@ if (isset($_POST['acao'])) {
                 $nova_quantidade = $quantidade_atual - $quantidade;
             }
 
-            // Atualiza a quantidade no estoque principal
-            $sql_update_estoque = "UPDATE estoque SET quantidade = ? WHERE id = ?";
-            $stmt_update = $conn->prepare($sql_update_estoque);
+            $sql_update = "UPDATE estoque SET quantidade = ? WHERE id = ?";
+            $stmt_update = $conn->prepare($sql_update);
             $stmt_update->bind_param("di", $nova_quantidade, $id_estoque);
             $stmt_update->execute();
+
         } else {
-            // Se o produto não existe, insere um novo (somente para ação de adicionar)
+            // Nenhum produto semelhante → criar novo
             if ($acao === 'adicionar') {
-                $sql_insert_estoque = "INSERT INTO estoque (id_terreiro, produto, quantidade, origem) VALUES (?, ?, ?, ?)";
-                $stmt_insert = $conn->prepare($sql_insert_estoque);
+                $sql_insert = "INSERT INTO estoque (id_terreiro, produto, quantidade, origem) VALUES (?, ?, ?, ?)";
+                $stmt_insert = $conn->prepare($sql_insert);
                 $stmt_insert->bind_param("isis", $id_terreiro, $produto, $quantidade, $origem);
                 $stmt_insert->execute();
                 $id_estoque = $conn->insert_id;
@@ -64,25 +90,24 @@ if (isset($_POST['acao'])) {
                 throw new Exception("Produto não encontrado no estoque para a ação de remoção.");
             }
         }
-        $stmt_find->close();
 
-        // Insere o registro na tabela de histórico
+        // Inserir histórico
         if ($id_estoque) {
-            $sql_historico = "INSERT INTO estoque_historico (id_estoque, quantidade, tipo) VALUES (?, ?, ?)";
-            $stmt_historico = $conn->prepare($sql_historico);
-            $stmt_historico->bind_param("ids", $id_estoque, $quantidade, $tipo_historico);
-            $stmt_historico->execute();
-            $stmt_historico->close();
+            $sql_hist = "INSERT INTO estoque_historico (id_estoque, quantidade, tipo) VALUES (?, ?, ?)";
+            $stmt_hist = $conn->prepare($sql_hist);
+            $stmt_hist->bind_param("ids", $id_estoque, $quantidade, $tipo_historico);
+            $stmt_hist->execute();
         }
 
         $conn->commit();
-        echo "<p style='color: green; display: flex;'>Movimentação de estoque registrada com sucesso.</p><br>";
+        echo "<p style='color: green;'>✅ Movimentação registrada com sucesso.</p>";
 
     } catch (Exception $e) {
         $conn->rollback();
-        echo "<p style='color: red; display: flex;'>Erro na movimentação: " . $e->getMessage() . "</p><br>";
+        echo "<p style='color: red;'>Erro: " . $e->getMessage() . "</p>";
     }
 }
+
 
 // --- DELETAR ITEM ---
 if (isset($_GET['deletar'])) {

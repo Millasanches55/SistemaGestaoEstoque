@@ -46,10 +46,11 @@ while ($prod = $res_prod->fetch_assoc()) {
     $quantidade_atual = (int)$prod['quantidade'];
 
     // Busca histórico deste produto: do mais novo para o mais antigo
-    $sql_hist = "SELECT id, quantidade, tipo, data_registro 
-                 FROM estoque_historico 
-                 WHERE id_estoque = ? 
-                 ORDER BY data_registro DESC, id DESC";
+   $sql_hist = "SELECT id, quantidade, tipo, data_registro 
+             FROM estoque_historico 
+             WHERE id_estoque = ? 
+             ORDER BY data_registro ASC, id ASC";
+
     $stmt_hist = $conn->prepare($sql_hist);
     $stmt_hist->bind_param("i", $prod_id);
     $stmt_hist->execute();
@@ -98,6 +99,16 @@ while ($prod = $res_prod->fetch_assoc()) {
 
     $stmt_hist->close();
 }
+
+// Reordena todas as movimentações do estoque em ordem cronológica (data e ID)
+usort($estoque_mov, function ($a, $b) {
+    $da = strtotime($a['data_registro']);
+    $db = strtotime($b['data_registro']);
+    if ($da === $db) return 0;
+    return ($da < $db) ? -1 : 1;
+});
+
+
 
 $stmt_prod->close();
 $conn->close();
