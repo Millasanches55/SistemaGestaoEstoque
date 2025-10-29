@@ -30,7 +30,7 @@ if (isset($_POST['acao'])) {
 
         $id_estoque = null;
         $nova_quantidade = $quantidade;
-        $tipo_historico = ($acao === 'adicionar') ? 'estoque_entrada' : 'estoque_saida';
+        $tipo_historico = ($acao === 'adicionar') ? 'entrada' : 'saida';
 
         if ($row = $result_find->fetch_assoc()) {
             $id_estoque = $row['id'];
@@ -177,7 +177,3 @@ $result = $stmt->get_result();
     </script>
 </body>
 </html>
-
-
-
-
