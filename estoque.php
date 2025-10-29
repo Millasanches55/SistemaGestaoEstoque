@@ -2,6 +2,16 @@
 session_start();
 include("conexao.php");
 
+// Função para normalizar nomes (sem acento, tudo minúsculo, sem pontuação)
+function normalizar_nome($nome) {
+    $nome = mb_strtolower($nome, 'UTF-8');
+    $nome = iconv('UTF-8', 'ASCII//TRANSLIT', $nome); // remove acentos
+    $nome = preg_replace('/[^a-z0-9\s]/', ' ', $nome); // remove caracteres especiais
+    $nome = preg_replace('/\s+/', ' ', trim($nome)); // normaliza espaços
+    return $nome;
+}
+
+
 // Redireciona se o usuário não estiver logado ou não tiver o tipo correto
 if (!isset($_SESSION["id_usuario"]) || !in_array($_SESSION["tipo"], ["adm", "auxiliar"])) {
     header("Location: index.php");
@@ -22,11 +32,43 @@ if (isset($_POST['acao'])) {
 
     try {
         // Encontra o ID do produto no estoque para registrar no histórico
-        $sql_find_product = "SELECT id, quantidade FROM estoque WHERE id_terreiro = ? AND produto = ?";
-        $stmt_find = $conn->prepare($sql_find_product);
-        $stmt_find->bind_param("is", $id_terreiro, $produto);
-        $stmt_find->execute();
-        $result_find = $stmt_find->get_result();
+        // Busca todos os produtos do mesmo terreiro
+$sql_find_product = "SELECT id, produto, quantidade FROM estoque WHERE id_terreiro = ?";
+$stmt_find = $conn->prepare($sql_find_product);
+$stmt_find->bind_param("i", $id_terreiro);
+$stmt_find->execute();
+$result_find = $stmt_find->get_result();
+
+$produto_normalizado = normalizar_nome($produto);
+$produto_encontrado = null;
+
+// Percorre todos e compara de forma tolerante
+while ($row = $result_find->fetch_assoc()) {
+    $existente_normalizado = normalizar_nome($row['produto']);
+
+    // 1️⃣ Igualdade direta (após normalização)
+    if ($produto_normalizado === $existente_normalizado) {
+        $produto_encontrado = $row;
+        break;
+    }
+
+    // 2️⃣ Comparação aproximada (aceita pequenas diferenças)
+    similar_text($produto_normalizado, $existente_normalizado, $percent);
+    if ($percent > 90) { // pode ajustar esse limiar
+        $produto_encontrado = $row;
+        break;
+    }
+}
+
+$id_estoque = null;
+$nova_quantidade = $quantidade;
+$tipo_historico = ($acao === 'adicionar') ? 'entrada' : 'saida';
+
+if ($produto_encontrado) {
+    $id_estoque = $produto_encontrado['id'];
+    $quantidade_atual = $produto_encontrado['quantidade'];
+    
+
 
         $id_estoque = null;
         $nova_quantidade = $quantidade;
