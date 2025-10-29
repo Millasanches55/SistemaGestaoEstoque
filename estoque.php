@@ -74,6 +74,10 @@ if ($produto_encontrado) {
 
     try{
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> abab7359865b64fa72c0528b4c53baef420adc5a
+>>>>>>> Stashed changes
 =======
 >>>>>>> abab7359865b64fa72c0528b4c53baef420adc5a
 >>>>>>> Stashed changes
