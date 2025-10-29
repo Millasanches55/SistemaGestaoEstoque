@@ -33,6 +33,11 @@ if (isset($_POST['acao'])) {
     try {
         // Encontra o ID do produto no estoque para registrar no histórico
         // Busca todos os produtos do mesmo terreiro
+    } catch (Exception $e) {
+        $conn->rollback();
+        echo "<p style='color: red; display: flex;'>Erro: " . $e->getMessage() . "</p><br>";
+    }
+}
 $sql_find_product = "SELECT id, produto, quantidade FROM estoque WHERE id_terreiro = ?";
 $stmt_find = $conn->prepare($sql_find_product);
 $stmt_find->bind_param("i", $id_terreiro);
@@ -69,7 +74,7 @@ if ($produto_encontrado) {
     $quantidade_atual = $produto_encontrado['quantidade'];
     
 
-
+    try{
         $id_estoque = null;
         $nova_quantidade = $quantidade;
         $tipo_historico = ($acao === 'adicionar') ? 'estoque_entrada' : 'estoque_saida';
