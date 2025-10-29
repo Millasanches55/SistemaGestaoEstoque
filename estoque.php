@@ -20,17 +20,6 @@ if (isset($_POST['acao'])) {
     // Inicia a transação para garantir que ambas as operações sejam concluídas
     $conn->begin_transaction();
 
-$produto = trim($_POST['produto'] ?? '');
-$quantidade = intval($_POST['quantidade'] ?? 0);
-$acao = $_POST['acao'] ?? '';
-$origem = $_POST['origem'] ?? '';
-
-if (empty($produto)) {
-    throw new Exception("O nome do produto é obrigatório.");
-}
-
-
-
 
     try {
         // Encontra o ID do produto no estoque para registrar no histórico
@@ -42,7 +31,8 @@ if (empty($produto)) {
 
         $id_estoque = null;
         $nova_quantidade = $quantidade;
-        $tipo_historico = ($acao === 'adicionar') ? 'entrada' : 'saida';
+        $tipo_historico = ($acao === 'adicionar') ? 'estoque_entrada' : 'estoque_saida';
+
 
         if ($row = $result_find->fetch_assoc()) {
             $id_estoque = $row['id'];
