@@ -27,60 +27,7 @@ if (isset($_POST['acao'])) {
         $stmt_find->bind_param("is", $id_terreiro, $produto);
         $stmt_find->execute();
         $result_find = $stmt_find->get_result();
-        // Busca todos os produtos do mesmo terreiro
-    } catch (Exception $e) {
-        $conn->rollback();
-        echo "<p style='color: red; display: flex;'>Erro: " . $e->getMessage() . "</p><br>";
-    }
-}
-$sql_find_product = "SELECT id, produto, quantidade FROM estoque WHERE id_terreiro = ?";
-$stmt_find = $conn->prepare($sql_find_product);
-$stmt_find->bind_param("i", $id_terreiro);
-$stmt_find->execute();
-$result_find = $stmt_find->get_result();
 
-$produto_normalizado = normalizar_nome($produto);
-$produto_encontrado = null;
-
-// Percorre todos e compara de forma tolerante
-while ($row = $result_find->fetch_assoc()) {
-    $existente_normalizado = normalizar_nome($row['produto']);
-
-    // 1️⃣ Igualdade direta (após normalização)
-    if ($produto_normalizado === $existente_normalizado) {
-        $produto_encontrado = $row;
-        break;
-    }
-
-    // 2️⃣ Comparação aproximada (aceita pequenas diferenças)
-    similar_text($produto_normalizado, $existente_normalizado, $percent);
-    if ($percent > 90) { // pode ajustar esse limiar
-        $produto_encontrado = $row;
-        break;
-    }
-}
-
-$id_estoque = null;
-$nova_quantidade = $quantidade;
-$tipo_historico = ($acao === 'adicionar') ? 'entrada' : 'saida';
-
-if ($produto_encontrado) {
-    $id_estoque = $produto_encontrado['id'];
-    $quantidade_atual = $produto_encontrado['quantidade'];
-    
-
-    try{
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
->>>>>>> abab7359865b64fa72c0528b4c53baef420adc5a
->>>>>>> Stashed changes
-=======
->>>>>>> abab7359865b64fa72c0528b4c53baef420adc5a
->>>>>>> Stashed changes
-=======
->>>>>>> 92b4b53594ab3079bb44c6d8a27a81f1aceedd6b
         $id_estoque = null;
         $nova_quantidade = $quantidade;
         $tipo_historico = ($acao === 'adicionar') ? 'entrada' : 'saida';
