@@ -27,7 +27,6 @@ if (isset($_POST['acao'])) {
         $stmt_find->bind_param("is", $id_terreiro, $produto);
         $stmt_find->execute();
         $result_find = $stmt_find->get_result();
-
         // Busca todos os produtos do mesmo terreiro
     } catch (Exception $e) {
         $conn->rollback();
