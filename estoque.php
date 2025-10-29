@@ -2,16 +2,6 @@
 session_start();
 include("conexao.php");
 
-// Função para normalizar nomes (sem acento, tudo minúsculo, sem pontuação)
-function normalizar_nome($nome) {
-    $nome = mb_strtolower($nome, 'UTF-8');
-    $nome = iconv('UTF-8', 'ASCII//TRANSLIT', $nome); // remove acentos
-    $nome = preg_replace('/[^a-z0-9\s]/', ' ', $nome); // remove caracteres especiais
-    $nome = preg_replace('/\s+/', ' ', trim($nome)); // normaliza espaços
-    return $nome;
-}
-
-
 // Redireciona se o usuário não estiver logado ou não tiver o tipo correto
 if (!isset($_SESSION["id_usuario"]) || !in_array($_SESSION["tipo"], ["adm", "auxiliar"])) {
     header("Location: index.php");
@@ -32,6 +22,14 @@ if (isset($_POST['acao'])) {
 
     try {
         // Encontra o ID do produto no estoque para registrar no histórico
+<<<<<<< HEAD
+        $sql_find_product = "SELECT id, quantidade FROM estoque WHERE id_terreiro = ? AND produto = ?";
+        $stmt_find = $conn->prepare($sql_find_product);
+        $stmt_find->bind_param("is", $id_terreiro, $produto);
+        $stmt_find->execute();
+        $result_find = $stmt_find->get_result();
+
+=======
         // Busca todos os produtos do mesmo terreiro
     } catch (Exception $e) {
         $conn->rollback();
@@ -75,9 +73,13 @@ if ($produto_encontrado) {
     
 
     try{
+<<<<<<< Updated upstream
+=======
+>>>>>>> abab7359865b64fa72c0528b4c53baef420adc5a
+>>>>>>> Stashed changes
         $id_estoque = null;
         $nova_quantidade = $quantidade;
-        $tipo_historico = ($acao === 'adicionar') ? 'estoque_entrada' : 'estoque_saida';
+        $tipo_historico = ($acao === 'adicionar') ? 'entrada' : 'saida';
 
         if ($row = $result_find->fetch_assoc()) {
             $id_estoque = $row['id'];
@@ -224,3 +226,7 @@ $result = $stmt->get_result();
     </script>
 </body>
 </html>
+
+
+
+
