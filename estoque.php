@@ -20,6 +20,18 @@ if (isset($_POST['acao'])) {
     // Inicia a transação para garantir que ambas as operações sejam concluídas
     $conn->begin_transaction();
 
+$produto = trim($_POST['produto'] ?? '');
+$quantidade = intval($_POST['quantidade'] ?? 0);
+$acao = $_POST['acao'] ?? '';
+$origem = $_POST['origem'] ?? '';
+
+if (empty($produto)) {
+    throw new Exception("O nome do produto é obrigatório.");
+}
+
+
+
+
     try {
         // Encontra o ID do produto no estoque para registrar no histórico
         $sql_find_product = "SELECT id, quantidade FROM estoque WHERE id_terreiro = ? AND produto = ?";
