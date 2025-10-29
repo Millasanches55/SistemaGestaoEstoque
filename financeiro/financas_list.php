@@ -65,6 +65,7 @@ $conn->close();
 </head>
 <body>
     <div class="container">
+        <br>
         <h2>💰 Movimentações Financeiras</h2>
         <table class="historico-table">
             <thead>
@@ -94,7 +95,7 @@ $conn->close();
                 <?php endif; ?>
             </tbody>
         </table>
-
+        <br>
        <h2>📦 Movimentações de Estoque</h2>
         <table class="historico-table">
             <thead>
