@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 include __DIR__ . '/../conexao.php';
@@ -46,10 +47,11 @@ while ($prod = $res_prod->fetch_assoc()) {
     $quantidade_atual = (int)$prod['quantidade'];
 
     // Busca histórico deste produto: do mais novo para o mais antigo
-   $sql_hist = "SELECT id, quantidade, tipo, data_registro 
+  $sql_hist = "SELECT id, quantidade, tipo, quantidade_anterior, quantidade_atual, data_registro
              FROM estoque_historico 
              WHERE id_estoque = ? 
              ORDER BY data_registro ASC, id ASC";
+
 
     $stmt_hist = $conn->prepare($sql_hist);
     $stmt_hist->bind_param("i", $prod_id);
@@ -59,46 +61,25 @@ while ($prod = $res_prod->fetch_assoc()) {
     // 'remaining' representa o valor do estoque depois das movimentações que já percorremos (começa no atual)
     $remaining = $quantidade_atual;
 
-    while ($h = $res_hist->fetch_assoc()) {
-        $mov_qtd = (int)$h['quantidade'];
-        $mov_tipo = $h['tipo']; // 'estoque_entrada' ou 'estoque_saida'
-        $mov_dt = $h['data_registro'];
+   while ($h = $res_hist->fetch_assoc()) {
+    $entrada = ($h['tipo'] === 'estoque_entrada') ? (int)$h['quantidade'] : 0;
+    $saida = ($h['tipo'] === 'estoque_saida') ? (int)$h['quantidade'] : 0;
 
-        // calcula quantidades antes e depois da movimentação
-        if ($mov_tipo === 'estoque_entrada') {
-            $q_after = $remaining;
-            $q_before = $remaining - $mov_qtd;
-            // atualiza remaining para a próxima iteração (mais antiga)
-            $remaining = $q_before;
-            $entrada = $mov_qtd;
-            $saida = 0;
-        } else { // estoque_saida
-            $q_after = $remaining;
-            $q_before = $remaining + $mov_qtd;
-            $remaining = $q_before;
-            $entrada = 0;
-            $saida = $mov_qtd;
-        }
+    $estoque_mov[] = [
+        'produto' => $produto_nome,
+        'quantidade_anterior' => (int)$h['quantidade_anterior'],
+        'quantidade_atual' => (int)$h['quantidade_atual'],
+        'entrada' => $entrada,
+        'saida' => $saida,
+        'data_registro' => ($h['data_registro'] && $h['data_registro'] !== '0000-00-00 00:00:00') ? 
+                           date('d/m/Y H:i', strtotime($h['data_registro'])) : '-'
+    ];
+}
 
-        // Tratar data nula/0000-00-00
-        if ($mov_dt && $mov_dt !== '0000-00-00 00:00:00') {
-            $displayDate = date('d/m/Y H:i', strtotime($mov_dt));
-        } else {
-            $displayDate = '-';
-        }
-
-        $estoque_mov[] = [
-            'produto' => $produto_nome,
-            'quantidade_anterior' => $q_before,
-            'quantidade_atual' => $q_after,
-            'entrada' => $entrada,
-            'saida' => $saida,
-            'data_registro' => $displayDate
-        ];
     }
 
     $stmt_hist->close();
-}
+
 
 // Reordena todas as movimentações do estoque em ordem cronológica (data e ID)
 usort($estoque_mov, function ($a, $b) {

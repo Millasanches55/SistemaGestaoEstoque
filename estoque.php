@@ -10,112 +10,132 @@ if (!isset($_SESSION["id_usuario"]) || !in_array($_SESSION["tipo"], ["adm", "aux
 
 $id_terreiro = $_SESSION["id_terreiro"];
 
+// Função de normalização (mantida fora do bloco POST para clareza)
+function normalizarTexto($texto) {
+    $texto = mb_strtolower($texto ?? '', 'UTF-8');
+    $texto = preg_replace('/[áàãâä]/u', 'a', $texto);
+    $texto = preg_replace('/[éèêë]/u', 'e', $texto);
+    $texto = preg_replace('/[íìîï]/u', 'i', $texto);
+    $texto = preg_replace('/[óòõôö]/u', 'o', $texto);
+    $texto = preg_replace('/[úùûü]/u', 'u', $texto);
+    $texto = preg_replace('/ç/u', 'c', $texto);
+    return trim($texto);
+}
+
 // --- Processar Ações (Adicionar/Remover) ---
 if (isset($_POST['acao'])) {
     $produto = trim($_POST['produto'] ?? '');
-    $quantidade = $_POST['quantidade'] ?? 0;
+    $quantidade = (int)($_POST['quantidade'] ?? 0);
     $acao = $_POST['acao'];
     $origem = $_POST['origem'] ?? null;
 
-    // Normaliza nome (remove acentos e converte para minúsculas)
-    function normalizarTexto($texto) {
-        $texto = mb_strtolower($texto, 'UTF-8');
-        $texto = preg_replace('/[áàãâä]/u', 'a', $texto);
-        $texto = preg_replace('/[éèêë]/u', 'e', $texto);
-        $texto = preg_replace('/[íìîï]/u', 'i', $texto);
-        $texto = preg_replace('/[óòõôö]/u', 'o', $texto);
-        $texto = preg_replace('/[úùûü]/u', 'u', $texto);
-        $texto = preg_replace('/ç/u', 'c', $texto);
-        return trim($texto);
-    }
+    if ($produto === '' || $quantidade <= 0) {
+        echo "<p style='color: red;'>Produto ou quantidade inválidos.</p>";
+    } else {
+        $produto_normalizado = normalizarTexto($produto);
 
-    $produto_normalizado = normalizarTexto($produto);
+        $conn->begin_transaction();
 
-    $conn->begin_transaction();
+        try {
+            // Buscar todos os produtos do terreiro
+            $sql_all = "SELECT id, produto, quantidade FROM estoque WHERE id_terreiro = ?";
+            $stmt_all = $conn->prepare($sql_all);
+            $stmt_all->bind_param("i", $id_terreiro);
+            $stmt_all->execute();
+            $result_all = $stmt_all->get_result();
 
-    try {
-        // Buscar todos os produtos do terreiro
-        $sql_all = "SELECT id, produto, quantidade FROM estoque WHERE id_terreiro = ?";
-        $stmt_all = $conn->prepare($sql_all);
-        $stmt_all->bind_param("i", $id_terreiro);
-        $stmt_all->execute();
-        $result_all = $stmt_all->get_result();
+            $id_estoque = null;
+            $quantidade_atual = 0;
+            $produto_encontrado = null;
+            $maior_similaridade = 0;
 
-        $id_estoque = null;
-        $quantidade_atual = 0;
-        $produto_encontrado = null;
-        $maior_similaridade = 0;
-
-        // Verifica similaridade com todos os produtos
-        while ($row = $result_all->fetch_assoc()) {
-            $existente_normalizado = normalizarTexto($row['produto']);
-            similar_text($produto_normalizado, $existente_normalizado, $percent);
-            if ($percent > 85 && $percent > $maior_similaridade) {
-                $maior_similaridade = $percent;
-                $id_estoque = $row['id'];
-                $quantidade_atual = $row['quantidade'];
-                $produto_encontrado = $row['produto'];
-            }
-        }
-        $stmt_all->close();
-
-        $nova_quantidade = $quantidade;
-        $tipo_historico = ($acao === 'adicionar') ? 'estoque_entrada' : 'estoque_saida';
-
-        if ($produto_encontrado) {
-            // Produto similar encontrado → atualizar
-            if ($acao === 'adicionar') {
-                $nova_quantidade = $quantidade_atual + $quantidade;
-            } else {
-                if ($quantidade > $quantidade_atual) {
-                    throw new Exception("Quantidade de saída maior que a quantidade em estoque.");
+            // Verifica similaridade com todos os produtos
+            while ($row = $result_all->fetch_assoc()) {
+                $existente_normalizado = normalizarTexto($row['produto']);
+                similar_text($produto_normalizado, $existente_normalizado, $percent);
+                if ($percent > 85 && $percent > $maior_similaridade) {
+                    $maior_similaridade = $percent;
+                    $id_estoque = (int)$row['id'];
+                    $quantidade_atual = (int)$row['quantidade'];
+                    $produto_encontrado = $row['produto'];
                 }
-                $nova_quantidade = $quantidade_atual - $quantidade;
             }
+            $stmt_all->close();
 
-            $sql_update = "UPDATE estoque SET quantidade = ? WHERE id = ?";
-            $stmt_update = $conn->prepare($sql_update);
-            $stmt_update->bind_param("di", $nova_quantidade, $id_estoque);
-            $stmt_update->execute();
+            // Inicializa variáveis do histórico
+            $quantidade_anterior = $produto_encontrado ? $quantidade_atual : 0;
+            $nova_quantidade = $quantidade_anterior;
+            $quantidade_movimentada = $quantidade; // o valor efetivamente movimentado nesta operação
 
-        } else {
-            // Nenhum produto semelhante → criar novo
-            if ($acao === 'adicionar') {
-                $sql_insert = "INSERT INTO estoque (id_terreiro, produto, quantidade, origem) VALUES (?, ?, ?, ?)";
-                $stmt_insert = $conn->prepare($sql_insert);
-                $stmt_insert->bind_param("isis", $id_terreiro, $produto, $quantidade, $origem);
-                $stmt_insert->execute();
-                $id_estoque = $conn->insert_id;
+            if ($produto_encontrado) {
+                // Atualiza produto existente
+                if ($acao === 'adicionar') {
+                    $nova_quantidade = $quantidade_atual + $quantidade;
+                    $tipo_historico = 'estoque_entrada';
+                } else { // remover
+                    if ($quantidade > $quantidade_atual) {
+                        throw new Exception("Quantidade de saída maior que a quantidade em estoque.");
+                    }
+                    $nova_quantidade = $quantidade_atual - $quantidade;
+                    $tipo_historico = 'estoque_saida';
+                }
+
+                // Atualiza nome e quantidade (mantém origem atual)
+                $sql_update = "UPDATE estoque SET produto = ?, quantidade = ? WHERE id = ? AND id_terreiro = ?";
+                $stmt_update = $conn->prepare($sql_update);
+                $stmt_update->bind_param("siii", $produto, $nova_quantidade, $id_estoque, $id_terreiro);
+                $stmt_update->execute();
+                $stmt_update->close();
+
             } else {
-                throw new Exception("Produto não encontrado no estoque para a ação de remoção.");
+                // Cria novo produto (somente para adicionar)
+                if ($acao === 'adicionar') {
+                    $tipo_historico = 'estoque_entrada';
+                    $sql_insert = "INSERT INTO estoque (id_terreiro, produto, quantidade, origem) VALUES (?, ?, ?, ?)";
+                    $stmt_insert = $conn->prepare($sql_insert);
+                    $stmt_insert->bind_param("isis", $id_terreiro, $produto, $quantidade, $origem);
+                    $stmt_insert->execute();
+                    $id_estoque = $conn->insert_id;
+                    $stmt_insert->close();
+
+                    $quantidade_anterior = 0;
+                    $nova_quantidade = $quantidade; // depois da inserção
+                    $quantidade_movimentada = $quantidade;
+                } else {
+                    throw new Exception("Produto não encontrado no estoque para a ação de remoção.");
+                }
             }
+
+            // Inserir histórico UMA ÚNICA vez, com os valores corretos
+            if ($id_estoque) {
+                $sql_hist = "INSERT INTO estoque_historico 
+                             (id_estoque, quantidade, tipo, quantidade_anterior, quantidade_atual)
+                             VALUES (?, ?, ?, ?, ?)";
+                $stmt_hist = $conn->prepare($sql_hist);
+                // binding: id_estoque (i), quantidade_movimentada (i), tipo_historico (s), quantidade_anterior (i), nova_quantidade (i)
+                $stmt_hist->bind_param("iisii", $id_estoque, $quantidade_movimentada, $tipo_historico, $quantidade_anterior, $nova_quantidade);
+                $stmt_hist->execute();
+                $stmt_hist->close();
+            }
+
+            $conn->commit();
+            echo "<p style='color: green;'>✅ Movimentação registrada com sucesso.</p>";
+
+        } catch (Exception $e) {
+            $conn->rollback();
+            echo "<p style='color: red;'>Erro: " . htmlspecialchars($e->getMessage()) . "</p>";
         }
-
-        // Inserir histórico
-        if ($id_estoque) {
-            $sql_hist = "INSERT INTO estoque_historico (id_estoque, quantidade, tipo) VALUES (?, ?, ?)";
-            $stmt_hist = $conn->prepare($sql_hist);
-            $stmt_hist->bind_param("ids", $id_estoque, $quantidade, $tipo_historico);
-            $stmt_hist->execute();
-        }
-
-        $conn->commit();
-        echo "<p style='color: green;'>✅ Movimentação registrada com sucesso.</p>";
-
-    } catch (Exception $e) {
-        $conn->rollback();
-        echo "<p style='color: red;'>Erro: " . $e->getMessage() . "</p>";
     }
 }
 
-
 // --- DELETAR ITEM ---
 if (isset($_GET['deletar'])) {
-    $id = $_GET['deletar'];
+    $id = intval($_GET['deletar']);
     $sql = "DELETE FROM estoque WHERE id = ? AND id_terreiro = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ii", $id, $id_terreiro);
     $stmt->execute();
+    $stmt->close();
 }
 
 // --- LISTAR ITENS ---
@@ -134,9 +154,7 @@ $result = $stmt->get_result();
     <link rel="stylesheet" href="style.css">
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
     <style>
-        .origem-field {
-            display: block;
-        }
+        .origem-field { display: block; }
     </style>
 </head>
 <body>
@@ -195,11 +213,7 @@ $result = $stmt->get_result();
         function toggleOrigemField() {
             const acao = document.getElementById('acao-select').value;
             const origemField = document.getElementById('origem-field');
-            if (acao === 'adicionar') {
-                origemField.style.display = 'block';
-            } else {
-                origemField.style.display = 'none';
-            }
+            origemField.style.display = (acao === 'adicionar') ? 'block' : 'none';
         }
     </script>
 </body>

@@ -55,16 +55,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt_update->execute();
 
     // Se houver diferença, registra no histórico
-   if ($dif != 0) {
+ if ($dif != 0) {
     $tipo_mov = ($dif > 0) ? 'estoque_entrada' : 'estoque_saida';
     $quantidade_mov = abs($dif);
 
-    $sql_hist = "INSERT INTO estoque_historico (id_estoque, quantidade, tipo)
-                 VALUES (?, ?, ?)";
+    $sql_hist = "INSERT INTO estoque_historico (id_estoque, quantidade, tipo, quantidade_anterior, quantidade_atual)
+                 VALUES (?, ?, ?, ?, ?)";
     $stmt_hist = $conn->prepare($sql_hist);
-    $stmt_hist->bind_param("iis", $id, $quantidade_mov, $tipo_mov);
+    $stmt_hist->bind_param("iisii", $id, $quantidade_mov, $tipo_mov, $quantidade_atual, $nova_quantidade);
     $stmt_hist->execute();
 }
+
 
 
     header("Location: estoque.php");
