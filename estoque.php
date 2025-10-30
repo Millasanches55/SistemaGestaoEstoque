@@ -81,11 +81,13 @@ if (isset($_POST['acao'])) {
                 }
 
                 // Atualiza nome e quantidade (mantém origem atual)
-                $sql_update = "UPDATE estoque SET produto = ?, quantidade = ? WHERE id = ? AND id_terreiro = ?";
-                $stmt_update = $conn->prepare($sql_update);
-                $stmt_update->bind_param("siii", $produto, $nova_quantidade, $id_estoque, $id_terreiro);
-                $stmt_update->execute();
-                $stmt_update->close();
+                // Atualiza apenas a quantidade (mantém o nome original existente)
+$sql_update = "UPDATE estoque SET quantidade = ? WHERE id = ? AND id_terreiro = ?";
+$stmt_update = $conn->prepare($sql_update);
+$stmt_update->bind_param("iii", $nova_quantidade, $id_estoque, $id_terreiro);
+$stmt_update->execute();
+$stmt_update->close();
+
 
             } else {
                 // Cria novo produto (somente para adicionar)

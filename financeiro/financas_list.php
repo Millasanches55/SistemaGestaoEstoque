@@ -143,26 +143,38 @@ $conn->close();
             </tbody>
         </table>
 
-        <br>
-        <h2>📦 Movimentações de Estoque</h2>
-        <table class="historico-table">
-            <thead>
-                <tr>
-                    <th>Produto</th>
-                    <th>Quantidade Anterior</th>
-                    <th>Quantidade Atual</th>
-                    <th>Entrada</th>
-                    <th>Saída</th>
-                    <th>Data</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (empty($estoque_mov)): ?>
-                    <tr><td colspan="6">Nenhuma movimentação de estoque encontrada.</td></tr>
-                <?php else: ?>
-                    <?php foreach ($estoque_mov as $mov): ?>
+       <br>
+<h2>📦 Movimentações de Estoque</h2>
+
+<?php if (empty($estoque_mov)): ?>
+    <p>Nenhuma movimentação de estoque encontrada.</p>
+<?php else: ?>
+    <?php
+    // Agrupa as movimentações por produto
+    $grupos = [];
+    foreach ($estoque_mov as $mov) {
+        $grupos[$mov['produto']][] = $mov;
+    }
+    ?>
+
+    <?php foreach ($grupos as $produto => $movs): ?>
+        <div style="margin-bottom: 40px;">
+            <h3 style="margin-top:20px; color:#3c8dbc;">
+                🧾 <?php echo htmlspecialchars(ucfirst($produto)); ?>
+            </h3>
+            <table class="historico-table" style="margin-top:10px;">
+                <thead>
+                    <tr>
+                        <th>Quantidade Anterior</th>
+                        <th>Quantidade Atual</th>
+                        <th>Entrada</th>
+                        <th>Saída</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($movs as $mov): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($mov['produto']); ?></td>
                             <td class="small-muted"><?php echo (int)$mov['quantidade_anterior']; ?></td>
                             <td><?php echo (int)$mov['quantidade_atual']; ?></td>
                             <td class="entrada"><?php echo (int)$mov['entrada']; ?></td>
@@ -170,7 +182,12 @@ $conn->close();
                             <td><?php echo $mov['data_registro']; ?></td>
                         </tr>
                     <?php endforeach; ?>
-                <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php endforeach; ?>
+<?php endif; ?>
+
             </tbody>
         </table>
     </div>
