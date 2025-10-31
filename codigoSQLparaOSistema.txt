@@ -57,3 +57,10 @@ CREATE TABLE estoque_historico (
     data_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_estoque) REFERENCES estoque(id) ON DELETE CASCADE
 );
+
+
+fazer um alter para atualizar a movimentação
+
+--ALTER TABLE estoque_historico
+ADD COLUMN quantidade_anterior INT NOT NULL DEFAULT 0 AFTER quantidade,
+ADD COLUMN quantidade_atual INT NOT NULL DEFAULT 0 AFTER quantidade_anterior;
