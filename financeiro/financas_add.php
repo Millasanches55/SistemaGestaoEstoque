@@ -63,48 +63,103 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $quantidade_movimentacao = ($tipo === 'estoque_entrada') ? $quantidade : -$quantidade;
             
-            // Verificar se o produto já existe no estoque
-            $sql_check = "SELECT id, quantidade FROM estoque WHERE id_terreiro = ? AND produto = ?";
-            if ($stmt_check = $conn->prepare($sql_check)) {
-                $stmt_check->bind_param("is", $id_terreiro, $produto);
-                $stmt_check->execute();
-                $result_check = $stmt_check->get_result();
+            // Função para normalizar texto (remover acentos, espaços extras e deixar em minúsculas)
+            function normalize_name($str) {
+                $str = trim(mb_strtolower($str, 'UTF-8'));
+                // remover acentuação
+                $str = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $str);
+                // remover múltiplos espaços
+                $str = preg_replace('/\s+/', ' ', $str);
+                return $str;
+            }
 
-                $id_estoque = null;
+            // Para entradas de estoque, tentamos encontrar produtos com grafia semelhante
+            if ($tipo === 'estoque_entrada') {
+                $produto_normal = normalize_name($produto);
 
-                if ($row = $result_check->fetch_assoc()) {
-                    // Produto existe, então atualiza a quantidade
-                    $id_estoque = $row['id'];
-                    $nova_quantidade = $row['quantidade'] + $quantidade_movimentacao;
-                    $sql_estoque = "UPDATE estoque SET quantidade = ? WHERE id = ?";
-                    $stmt_estoque = $conn->prepare($sql_estoque);
-                    $stmt_estoque->bind_param("di", $nova_quantidade, $id_estoque);
-                    $stmt_estoque->execute();
-                    $stmt_estoque->close();
-                } else {
-                    // Produto não existe, insere um novo (somente para entrada)
-                    if ($tipo === 'estoque_entrada') {
+                // Pegar todos os produtos do terreiro para comparar similaridade
+                $sql_all = "SELECT id, produto, quantidade FROM estoque WHERE id_terreiro = ?";
+                if ($stmt_all = $conn->prepare($sql_all)) {
+                    $stmt_all->bind_param("i", $id_terreiro);
+                    $stmt_all->execute();
+                    $result_all = $stmt_all->get_result();
+
+                    $found_match = false;
+                    $matched_row = null;
+                    while ($row_all = $result_all->fetch_assoc()) {
+                        $db_name = $row_all['produto'];
+                        $db_normal = normalize_name($db_name);
+
+                        // similar_text para percentual de similaridade
+                        similar_text($produto_normal, $db_normal, $percent);
+                        $distance = levenshtein($produto_normal, $db_normal);
+
+                        // Critério: percentual alto (>=85) ou distância pequena (<=2)
+                        if ($percent >= 85 || $distance <= 2) {
+                            $found_match = true;
+                            $matched_row = $row_all;
+                            break;
+                        }
+                    }
+                    $stmt_all->close();
+
+                    if ($found_match) {
+                        // Se encontrou produto similar, atualiza a quantidade existente
+                        $id_estoque = $matched_row['id'];
+                        $nova_quantidade = $matched_row['quantidade'] + $quantidade; // entrada soma
+                        $sql_estoque = "UPDATE estoque SET quantidade = ? WHERE id = ?";
+                        $stmt_estoque = $conn->prepare($sql_estoque);
+                        $stmt_estoque->bind_param("di", $nova_quantidade, $id_estoque);
+                        $stmt_estoque->execute();
+                        $stmt_estoque->close();
+                    } else {
+                        // Nenhum similar encontrado: insere novo produto
                         $sql_estoque = "INSERT INTO estoque (id_terreiro, produto, quantidade, origem) VALUES (?, ?, ?, ?)";
                         $stmt_estoque = $conn->prepare($sql_estoque);
-                        $stmt_estoque->bind_param("isis", $id_terreiro, $produto, $quantidade_movimentacao, $origem);
+                        $stmt_estoque->bind_param("isis", $id_terreiro, $produto, $quantidade, $origem);
                         $stmt_estoque->execute();
                         $id_estoque = $conn->insert_id;
+                        $stmt_estoque->close();
+                    }
+                } else {
+                    throw new Exception("Erro na preparação da query de verificação de estoque.");
+                }
+            } else {
+                // Saída: manter verificação exata (produto_select)
+                $sql_check = "SELECT id, quantidade FROM estoque WHERE id_terreiro = ? AND produto = ?";
+                if ($stmt_check = $conn->prepare($sql_check)) {
+                    $stmt_check->bind_param("is", $id_terreiro, $produto);
+                    $stmt_check->execute();
+                    $result_check = $stmt_check->get_result();
+
+                    $id_estoque = null;
+
+                    if ($row = $result_check->fetch_assoc()) {
+                        // Produto existe, então atualiza a quantidade
+                        $id_estoque = $row['id'];
+                        $nova_quantidade = $row['quantidade'] + $quantidade_movimentacao;
+                        $sql_estoque = "UPDATE estoque SET quantidade = ? WHERE id = ?";
+                        $stmt_estoque = $conn->prepare($sql_estoque);
+                        $stmt_estoque->bind_param("di", $nova_quantidade, $id_estoque);
+                        $stmt_estoque->execute();
                         $stmt_estoque->close();
                     } else {
                         throw new Exception("Produto não encontrado no estoque para a ação de saída.");
                     }
+                    $stmt_check->close();
+                } else {
+                    throw new Exception("Erro na preparação da query de verificação de estoque.");
                 }
-                $stmt_check->close();
-            } else {
-                throw new Exception("Erro na preparação da query de verificação de estoque.");
             }
 
             // 3. Registrar a movimentação na tabela estoque_historico
             if ($id_estoque) {
                 $tipo_historico = ($tipo === 'estoque_entrada') ? 'estoque_entrada' : 'estoque_saida';
+                // Para histórico, sempre registrar a quantidade como positiva (a natureza já determina entrada/saída)
+                $quant_historico = ($tipo === 'estoque_entrada') ? $quantidade : $quantidade;
                 $sql_historico = "INSERT INTO estoque_historico (id_estoque, quantidade, tipo, data_registro) VALUES (?, ?, ?, NOW())";
                 $stmt_historico = $conn->prepare($sql_historico);
-                $stmt_historico->bind_param("ids", $id_estoque, $quantidade, $tipo_historico);
+                $stmt_historico->bind_param("ids", $id_estoque, $quant_historico, $tipo_historico);
                 $stmt_historico->execute();
                 $stmt_historico->close();
             } else {
