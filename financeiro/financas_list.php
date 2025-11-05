@@ -1,6 +1,5 @@
 
 <?php
-session_start();
 include __DIR__ . '/../conexao.php';
 
 // Verifica se o usuário está logado e é ADM
