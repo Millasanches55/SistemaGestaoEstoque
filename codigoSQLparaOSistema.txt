@@ -59,8 +59,8 @@ CREATE TABLE estoque_historico (
 );
 
 
-fazer um alter para atualizar a movimentação
+--fazer um alter para atualizar a movimentação
 
---ALTER TABLE estoque_historico
+ALTER TABLE estoque_historico
 ADD COLUMN quantidade_anterior INT NOT NULL DEFAULT 0 AFTER quantidade,
 ADD COLUMN quantidade_atual INT NOT NULL DEFAULT 0 AFTER quantidade_anterior;
