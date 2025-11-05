@@ -1,22 +1,17 @@
--- Código SQL para rodar no PHPMyAdmin
+-- Código SQL para rodar no PHPMyAdmin — cria o banco e todas as tabelas já com as colunas finais
 
--- Criar o banco de dados
 CREATE DATABASE IF NOT EXISTS db_terreiro
     DEFAULT CHARACTER SET utf8mb4
     DEFAULT COLLATE utf8mb4_general_ci;
-
--- Usar o banco
 USE db_terreiro;
 
--- Tabela: terreiro
-CREATE TABLE terreiro (
+CREATE TABLE IF NOT EXISTS terreiro (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome_terreiro VARCHAR(100) NOT NULL,
     endereco VARCHAR(150)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Tabela: usuarios
-CREATE TABLE usuarios (
+CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_terreiro INT NOT NULL,
     nome VARCHAR(100) NOT NULL,
@@ -24,10 +19,9 @@ CREATE TABLE usuarios (
     senha VARCHAR(255) NOT NULL,
     tipo ENUM('adm', 'auxiliar') NOT NULL,
     FOREIGN KEY (id_terreiro) REFERENCES terreiro(id) ON DELETE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Tabela: estoque
-CREATE TABLE estoque (
+CREATE TABLE IF NOT EXISTS estoque (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_terreiro INT NOT NULL,
     produto VARCHAR(100) NOT NULL,
@@ -35,10 +29,9 @@ CREATE TABLE estoque (
     origem ENUM('compra', 'doacao') NOT NULL,
     data_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_terreiro) REFERENCES terreiro(id) ON DELETE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Tabela: financas
-CREATE TABLE financas (
+CREATE TABLE IF NOT EXISTS financas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_terreiro INT NOT NULL,
     tipo ENUM('arrecadacao', 'despesa', 'estoque_entrada', 'estoque_saida') NOT NULL,
@@ -46,21 +39,17 @@ CREATE TABLE financas (
     valor DECIMAL(10,2) NOT NULL,
     data DATE NOT NULL,
     FOREIGN KEY (id_terreiro) REFERENCES terreiro(id) ON DELETE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Tabela: estoque_historico
-CREATE TABLE estoque_historico (
+CREATE TABLE IF NOT EXISTS estoque_historico (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_estoque INT NOT NULL,
     quantidade INT NOT NULL,
+    quantidade_anterior INT NOT NULL DEFAULT 0,
+    quantidade_atual INT NOT NULL DEFAULT 0,
     tipo ENUM('estoque_entrada', 'estoque_saida') NOT NULL,
     data_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_estoque) REFERENCES estoque(id) ON DELETE CASCADE
-);
-
-
--- fazer um alter para atualizar a movimentação
-
-ALTER TABLE estoque_historico
-ADD COLUMN quantidade_anterior INT NOT NULL DEFAULT 0 AFTER quantidade,
-ADD COLUMN quantidade_atual INT NOT NULL DEFAULT 0 AFTER quantidade_anterior;
+    FOREIGN KEY (id_estoque) REFERENCES estoque(id) ON DELETE CASCADE,
+    INDEX (id_estoque),
+    INDEX (data_registro)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

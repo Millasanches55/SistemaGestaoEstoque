@@ -1,34 +1,71 @@
--- Script de teste para a tabela 'financas' e 'estoque'
--- Inserções para teste na tabela Finanças, incluindo arrecadações e despesas
-INSERT INTO financas (id_terreiro, tipo, descricao, valor, data) VALUES
-(1, 'arrecadacao', 'Doação de membro para festa de Yemanjá', 250.00, '2025-02-02'),
-(1, 'despesa', 'Compra de bebidas para a festa de Exu', 120.50, '2025-06-13'),
-(1, 'arrecadacao', 'Oferta de assistência para o Terreiro', 50.00, '2025-09-01'),
-(1, 'despesa', 'Material de limpeza e manutenção', 75.00, '2025-09-02'),
-(1, 'despesa', 'Decoração e velas para a Festa de Cosme e Damião', 180.75, '2025-09-27'),
-(1, 'arrecadacao', 'Contribuição de festa de Ogum', 300.00, '2025-04-23'),
-(1, 'despesa', 'Pagamento de conta de luz', 150.00, '2025-09-03'),
-(1, 'arrecadacao', 'Contribuição para a reforma do telhado', 100.00, '2025-09-04'),
-(1, 'despesa', 'Compra de flores para oferendas', 45.00, '2025-09-05'),
-(1, 'arrecadacao', 'Arrecadação de rifa para o fim do ano', 500.00, '2025-12-15');
+-- Massa de testes mais realista para financas, estoque e estoque_historico
+USE db_terreiro;
 
--- Novas inserções de teste para as movimentações de estoque na tabela Finanças
+-- FINANÇAS: arrecadações, despesas e movimentações vinculadas a entrada/saída de estoque
 INSERT INTO financas (id_terreiro, tipo, descricao, valor, data) VALUES
-(1, 'estoque_entrada', 'Entrada de velas brancas doadas', 30.00, '2025-09-10'),
-(1, 'estoque_saida', 'Saída de velas para gira', 15.00, '2025-09-10'),
-(1, 'estoque_entrada', 'Compra de azeite de dendê', 50.00, '2025-09-11'),
-(1, 'estoque_saida', 'Saída de pipoca para ebó', 5.00, '2025-09-12'),
-(1, 'estoque_entrada', 'Doação de fitas para a festa', 20.00, '2025-09-15');
+(1, 'arrecadacao', 'Doação mensal de família local', 200.00, '2024-12-05'),
+(1, 'arrecadacao', 'Contribuição durante roda de samba', 340.00, '2025-01-18'),
+(1, 'despesa', 'Compra de velas e pavio para cerimônias', 120.00, '2025-01-20'),
+(1, 'despesa', 'Pagamento conta de energia elétrica (fev/2025)', 210.35, '2025-02-10'),
+(1, 'despesa', 'Compra de material de limpeza (detergente, desinfetante)', 85.50, '2025-03-02'),
+(1, 'arrecadacao', 'Rifa beneficente para reforma do barracão', 950.00, '2025-04-12'),
+(1, 'despesa', 'Compra de alimentos para evento comunitário', 320.75, '2025-05-05'),
+(1, 'arrecadacao', 'Doações para festa de Iemanjá', 480.00, '2025-06-01'),
+(1, 'despesa', 'Homenagem / cachê para músico convidado', 150.00, '2025-06-15'),
+(1, 'despesa', 'Reparo em louças e utensílios', 60.00, '2025-07-03'),
 
--- Inserção para teste na tabela Estoque
-INSERT INTO estoque (id_terreiro, produto, quantidade, origem) VALUES
-(1, 'Velas Brancas', 50, 'compra'),
-(1, 'Ervas Secas', 10, 'doacao'),
-(1, 'Incenso de Arruda', 25, 'compra'),
-(1, 'Cachaça', 5, 'compra'),
-(1, 'Pipoca', 2, 'doacao'),
-(1, 'Farinha de Milho', 15, 'compra'),
-(1, 'Fitas de Cetim', 30, 'compra'),
-(1, 'Óleo de Dendê', 3, 'doacao'),
-(1, 'Carvão Vegetal', 20, 'compra'),
-(1, 'Flores Brancas', 8, 'doacao');
+-- Movimentações financeiras relacionadas a estoque (compras, doações e uso)
+(1, 'estoque_entrada', 'Compra de 100 velas brancas', 90.00, '2025-07-10'),
+(1, 'estoque_entrada', 'Doação de ervas secas (membros)', 0.00, '2025-07-12'),
+(1, 'estoque_saida', 'Utilização de velas em cerimônia de julho', 0.00, '2025-07-13'),
+(1, 'estoque_entrada', 'Compra de óleo de dendê (20L)', 180.00, '2025-08-01'),
+(1, 'estoque_saida', 'Distribuição de pipoca em festivity comunitária', 0.00, '2025-08-18'),
+(1, 'estoque_entrada', 'Compra de fitas de cetim para decoração', 45.00, '2025-09-02'),
+(1, 'estoque_saida', 'Uso de ervas e flores em oferenda coletiva', 0.00, '2025-09-10');
+
+-- ESTOQUE: itens iniciais do terreiro
+INSERT INTO estoque (id_terreiro, produto, quantidade, origem, data_registro) VALUES
+(1, 'Velas Brancas 20cm', 120, 'compra', '2025-07-10 09:00:00'),
+(1, 'Ervas Secas (saco 500g)', 25, 'doacao', '2025-07-12 11:30:00'),
+(1, 'Incenso de Arruda (un)', 40, 'compra', '2025-03-15 10:20:00'),
+(1, 'Cachaça (garrafa 1L)', 12, 'compra', '2024-11-20 12:00:00'),
+(1, 'Pipoca (kg)', 10, 'compra', '2025-06-05 14:00:00'),
+(1, 'Farinha de Milho (kg)', 20, 'compra', '2025-02-28 08:45:00'),
+(1, 'Fitas de Cetim (pacote 50un)', 60, 'compra', '2025-09-02 16:00:00'),
+(1, 'Óleo de Dendê (litro)', 10, 'compra', '2025-08-01 09:15:00'),
+(1, 'Carvão Vegetal (saco 5kg)', 15, 'compra', '2025-05-20 07:30:00'),
+(1, 'Flores Brancas (maço)', 30, 'doacao', '2025-04-18 10:00:00');
+
+-- HISTÓRICO DE ESTOQUE: registrar entradas e saídas reais (quantidade_anterior e quantidade_atual preenchidos)
+-- Observação: estamos assumindo que os IDs do estoque acima serão 1..10 na mesma ordem de inserção.
+INSERT INTO estoque_historico (id_estoque, quantidade, tipo, quantidade_anterior, quantidade_atual, data_registro) VALUES
+-- Velas Brancas: compra inicial + uso
+(1, 100, 'estoque_entrada', 20, 120, '2025-07-10 09:00:00'), -- compra 100 (antes havia 20)
+(1, 15, 'estoque_saida', 120, 105, '2025-07-13 20:30:00'),      -- uso em cerimônia
+-- Ervas Secas: doação recebida
+(2, 25, 'estoque_entrada', 0, 25, '2025-07-12 11:30:00'),
+(2, 5, 'estoque_saida', 25, 20, '2025-09-10 09:00:00'),         -- uso em oferendas
+-- Incenso: compras ao longo do tempo
+(3, 15, 'estoque_entrada', 25, 40, '2025-03-15 10:20:00'),
+(3, 5, 'estoque_saida', 40, 35, '2025-04-10 18:00:00'),
+-- Cachaça: pequenas reposições
+(4, 12, 'estoque_entrada', 0, 12, '2024-11-20 12:00:00'),
+(4, 2, 'estoque_saida', 12, 10, '2025-06-20 21:00:00'),
+-- Pipoca: compras e uso
+(5, 5, 'estoque_entrada', 5, 10, '2025-06-05 14:00:00'),
+(5, 3, 'estoque_saida', 10, 7, '2025-08-18 19:30:00'),
+-- Farinha de Milho
+(6, 10, 'estoque_entrada', 10, 20, '2025-02-28 08:45:00'),
+(6, 2, 'estoque_saida', 20, 18, '2025-03-22 17:00:00'),
+-- Fitas de Cetim: compra recente
+(7, 60, 'estoque_entrada', 10, 70, '2025-09-02 16:00:00'),
+(7, 10, 'estoque_saida', 70, 60, '2025-09-15 11:00:00'),
+-- Óleo de Dendê: compra e pequeno consumo
+(8, 20, 'estoque_entrada', 0, 20, '2025-08-01 09:15:00'),
+(8, 2, 'estoque_saida', 20, 18, '2025-08-25 13:00:00'),
+-- Carvão Vegetal
+(9, 15, 'estoque_entrada', 0, 15, '2025-05-20 07:30:00'),
+(9, 5, 'estoque_saida', 15, 10, '2025-07-30 20:00:00'),
+-- Flores Brancas: doação e uso
+(10, 30, 'estoque_entrada', 0, 30, '2025-04-18 10:00:00'),
+(10, 6, 'estoque_saida', 30, 24, '2025-09-10 09:00:00');
