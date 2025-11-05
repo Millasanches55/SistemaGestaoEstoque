@@ -12,13 +12,14 @@ $id_terreiro = $_SESSION["id_terreiro"];
 
 // Função de normalização (mantida fora do bloco POST para clareza)
 function normalizarTexto($texto) {
-    $texto = mb_strtolower($texto ?? '', 'UTF-8');
-    $texto = preg_replace('/[áàãâä]/u', 'a', $texto);
-    $texto = preg_replace('/[éèêë]/u', 'e', $texto);
-    $texto = preg_replace('/[íìîï]/u', 'i', $texto);
-    $texto = preg_replace('/[óòõôö]/u', 'o', $texto);
-    $texto = preg_replace('/[úùûü]/u', 'u', $texto);
-    $texto = preg_replace('/ç/u', 'c', $texto);
+    $texto = trim(mb_strtolower($texto ?? '', 'UTF-8'));
+    // remover acentuação via iconv quando disponível
+    $trans = @iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $texto);
+    if ($trans !== false) $texto = $trans;
+    // remover caracteres não alfanuméricos exceto espaços
+    $texto = preg_replace('/[^a-z0-9\s]/', '', $texto);
+    // normalizar múltiplos espaços
+    $texto = preg_replace('/\s+/', ' ', $texto);
     return trim($texto);
 }
 
@@ -40,6 +41,7 @@ if (isset($_POST['acao'])) {
             // Buscar todos os produtos do terreiro
             $sql_all = "SELECT id, produto, quantidade FROM estoque WHERE id_terreiro = ?";
             $stmt_all = $conn->prepare($sql_all);
+            if (!$stmt_all) throw new Exception("Erro preparação SQL: " . $conn->error);
             $stmt_all->bind_param("i", $id_terreiro);
             $stmt_all->execute();
             $result_all = $stmt_all->get_result();
@@ -48,16 +50,26 @@ if (isset($_POST['acao'])) {
             $quantidade_atual = 0;
             $produto_encontrado = null;
             $maior_similaridade = 0;
+            $menor_distancia = PHP_INT_MAX;
 
             // Verifica similaridade com todos os produtos
             while ($row = $result_all->fetch_assoc()) {
                 $existente_normalizado = normalizarTexto($row['produto']);
+
+                // similar_text fornece percentual; levenshtein fornece distância
                 similar_text($produto_normalizado, $existente_normalizado, $percent);
-                if ($percent > 85 && $percent > $maior_similaridade) {
-                    $maior_similaridade = $percent;
-                    $id_estoque = (int)$row['id'];
-                    $quantidade_atual = (int)$row['quantidade'];
-                    $produto_encontrado = $row['produto'];
+                $distance = levenshtein($produto_normalizado, $existente_normalizado);
+
+                // Critério: percentual alto OU distância pequena
+                if ($percent >= 85 || $distance <= 2) {
+                    // preferir maior percent ou menor distância quando empate
+                    if ($percent > $maior_similaridade || ($percent == $maior_similaridade && $distance < $menor_distancia)) {
+                        $maior_similaridade = $percent;
+                        $menor_distancia = $distance;
+                        $id_estoque = (int)$row['id'];
+                        $quantidade_atual = (int)$row['quantidade'];
+                        $produto_encontrado = $row['produto'];
+                    }
                 }
             }
             $stmt_all->close();
@@ -80,14 +92,13 @@ if (isset($_POST['acao'])) {
                     $tipo_historico = 'estoque_saida';
                 }
 
-                // Atualiza nome e quantidade (mantém origem atual)
                 // Atualiza apenas a quantidade (mantém o nome original existente)
-$sql_update = "UPDATE estoque SET quantidade = ? WHERE id = ? AND id_terreiro = ?";
-$stmt_update = $conn->prepare($sql_update);
-$stmt_update->bind_param("iii", $nova_quantidade, $id_estoque, $id_terreiro);
-$stmt_update->execute();
-$stmt_update->close();
-
+                $sql_update = "UPDATE estoque SET quantidade = ? WHERE id = ? AND id_terreiro = ?";
+                $stmt_update = $conn->prepare($sql_update);
+                if (!$stmt_update) throw new Exception("Erro preparação UPDATE: " . $conn->error);
+                $stmt_update->bind_param("iii", $nova_quantidade, $id_estoque, $id_terreiro);
+                $stmt_update->execute();
+                $stmt_update->close();
 
             } else {
                 // Cria novo produto (somente para adicionar)
@@ -95,6 +106,7 @@ $stmt_update->close();
                     $tipo_historico = 'estoque_entrada';
                     $sql_insert = "INSERT INTO estoque (id_terreiro, produto, quantidade, origem) VALUES (?, ?, ?, ?)";
                     $stmt_insert = $conn->prepare($sql_insert);
+                    if (!$stmt_insert) throw new Exception("Erro preparação INSERT: " . $conn->error);
                     $stmt_insert->bind_param("isis", $id_terreiro, $produto, $quantidade, $origem);
                     $stmt_insert->execute();
                     $id_estoque = $conn->insert_id;
@@ -114,6 +126,7 @@ $stmt_update->close();
                              (id_estoque, quantidade, tipo, quantidade_anterior, quantidade_atual)
                              VALUES (?, ?, ?, ?, ?)";
                 $stmt_hist = $conn->prepare($sql_hist);
+                if (!$stmt_hist) throw new Exception("Erro preparação hist: " . $conn->error);
                 // binding: id_estoque (i), quantidade_movimentada (i), tipo_historico (s), quantidade_anterior (i), nova_quantidade (i)
                 $stmt_hist->bind_param("iisii", $id_estoque, $quantidade_movimentada, $tipo_historico, $quantidade_anterior, $nova_quantidade);
                 $stmt_hist->execute();
