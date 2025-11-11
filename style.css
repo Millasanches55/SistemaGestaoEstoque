@@ -18,7 +18,7 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
-body.tema-claro {
+body {
     background: var(--azul-gradiente);
     min-height: 100vh;
     padding: 40px 15px;
@@ -199,11 +199,4 @@ select:focus {
 
 .despesas {
     color: red;
-}
-
-/* ====== TEMA ESCURO ====== */
-
-body.tema-escuro {
-    background: #1a1a1a;
-    color: white;
 }
