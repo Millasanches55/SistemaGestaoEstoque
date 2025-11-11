@@ -9,15 +9,18 @@ if (!isset($_SESSION['id_usuario'])) {
 $nome = $_SESSION['nome'];
 $tipo = $_SESSION['tipo'];
 $tema = $_SESSION['tema'];
+$icone = "<i class='bx  bx-moon' style='font-size: 20px;' ></i>";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($tema == "style.css") {
         $tema = "styleTemaEscuro.css";
         $_SESSION["tema"] = $tema;
+        $icone = "<i class='bx  bx-sun' style='font-size: 20px;' ></i> ";
     }
     else {
         $tema = "style.css";
         $_SESSION["tema"] = $tema;
+        $icone = "<i class='bx  bx-moon' style='font-size: 20px;' ></i>";
     }
 }
 ?>
@@ -59,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </section>
     
     <form action="" method="post">
-        <button class="botao" type="submit">Alterar tema</button>
+        <button class="botao" style="position: fixed; top: 10px; right: 10px;" type="submit"><?php echo $icone; ?></button>
     </form>
 </body>
 </html>

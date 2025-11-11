@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap');
 
 :root {
-    --azul-aero: #3c8dbc;
-    --preto-gradiente: linear-gradient(0deg,rgba(9, 38, 71, 1) 0%, rgba(36, 36, 36, 1) 100%);;
+    --azul-claro: #a3d3f0;
+    --preto-gradiente: linear-gradient(0deg,rgba(34, 42, 66, 1) 0%, rgba(20, 20, 20, 1) 100%);
     --cinza-borda: #ccddee;
     --sombra-leve: 0 2px 8px rgba(0, 0, 0, 0.1);
     --sombra-forte: 0 4px 20px rgba(0, 0, 0, 0.2);
     --raio: 10px;
     --texto-primario: #1a1a1a;
-    --cinza-escuro: #404146;
+    --cinza-escuro: #2e2f33;
 }
 
 * {
@@ -33,7 +33,7 @@ p {
 
 h2 {
     margin-bottom: 25px;
-    color: var(--azul-aero);
+    color: var(--azul-claro);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -44,7 +44,7 @@ section {
     background-color: var(--cinza-escuro);
     padding: 30px;
     border-radius: 15px;
-    box-shadow: 0px 0px 15px 2px var(--azul-aero);
+    box-shadow: 0px 0px 15px 2px var(--azul-claro);
 }
 
 #tabela-usuarios, #tabela-estoque {
@@ -69,13 +69,13 @@ section {
 
 #tabela-estoque th,
 #tabela-usuarios th {
-    background-color: var(--azul-aero);
+    background-color: var(--azul-claro);
     color: white;
     padding: 8px;
 }
 
 #tabela-usuarios thead th {
-    background-color: var(--azul-aero);
+    background-color: var(--azul-claro);
     color: white;
     text-align: left;
 }
@@ -148,7 +148,7 @@ select:focus {
 }
 
 .botao {
-    background: linear-gradient(0deg,rgba(67, 79, 112, 1) 0%, rgba(71, 71, 71, 1) 100%);
+    background: linear-gradient(0deg,rgba(75, 77, 92, 1) 0%, rgba(46, 47, 51, 1) 100%);
     color: white;
     width: fit-content;
     padding: 10px;
@@ -162,7 +162,7 @@ select:focus {
 }
 
 .botao:hover {
-    background: linear-gradient(to bottom, #3c8dbc, #2b6fa8);
+    background: linear-gradient(0deg,rgba(138, 141, 171, 1) 0%, rgba(77, 85, 125, 1) 100%);
     transform: scale(1.05);
     transition: all 2s;
 }
