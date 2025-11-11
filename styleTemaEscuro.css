@@ -2,13 +2,13 @@
 
 :root {
     --azul-aero: #3c8dbc;
-    --azul-gradiente: linear-gradient(to bottom, #e3f2fd, #b0d8f1);
+    --preto-gradiente: linear-gradient(0deg,rgba(9, 38, 71, 1) 0%, rgba(36, 36, 36, 1) 100%);;
     --cinza-borda: #ccddee;
     --sombra-leve: 0 2px 8px rgba(0, 0, 0, 0.1);
     --sombra-forte: 0 4px 20px rgba(0, 0, 0, 0.2);
     --raio: 10px;
     --texto-primario: #1a1a1a;
-    --cinza-claro: #e8edf9;
+    --cinza-escuro: #404146;
 }
 
 * {
@@ -18,13 +18,17 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
-body.tema-claro {
-    background: var(--azul-gradiente);
+body {
+    background: var(--preto-gradiente);
     min-height: 100vh;
     padding: 40px 15px;
     display: flex;
     justify-content: center;
     align-items: flex-start;
+}
+
+p {
+    color: white;
 }
 
 h2 {
@@ -37,7 +41,7 @@ h2 {
 
 section {
     margin: 10px auto;
-    background-color: var(--cinza-claro);
+    background-color: var(--cinza-escuro);
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0px 0px 15px 2px var(--azul-aero);
@@ -144,11 +148,11 @@ select:focus {
 }
 
 .botao {
-    background: linear-gradient(to bottom, #5faee3, #3c8dbc);
+    background: linear-gradient(0deg,rgba(67, 79, 112, 1) 0%, rgba(71, 71, 71, 1) 100%);
     color: white;
     width: fit-content;
     padding: 10px;
-    border: 1px solid #2d6a9f;
+    border: 1px solid #8a8a8a;
     border-radius: var(--raio);
     font-weight: bold;
     cursor: pointer;
@@ -199,11 +203,4 @@ select:focus {
 
 .despesas {
     color: red;
-}
-
-/* ====== TEMA ESCURO ====== */
-
-body.tema-escuro {
-    background: #1a1a1a;
-    color: white;
 }

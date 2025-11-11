@@ -8,6 +8,18 @@ if (!isset($_SESSION['id_usuario'])) {
 
 $nome = $_SESSION['nome'];
 $tipo = $_SESSION['tipo'];
+$tema = $_SESSION['tema'];
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($tema == "style.css") {
+        $tema = "styleTemaEscuro.css";
+        $_SESSION["tema"] = $tema;
+    }
+    else {
+        $tema = "style.css";
+        $_SESSION["tema"] = $tema;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +27,7 @@ $tipo = $_SESSION['tipo'];
 <head>
     <meta charset="UTF-8">
     <title>Painel</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?php echo $tema; ?>">
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
@@ -45,5 +57,9 @@ $tipo = $_SESSION['tipo'];
         </div>
             
     </section>
+    
+    <form action="" method="post">
+        <button class="botao" type="submit">Alterar tema</button>
+    </form>
 </body>
 </html>
