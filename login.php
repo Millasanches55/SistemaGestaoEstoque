@@ -28,6 +28,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['tipo']       = $row['tipo']; // adm ou auxiliar
             $_SESSION['id_terreiro']= $row['id_terreiro'];
             $_SESSION['tema'] = 'style.css';
+            $_SESSION['fontep'] = "15px";
+            $_SESSION['fonteh2'] = "25px";
+            $_SESSION['fonteh3'] = "20px";
 
             // Redireciona para painel
             header("Location: painel.php");

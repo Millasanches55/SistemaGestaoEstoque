@@ -71,6 +71,48 @@ if (isset($_GET['remover']) && $auxiliar) {
     header("Location: usuarios.php");
     exit;
 }
+
+
+$tema = $_SESSION['tema'];
+$fontep = $_SESSION['fontep'];
+$fonteh2 = $_SESSION['fonteh2'];
+$fonteh3 = $_SESSION['fonteh3'];
+$icone_tema = "<i class='bx  bx-moon' style='font-size: 20px;' ></i>";
+$icone_fonte = "+A";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_POST["tema"] == "alterar") {
+        if ($tema == "style.css") {
+            $tema = "styleTemaEscuro.css";
+            $icone_tema = "<i class='bx  bx-sun' style='font-size: 20px;' ></i> ";
+        }
+        else {
+            $tema = "style.css";
+            $icone_tema = "<i class='bx  bx-moon' style='font-size: 20px;' ></i>";
+        }
+        $_SESSION["tema"] = $tema;
+    }
+    else if ($_POST["fonte"] == "alterar") {
+        if ($fontep == "15px" && $fonteh2 == "25px") {
+            $fontep = "19px";
+            $fonteh2 = "30px";
+            $fonteh3 = "25px";
+            $icone_fonte = "-A";
+            $_SESSION["fontep"] = $fontep;
+            $_SESSION["fonteh2"] = $fonteh2;
+            $_SESSION["fonteh3"] = $fonteh3;
+        }
+        else {
+            $fontep = "15px";
+            $fonteh2 = "25px";
+            $fonteh3 = "20px";
+            $icone_fonte = "+A";
+            $_SESSION["fontep"] = $fontep;
+            $_SESSION["fonteh2"] = $fonteh2;
+            $_SESSION["fonteh3"] = $fonteh3;
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -78,10 +120,33 @@ if (isset($_GET['remover']) && $auxiliar) {
 <head>
     <meta charset="UTF-8">
     <title>Gerenciar Auxiliar</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?php echo $tema; ?>">
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
+    <?php
+        echo "<style>";
+        echo "p {";
+        echo "font-size: $fontep;";
+        echo "}";
+        echo "h2 {";
+        echo "font-size: $fonteh2;";
+        echo "}";
+        echo "h3 {";
+        echo "font-size: $fonteh3;";
+        echo "}";
+        echo "</style>";
+    ?>
+    <div style="display: flex; position: fixed; top: 10px; right: 10px; gap: 15px;">
+        <form action="" method="post">
+            <input type="hidden" name="fonte" value="alterar" />
+            <button class="botao" style="font-size: 20px; width: 60px;" type="submit"><?php echo $icone_fonte; ?></button>
+        </form>
+        <form action="" method="post">
+            <input type="hidden" name="tema" value="alterar" />
+            <button class="botao" style="width: 60px;" type="submit"><?php echo $icone_tema; ?></button>
+        </form>
+    </div>
     <section>
         <h2><i class='bx  bx-group'  ></i>  Gerenciar Auxiliar</h2>
         <a href="painel.php" class="botao"><i class='bx  bx-arrow-left-stroke-circle'  ></i>  Voltar ao Painel</a>
@@ -120,17 +185,17 @@ if (isset($_GET['remover']) && $auxiliar) {
         <?php if (!$auxiliar) { ?>
             <h3>Cadastrar Auxiliar</h3>
             <form method="post">
-                Nome: <input type="text" name="nome" required><br><br>
-                Usuário: <input type="text" name="usuario" required><br><br>
-                Senha: <input type="password" name="senha" required><br><br>
+                <p>Nome:</p> <input type="text" name="nome" class="input-texto" required><br><br>
+                <p>Usuário:</p> <input type="text" name="usuario" class="input-texto"  required><br><br>
+                <p>Senha:</p> <input type="password" name="senha" class="input-texto" required><br><br>
                 <button class="botao" type="submit" name="cadastrar">Cadastrar</button>
             </form>
         <?php } else { ?>
             <h3>Auxiliar Atual</h3>
             <form method="post">
-                Nome: <input type="text" name="nome" value="<?php echo htmlspecialchars($auxiliar['nome']); ?>" required><br><br>
-                Usuário: <input type="text" name="usuario" value="<?php echo htmlspecialchars($auxiliar['usuario']); ?>" required><br><br>
-                Senha (deixe em branco para não alterar): <input type="password" name="senha"><br><br>
+                <p>Nome:</p> <input type="text" name="nome" value="<?php echo htmlspecialchars($auxiliar['nome']); ?>" class="input-texto"  required><br><br>
+                <p>Usuário:</p> <input type="text" name="usuario" value="<?php echo htmlspecialchars($auxiliar['usuario']); ?>" class="input-texto"  required><br><br>
+                <p>Senha (deixe em branco para não alterar):</p> <input type="password" name="senha" class="input-texto" ><br><br>
                 <button class="botao" type="submit" name="editar">Salvar Alterações</button>
             </form>
             <br>
