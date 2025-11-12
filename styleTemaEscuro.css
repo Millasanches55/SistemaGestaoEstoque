@@ -27,7 +27,7 @@ body {
     align-items: flex-start;
 }
 
-p, h3 {
+p, h3, label {
     color: white;
 }
 

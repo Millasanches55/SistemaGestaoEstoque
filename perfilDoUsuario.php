@@ -70,16 +70,72 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mensagem = "<i class='bx  bx-check'  ></i>  Dados atualizados com sucesso!";
     }
 }
+
+$tema = $_SESSION['tema'];
+$fontep = $_SESSION['fontep'];
+$fonteh2 = $_SESSION['fonteh2'];
+$icone_tema = "<i class='bx  bx-moon' style='font-size: 20px;' ></i>";
+$icone_fonte = "+A";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_POST["tema"] == "alterar") {
+        if ($tema == "style.css") {
+            $tema = "styleTemaEscuro.css";
+            $icone_tema = "<i class='bx  bx-sun' style='font-size: 20px;' ></i> ";
+        }
+        else {
+            $tema = "style.css";
+            $icone_tema = "<i class='bx  bx-moon' style='font-size: 20px;' ></i>";
+        }
+        $_SESSION["tema"] = $tema;
+    }
+    else if ($_POST["fonte"] == "alterar") {
+        if ($fontep == "15px" && $fonteh2 == "25px") {
+            $fontep = "19px";
+            $fonteh2 = "30px";
+            $icone_fonte = "-A";
+            $_SESSION["fontep"] = $fontep;
+            $_SESSION["fonteh2"] = $fonteh2;
+        }
+        else {
+            $fontep = "15px";
+            $fonteh2 = "25px";
+            $icone_fonte = "+A";
+            $_SESSION["fontep"] = $fontep;
+            $_SESSION["fonteh2"] = $fonteh2;
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Perfil do Usuário</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?php echo $tema; ?>">
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
+    <?php
+        echo "<style>";
+        echo "p {";
+        echo "font-size: $fontep;";
+        echo "}";
+        echo "h2 {";
+        echo "font-size: $fonteh2;";
+        echo "}";
+        echo "</style>";
+    ?>
+    <div style="display: flex; position: fixed; top: 10px; right: 10px; gap: 15px;">
+        <form action="" method="post">
+            <input type="hidden" name="fonte" value="alterar" />
+            <button class="botao" style="font-size: 20px; width: 60px;" type="submit"><?php echo $icone_fonte; ?></button>
+        </form>
+        <form action="" method="post">
+            <input type="hidden" name="tema" value="alterar" />
+            <button class="botao" style="width: 60px;" type="submit"><?php echo $icone_tema; ?></button>
+        </form>
+    </div>
     <section>
         <h2><i class='bx  bx-user'  ></i> Perfil do Usuário</h2>
         <hr>
@@ -91,23 +147,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <form method="post">
             <label>Nome:</label><br>
-            <input type="text" name="nome" value="<?php echo htmlspecialchars($dados['nome']); ?>" required><br><br>
+            <input type="text" name="nome" value="<?php echo htmlspecialchars($dados['nome']); ?>" class="input-texto" required><br><br>
 
             <label>Usuário:</label><br>
-            <input type="text" name="usuario" value="<?php echo htmlspecialchars($dados['usuario']); ?>" required><br><br>
+            <input type="text" name="usuario" value="<?php echo htmlspecialchars($dados['usuario']); ?>" class="input-texto" required><br><br>
 
             <?php if ($tipo == "adm") { ?>
                 <label>Nome do Terreiro:</label><br>
-                <input type="text" name="nome_terreiro" value="<?php echo htmlspecialchars($dados['nome_terreiro']); ?>" required><br><br>
+                <input type="text" name="nome_terreiro" value="<?php echo htmlspecialchars($dados['nome_terreiro']); ?>" class="input-texto" required><br><br>
 
                 <label>Endereço:</label><br>
-                <input type="text" name="endereco" value="<?php echo htmlspecialchars($dados['endereco']); ?>"><br><br>
+                <input type="text" name="endereco" value="<?php echo htmlspecialchars($dados['endereco']);?>" class="input-texto"><br><br>
             <?php } ?>
 
             <h3>Alterar Senha</h3>
-            Senha atual: <input type="password" name="senha_atual" required><br><br>
-            Nova senha: <input type="password" name="senha_nova" required><br><br>
-            Confirmar nova senha: <input type="password" name="confirmar_senha" required><br><br>
+            <p>Senha atual:</p> <input type="password" name="senha_atual" class="input-texto" required><br><br>
+            <p>Nova senha:</p> <input type="password" name="senha_nova" class="input-texto" required><br><br>
+            <p>Confirmar nova senha:</p> <input type="password" name="confirmar_senha" class="input-texto" required><br><br>
 
             <button class="botao" type="submit">Salvar Alterações</button>
         </form>
