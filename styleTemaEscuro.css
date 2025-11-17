@@ -95,6 +95,14 @@ section {
     color: white;
 }
 
+.link-estoque {
+    color: var(--azul-claro);
+}
+
+.link-estoque:visited {
+    color: #5a71be;
+}
+
 /* ====== CARD PRINCIPAL ====== */
 .card {
     max-width: 700px;

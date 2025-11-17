@@ -5,7 +5,11 @@
         exit;
 }
 
-$tema = "style.css";
+if (!isset($_SESSION['tema'])) {
+    $_SESSION['tema'] = "style.css";
+}
+
+$tema = $_SESSION['tema'];
 $fontep = $_SESSION['fontep'];
 $fonteh2 = $_SESSION['fonteh2'];
 $icone_tema = "<i class='bx  bx-moon' style='font-size: 20px;' ></i>";
@@ -16,10 +20,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($tema == "style.css") {
             $tema = "styleTemaEscuro.css";
             $icone_tema = "<i class='bx  bx-sun' style='font-size: 20px;' ></i> ";
+            $_SESSION['tema'] = $tema;
         }
         else {
             $tema = "style.css";
             $icone_tema = "<i class='bx  bx-moon' style='font-size: 20px;' ></i>";
+            $_SESSION['tema'] = $tema;
         }
     }
     else if ($_POST["fonte"] == "alterar") {
@@ -72,8 +78,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <section>
         <h2>Login</h2>
         <form action="login.php" method="post">
-            Usuário: <input type="text" name="usuario" required><br><br>
-            Senha: <input type="password" name="senha" required><br><br>
+            <p>Usuário:</p> <input type="text" name="usuario" class="input-texto" required><br><br>
+            <p>Senha:</p> <input type="password" name="senha" class="input-texto" required><br><br>
             <button class="botao" type="submit">Entrar</button>
         </form>
         <br><br>

@@ -159,6 +159,47 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id_terreiro);
 $stmt->execute();
 $result = $stmt->get_result();
+
+$tema = $_SESSION['tema'];
+$fontep = $_SESSION['fontep'];
+$fonteh2 = $_SESSION['fonteh2'];
+$fonteh3 = $_SESSION['fonteh3'];
+$icone_tema = "<i class='bx  bx-moon' style='font-size: 20px;' ></i>";
+$icone_fonte = "+A";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_POST["tema"] == "alterar") {
+        if ($tema == "style.css") {
+            $tema = "styleTemaEscuro.css";
+            $icone_tema = "<i class='bx  bx-sun' style='font-size: 20px;' ></i> ";
+        }
+        else {
+            $tema = "style.css";
+            $icone_tema = "<i class='bx  bx-moon' style='font-size: 20px;' ></i>";
+        }
+        $_SESSION["tema"] = $tema;
+    }
+    else if ($_POST["fonte"] == "alterar") {
+        if ($fontep == "15px" && $fonteh2 == "25px") {
+            $fontep = "19px";
+            $fonteh2 = "30px";
+            $fonteh3 = "25px";
+            $icone_fonte = "-A";
+            $_SESSION["fontep"] = $fontep;
+            $_SESSION["fonteh2"] = $fonteh2;
+            $_SESSION["fonteh3"] = $fonteh3;
+        }
+        else {
+            $fontep = "15px";
+            $fonteh2 = "25px";
+            $fonteh3 = "20px";
+            $icone_fonte = "+A";
+            $_SESSION["fontep"] = $fontep;
+            $_SESSION["fonteh2"] = $fonteh2;
+            $_SESSION["fonteh3"] = $fonteh3;
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -166,13 +207,36 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <title>Gerenciar Estoque</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?php echo $tema; ?>">
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
     <style>
         .origem-field { display: block; }
     </style>
 </head>
 <body>
+    <?php
+        echo "<style>";
+        echo "p {";
+        echo "font-size: $fontep;";
+        echo "}";
+        echo "h2 {";
+        echo "font-size: $fonteh2;";
+        echo "}";
+        echo "h3 {";
+        echo "font-size: $fonteh3;";
+        echo "}";
+        echo "</style>";
+    ?>
+    <div style="display: flex; position: fixed; top: 10px; right: 10px; gap: 15px;">
+        <form action="" method="post">
+            <input type="hidden" name="fonte" value="alterar" />
+            <button class="botao" style="font-size: 20px; width: 60px;" type="submit"><?php echo $icone_fonte; ?></button>
+        </form>
+        <form action="" method="post">
+            <input type="hidden" name="tema" value="alterar" />
+            <button class="botao" style="width: 60px;" type="submit"><?php echo $icone_tema; ?></button>
+        </form>
+    </div>
     <section>
         <h2><i class='bx bx-box-alt'></i> Gerenciar Estoque</h2>
         <p><a class="botao" href="painel.php"><i class='bx bx-arrow-left-stroke-circle'></i> Voltar ao Painel</a></p>
@@ -180,16 +244,16 @@ $result = $stmt->get_result();
         <h3>Registrar Movimentação</h3>
         <br>
         <form method="post">
-            Ação:
-            <select name="acao" id="acao-select" onchange="toggleOrigemField()">
+            <p>Ação:</p>
+            <select name="acao" class="input-texto" id="acao-select" onchange="toggleOrigemField()">
                 <option value="adicionar">Adicionar (Entrada)</option>
                 <option value="remover">Remover (Saída)</option>
             </select><br><br>
-            Nome do Produto: <input type="text" name="produto" required><br><br>
-            Quantidade: <input type="number" name="quantidade" min="1" required><br><br>
+            <p>Nome do Produto:</p> <input type="text" class="input-texto" name="produto" required><br><br>
+            <p>Quantidade:</p> <input type="number" class="input-texto" name="quantidade" min="1" required><br><br>
             <div id="origem-field" class="origem-field">
-                Tipo de Aquisição:
-                <select name="origem">
+                <p>Tipo de Aquisição:</p>
+                <select name="origem" class="input-texto">
                     <option value="compra">Compra</option>
                     <option value="doacao">Doação</option>
                 </select><br><br>
@@ -216,8 +280,8 @@ $result = $stmt->get_result();
                 <td><?php echo ucfirst(htmlspecialchars($row['origem'])); ?></td>
                 <td><?php echo htmlspecialchars($row['data_registro']); ?></td>
                 <td>
-                    <a href="editar_estoque.php?id=<?php echo $row['id']; ?>">Editar</a> |
-                    <a href="estoque.php?deletar=<?php echo $row['id']; ?>" onclick="return confirm('Deseja excluir este item?')">Excluir</a>
+                    <a href="editar_estoque.php?id=<?php echo $row['id']; ?>" class="link-estoque">Editar</a> |
+                    <a href="estoque.php?deletar=<?php echo $row['id']; ?>" onclick="return confirm('Deseja excluir este item?')" class="link-estoque">Excluir</a>
                 </td>
             </tr>
             <?php } ?>
