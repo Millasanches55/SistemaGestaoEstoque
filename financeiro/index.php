@@ -49,6 +49,48 @@ if ($action === 'saldo') {
     }
 }
 // --- FIM DO CÁLCULO DO SALDO ---
+
+$tema = $_SESSION['tema'];
+$fontep = $_SESSION['fontep'];
+$fonteh2 = $_SESSION['fonteh2'];
+$fonteh3 = $_SESSION['fonteh3'];
+$icone_tema = $_SESSION['icone-tema'];
+$icone_fonte = $_SESSION['icone-fonte'];
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_POST["tema"] == "alterar") {
+        if ($tema == "style.css") {
+            $tema = "styleTemaEscuro.css";
+            $icone_tema = "<i class='bx  bx-sun' style='font-size: 20px;' ></i> ";
+        }
+        else {
+            $tema = "style.css";
+            $icone_tema = "<i class='bx  bx-moon' style='font-size: 20px;' ></i>";
+        }
+        $_SESSION["tema"] = $tema;
+        $_SESSION["icone-tema"] = $icone_tema;
+    }
+    else if ($_POST["fonte"] == "alterar") {
+        if ($fontep == "15px" && $fonteh2 == "25px") {
+            $fontep = "19px";
+            $fonteh2 = "30px";
+            $fonteh3 = "25px";
+            $icone_fonte = "-A";
+            $_SESSION["fontep"] = $fontep;
+            $_SESSION["fonteh2"] = $fonteh2;
+            $_SESSION["icone-fonte"] = $icone_fonte;
+        }
+        else {
+            $fontep = "15px";
+            $fonteh2 = "25px";
+            $fonteh3 = "20px";
+            $icone_fonte = "+A";
+            $_SESSION["fontep"] = $fontep;
+            $_SESSION["fonteh2"] = $fonteh2;
+            $_SESSION["icone-fonte"] = $icone_fonte;
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +98,7 @@ if ($action === 'saldo') {
 <head>
     <meta charset="UTF-8">
     <title>Módulo Financeiro</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../<?php echo $tema; ?>">
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
     <style>
         /* estilo só para a página de saldo */
@@ -72,6 +114,29 @@ if ($action === 'saldo') {
     </style>
 </head>
 <body>
+    <?php
+        echo "<style>";
+        echo "p {";
+        echo "font-size: $fontep;";
+        echo "}";
+        echo "h2 {";
+        echo "font-size: $fonteh2;";
+        echo "}";
+        echo "h3 {";
+        echo "font-size: $fonteh3;";
+        echo "}";
+        echo "</style>";
+    ?>
+    <div style="display: flex; position: fixed; top: 10px; right: 10px; gap: 15px;">
+        <form action="" method="post">
+            <input type="hidden" name="fonte" value="alterar" />
+            <button class="botao" style="font-size: 20px; width: 60px;" type="submit"><?php echo $icone_fonte; ?></button>
+        </form>
+        <form action="" method="post">
+            <input type="hidden" name="tema" value="alterar" />
+            <button class="botao" style="width: 60px;" type="submit"><?php echo $icone_tema; ?></button>
+        </form>
+    </div>
     <section>
         <div class="botoes-container">
             <a class="botao" href="../painel.php"><i class='bx  bx-arrow-left-stroke-circle'  ></i> Voltar</a>

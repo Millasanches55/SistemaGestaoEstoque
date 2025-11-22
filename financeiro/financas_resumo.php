@@ -57,7 +57,7 @@ $res_hist = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <title>Resumo Financeiro</title>
-    <link rel="stylesheet" href="../estilo.css">
+    <link rel="stylesheet" href="../<?php echo $tema; ?>">
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>

@@ -74,8 +74,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $tema = $_SESSION['tema'];
 $fontep = $_SESSION['fontep'];
 $fonteh2 = $_SESSION['fonteh2'];
-$icone_tema = "<i class='bx  bx-moon' style='font-size: 20px;' ></i>";
-$icone_fonte = "+A";
+$fonteh3 = $_SESSION['fonteh3'];
+$icone_tema = $_SESSION['icone-tema'];
+$icone_fonte = $_SESSION['icone-fonte'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($_POST["tema"] == "alterar") {
@@ -88,21 +89,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $icone_tema = "<i class='bx  bx-moon' style='font-size: 20px;' ></i>";
         }
         $_SESSION["tema"] = $tema;
+        $_SESSION["icone-tema"] = $icone_tema;
     }
     else if ($_POST["fonte"] == "alterar") {
         if ($fontep == "15px" && $fonteh2 == "25px") {
             $fontep = "19px";
             $fonteh2 = "30px";
+            $fonteh3 = "25px";
             $icone_fonte = "-A";
             $_SESSION["fontep"] = $fontep;
             $_SESSION["fonteh2"] = $fonteh2;
+            $_SESSION["icone-fonte"] = $icone_fonte;
         }
         else {
             $fontep = "15px";
             $fonteh2 = "25px";
+            $fonteh3 = "20px";
             $icone_fonte = "+A";
             $_SESSION["fontep"] = $fontep;
             $_SESSION["fonteh2"] = $fonteh2;
+            $_SESSION["icone-fonte"] = $icone_fonte;
         }
     }
 }
@@ -123,6 +129,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "}";
         echo "h2 {";
         echo "font-size: $fonteh2;";
+        echo "}";
+        echo "h3 {";
+        echo "font-size: $fonteh3;";
         echo "}";
         echo "</style>";
     ?>

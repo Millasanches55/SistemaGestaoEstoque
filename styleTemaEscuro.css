@@ -27,7 +27,7 @@ body {
     align-items: flex-start;
 }
 
-p, h3, label {
+p, h3, legend, label {
     color: white;
 }
 
@@ -76,7 +76,7 @@ section {
 }
 
 #tabela-usuarios thead th {
-    background-color: var(--azul-claro);
+    background-color: #5a6980;
     color: white;
     text-align: left;
 }
@@ -107,7 +107,7 @@ section {
 .card {
     max-width: 700px;
     width: 100%;
-    background: rgba(255, 255, 255, 0.85);
+    background: var(--cinza-escuro);
     border: 1px solid var(--cinza-borda);
     border-radius: var(--raio);
     box-shadow: var(--sombra-leve);
@@ -132,7 +132,7 @@ section {
 .form-group label {
     margin-bottom: 8px;
     font-weight: 600;
-    color: var(--azul-escuro);
+    color: white;
     text-align: center;
 }
 
@@ -142,7 +142,8 @@ select {
     padding: 10px;
     border: 1px solid #aaccee;
     border-radius: var(--raio);
-    background-color: #fff;
+    background-color: #4f5055;
+    color: white;
     transition: box-shadow 0.2s;
 }
 
@@ -197,9 +198,9 @@ select:focus {
 .summary-box {
     text-align: center;
     padding: 20px;
-    border: 1px solid #ddd;
     border-radius: 8px;
-    background-color: #f9f9f9;
+    border: 1px solid var(--cinza-borda);
+    color: white;
 }
 
 .saldo-value {
@@ -217,4 +218,13 @@ select:focus {
 
 .despesas {
     color: red;
+}
+
+.container {
+    max-width: 800px;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: var(--cinza-escuro);
+    border-radius: 8px;
+    border: 1px solid var(--cinza-borda);
 }

@@ -27,10 +27,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['nome']       = $row['nome'];
             $_SESSION['tipo']       = $row['tipo']; // adm ou auxiliar
             $_SESSION['id_terreiro']= $row['id_terreiro'];
-            $_SESSION['tema'] = 'style.css';
-            $_SESSION['fontep'] = "15px";
-            $_SESSION['fonteh2'] = "25px";
-            $_SESSION['fonteh3'] = "20px";
+
+            if (!isset($_SESSION["tema"])) {
+                $_SESSION['tema'] = 'style.css';
+                $_SESSION['fontep'] = "15px";
+                $_SESSION['fonteh2'] = "25px";
+                $_SESSION['fonteh3'] = "20px";
+                $_SESSION["icone-tema"] = "<i class='bx  bx-moon' style='font-size: 20px;' ></i>";
+                $_SESSION["icone-fonte"] = "+A";
+            }
 
             // Redireciona para painel
             header("Location: painel.php");

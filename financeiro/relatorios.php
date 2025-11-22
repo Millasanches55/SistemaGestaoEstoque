@@ -61,16 +61,77 @@ if ($stmt_estoque = $conn->prepare($sql_estoque)) {
 // Fecha a conexão com o banco de dados
 $conn->close();
 
+$tema = $_SESSION['tema'];
+$fontep = $_SESSION['fontep'];
+$fonteh2 = $_SESSION['fonteh2'];
+$fonteh3 = $_SESSION['fonteh3'];
+$icone_tema = "<i class='bx  bx-moon' style='font-size: 20px;' ></i>";
+$icone_fonte = "+A";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_POST["tema"] == "alterar") {
+        if ($tema == "style.css") {
+            $tema = "styleTemaEscuro.css";
+            $icone_tema = "<i class='bx  bx-sun' style='font-size: 20px;' ></i> ";
+        }
+        else {
+            $tema = "style.css";
+            $icone_tema = "<i class='bx  bx-moon' style='font-size: 20px;' ></i>";
+        }
+        $_SESSION["tema"] = $tema;
+    }
+    else if ($_POST["fonte"] == "alterar") {
+        if ($fontep == "15px" && $fonteh2 == "25px") {
+            $fontep = "19px";
+            $fonteh2 = "30px";
+            $fonteh3 = "25px";
+            $icone_fonte = "-A";
+            $_SESSION["fontep"] = $fontep;
+            $_SESSION["fonteh2"] = $fonteh2;
+        }
+        else {
+            $fontep = "15px";
+            $fonteh2 = "25px";
+            $fonteh3 = "20px";
+            $icone_fonte = "+A";
+            $_SESSION["fontep"] = $fontep;
+            $_SESSION["fonteh2"] = $fonteh2;
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Relatórios</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../<?php echo $tema; ?>">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
+<?php
+        echo "<style>";
+        echo "p {";
+        echo "font-size: $fontep;";
+        echo "}";
+        echo "h2 {";
+        echo "font-size: $fonteh2;";
+        echo "}";
+        echo "h3 {";
+        echo "font-size: $fonteh3;";
+        echo "}";
+        echo "</style>";
+    ?>
+    <div style="display: flex; position: fixed; top: 10px; right: 10px; gap: 15px;">
+        <form action="" method="post">
+            <input type="hidden" name="fonte" value="alterar" />
+            <button class="botao" style="font-size: 20px; width: 60px;" type="submit"><?php echo $icone_fonte; ?></button>
+        </form>
+        <form action="" method="post">
+            <input type="hidden" name="tema" value="alterar" />
+            <button class="botao" style="width: 60px;" type="submit"><?php echo $icone_tema; ?></button>
+        </form>
+    </div>
 <body>
     <section>
         <div class="nav-menu">
@@ -86,7 +147,7 @@ $conn->close();
         <div class="content">
             <h3>Resumo Financeiro</h3>
             <div class="summary-box">
-                <p>Arrecadações e Entradas: <span class="arrecadacoes">R$ <?php echo number_format($arrecadacoes, 2, ',', '.'); ?></span></p>
+                <p>Arrecadações e Entradas: <span style="color: #138000;">R$ <?php echo number_format($arrecadacoes, 2, ',', '.'); ?></span></p>
                 <p>Despesas e Saídas: <span class="despesas">R$ <?php echo number_format($despesas, 2, ',', '.'); ?></span></p>
                 <p>Saldo Atual: <span class="saldo-value"><?php echo number_format($saldo, 2, ',', '.'); ?></span></p>
             </div>

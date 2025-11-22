@@ -99,8 +99,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>Lista de Movimentações</title>
-    <link rel="stylesheet" href="estilo.css">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../<?php echo $tema; ?>">
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
     <style>
         /* Pequeno destaque visual */

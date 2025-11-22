@@ -210,7 +210,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>Adicionar Movimentação</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../<?php echo $tema; ?>">
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
     <style>
         .estoque-field {
@@ -223,7 +223,7 @@ $conn->close();
         <h2><i class='bx  bx-plus-circle'  ></i> Adicionar Movimentação Financeira</h2>
         <form method="POST" action="index.php?action=add">
             <div class="form-group">
-                <label for="tipo">Tipo:</label>
+                <h3>Tipo:</h3>
                 <select id="tipo" name="tipo" required onchange="toggleEstoqueField()">
                     <option value="arrecadacao">Arrecadação</option>
                     <option value="despesa">Despesa</option>
@@ -233,22 +233,22 @@ $conn->close();
             </div>
             
             <div class="form-group">
-                <label for="descricao">Descrição:</label>
+                <h3>Descrição:</h3>
                 <input type="text" id="descricao" name="descricao" required>
             </div>
             
             <div class="form-group">
-                <label for="valor">Valor:</label>
+                <h3>Valor:</h3>
                 <input type="number" step="0.01" id="valor" name="valor" required>
             </div>
             
             <div class="form-group">
-                <label for="data">Data:</label>
+                <h3>Data:</h3>
                 <input type="date" id="data" name="data" required>
             </div>
             
             <div class="form-group estoque-field" id="produto-field">
-                <label for="produto">Produto:</label>
+                <h3>Produto:</h3>
                 
                 <!-- Campo de texto (entrada de estoque) -->
                 <input type="text" id="produto_texto" name="produto_texto" placeholder="Digite o nome do novo produto">
@@ -266,12 +266,12 @@ $conn->close();
 
 
             <div class="form-group estoque-field" id="quantidade-field">
-                <label for="quantidade">Quantidade:</label>
+                <h3>Quantidade:</h3>
                 <input type="number" id="quantidade" name="quantidade" step="1">
             </div>
             
             <div class="form-group estoque-field" id="origem-field">
-                <label for="origem">Origem:</label>
+                <h3>Origem:</h3>
                 <select id="origem" name="origem">
                     <option value="compra">Compra</option>
                     <option value="doacao">Doação</option>
