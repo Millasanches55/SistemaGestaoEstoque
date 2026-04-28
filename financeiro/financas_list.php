@@ -109,10 +109,10 @@ $conn->close();
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" style="margin-top: 20px;">
         <br>
         <h2>💰 Movimentações Financeiras</h2>
-        <table class="historico-table">
+        <table id="tabela-usuarios">
             <thead>
                 <tr>
                     <th>Data</th>
@@ -160,7 +160,7 @@ $conn->close();
             <h3 style="margin-top:20px; color:#3c8dbc;">
                 🧾 <?php echo htmlspecialchars(ucfirst($produto)); ?>
             </h3>
-            <table class="historico-table" style="margin-top:10px;">
+            <table id="tabela-usuarios" style="margin-top:10px;">
                 <thead>
                     <tr>
                         <th>Quantidade Anterior</th>

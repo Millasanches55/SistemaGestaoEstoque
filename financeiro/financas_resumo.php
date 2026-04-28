@@ -62,7 +62,7 @@ $res_hist = $stmt->get_result();
 </head>
 <body>
 
-<div class="card">
+<div class="container">
     <h2><i class='bxr  bx-dollar-circle' style='font-size: 1.5em;' ></i> Resumo Financeiro</h2>
     <div style="max-width: 400px; display: flex; justify-content: center; margin: auto;">
         <div>
@@ -82,7 +82,7 @@ $res_hist = $stmt->get_result();
     </div>
 </div>
 
-<div class='card' style="margin-top: 20px;">
+<div class="container" style="margin-top: 20px;">
     <h2>Últimas Movimentações</h2>
     <table id="tabela-usuarios">
         <thead>
