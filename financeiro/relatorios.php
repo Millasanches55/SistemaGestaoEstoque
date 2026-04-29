@@ -14,27 +14,49 @@ if (!isset($_SESSION['id_usuario']) || !isset($_SESSION['id_terreiro'])) {
 $id_terreiro = $_SESSION['id_terreiro'];
 
 // --- Lógica para o resumo financeiro ---
-$arrecadacoes = 0;
-$despesas = 0;
-$sql_financas = "SELECT tipo, SUM(valor) AS total FROM financas WHERE id_terreiro = ? GROUP BY tipo";
+$total_arrecadacao = 0;
+$total_despesa = 0;
+$total_estoque_entrada = 0;
+$total_estoque_saida = 0;
+$total_receitas = 0;
+$total_despesas = 0;
+$saldo = 0;
+
+$sql_financas = "
+    SELECT
+        COALESCE(SUM(CASE WHEN tipo = 'arrecadacao' THEN valor ELSE 0 END), 0) AS total_arrecadacao,
+        COALESCE(SUM(CASE WHEN tipo = 'despesa' THEN valor ELSE 0 END), 0) AS total_despesa,
+        COALESCE(SUM(CASE WHEN tipo = 'estoque_entrada' THEN valor ELSE 0 END), 0) AS total_estoque_entrada,
+        COALESCE(SUM(CASE WHEN tipo = 'estoque_saida' THEN valor ELSE 0 END), 0) AS total_estoque_saida,
+        COALESCE(SUM(CASE WHEN tipo IN ('arrecadacao', 'estoque_saida') THEN valor ELSE 0 END), 0) AS total_receitas,
+        COALESCE(SUM(CASE WHEN tipo IN ('despesa', 'estoque_entrada') THEN valor ELSE 0 END), 0) AS total_despesas,
+        COALESCE(SUM(CASE WHEN tipo IN ('arrecadacao', 'estoque_saida') THEN valor ELSE 0 END), 0)
+            - COALESCE(SUM(CASE WHEN tipo IN ('despesa', 'estoque_entrada') THEN valor ELSE 0 END), 0) AS saldo
+    FROM financas
+    WHERE id_terreiro = ?
+";
+
 if ($stmt_financas = $conn->prepare($sql_financas)) {
     $stmt_financas->bind_param("i", $id_terreiro);
     $stmt_financas->execute();
     $result_financas = $stmt_financas->get_result();
-    while ($row = $result_financas->fetch_assoc()) {
-        if ($row['tipo'] == 'arrecadacao') {
-            $arrecadacoes = $row['total'];
-        } else if ($row['tipo'] == 'despesa') {
-            $despesas = $row['total'];
-        }
+
+    if ($row = $result_financas->fetch_assoc()) {
+        $total_arrecadacao = (float) ($row['total_arrecadacao'] ?? 0);
+        $total_despesa = (float) ($row['total_despesa'] ?? 0);
+        $total_estoque_entrada = (float) ($row['total_estoque_entrada'] ?? 0);
+        $total_estoque_saida = (float) ($row['total_estoque_saida'] ?? 0);
+        $total_receitas = (float) ($row['total_receitas'] ?? 0);
+        $total_despesas = (float) ($row['total_despesas'] ?? 0);
+        $saldo = (float) ($row['saldo'] ?? 0);
     }
+
     $stmt_financas->close();
 }
-$saldo = $arrecadacoes - $despesas;
 
 // --- Lógica para o histórico financeiro ---
 $historico = [];
-$sql_historico = "SELECT tipo, descricao, valor, data FROM financas WHERE id_terreiro = ? ORDER BY data DESC LIMIT 10";
+$sql_historico = "SELECT tipo, descricao, valor, data FROM financas WHERE id_terreiro = ? ORDER BY data DESC, id DESC LIMIT 10";
 if ($stmt_historico = $conn->prepare($sql_historico)) {
     $stmt_historico->bind_param("i", $id_terreiro);
     $stmt_historico->execute();
@@ -146,10 +168,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- Seção de Resumo Financeiro -->
         <div class="content">
             <h3>Resumo Financeiro</h3>
-            <div class="summary-box">
-                <p>Arrecadações e Entradas: <span style="color: #138000;">R$ <?php echo number_format($arrecadacoes, 2, ',', '.'); ?></span></p>
-                <p>Despesas e Saídas: <span class="despesas">R$ <?php echo number_format($despesas, 2, ',', '.'); ?></span></p>
-                <p>Saldo Atual: <span class="saldo-value"><?php echo number_format($saldo, 2, ',', '.'); ?></span></p>
+            <div class="container">
+                <div style="max-width: 400px; display: flex; justify-content: center; margin: auto;">
+                    <div>
+                        <p><strong>Arrecadações:</strong> <span style='color: green;'>R$ <?php echo number_format($total_arrecadacao, 2, ',', '.'); ?></span></p>
+                        <p><strong>Despesas:</strong> <span class="despesas">R$ <?php echo number_format($total_despesa, 2, ',', '.'); ?></span></p>
+                        <p><strong>Entrada de Estoque:</strong> <span class="despesas">R$ <?php echo number_format($total_estoque_entrada, 2, ',', '.'); ?></span></p>
+                        <p><strong>Saída de Estoque:</strong> <span style='color: green;'>R$ <?php echo number_format($total_estoque_saida, 2, ',', '.'); ?></span></p>
+                        <hr>
+                        <p><strong>Total Receitas:</strong> <span style='color: green;'>R$ <?php echo number_format($total_receitas, 2, ',', '.'); ?></span></p>
+                        <p><strong>Total Despesas:</strong> <span class="despesas">R$ <?php echo number_format($total_despesas, 2, ',', '.'); ?></span></p>
+                        <p><strong>Saldo:</strong>
+                            <span class="saldo-value" style="color: <?php echo ($saldo >= 0) ? 'green' : 'red'; ?>;">
+                                R$ <?php echo number_format($saldo, 2, ',', '.'); ?>
+                            </span>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -176,7 +211,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <?php echo ucfirst($item['tipo']); ?>
                                 </td>
                                 <td><?php echo htmlspecialchars($item['descricao']); ?></td>
-                                <td>R$ <?php echo number_format($item['valor'], 2, ',', '.'); ?></td>
+                                <td style="color: <?php echo in_array($item['tipo'], ['arrecadacao', 'estoque_saida']) ? '#138000' : '#b00020'; ?>;">
+                                    R$ <?php echo number_format($item['valor'], 2, ',', '.'); ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
